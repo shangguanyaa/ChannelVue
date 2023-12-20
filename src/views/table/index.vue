@@ -1,78 +1,133 @@
 <template>
   <div class="app-container">
     <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
+      :data="tableData"
       border
-      fit
-      highlight-current-row
+      style="width: 100%"
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column
+        fixed
+        prop="channelName"
+        label="渠道名"
+        width="350"
+      />
+      <el-table-column
+        prop="country"
+        label="支持国家"
+        width="300"
+      />
+      <el-table-column
+        prop="province"
+        label="省份"
+        width="120"
+        :align="'center'"
+      >
         <template slot-scope="scope">
-          {{ scope.$index }}
+          <el-tag
+            :type="scope.row.countWay === '1' ? 'primary' : 'success'"
+            disable-transitions
+          >{{ scope.row.countWay === '1' ? '首重续重' : '重量范围' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      <el-table-column
+        prop="FWeight"
+        :label="'首重续重('+unitText+')'"
+        width="120"
+        :align="'center'"
+      >
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          <span v-show="scope.row.FWeight">{{ scope.row.FWeight / unit }} / {{ scope.row.CWeight / unit }}</span>
+          <span v-show="!scope.row.FWeight"> - </span>
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column
+        prop="FWeight"
+        label="首重/续重价格"
+        width="120"
+        :align="'center'"
+      >
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span v-show="scope.row.FWeightPrice">{{ scope.row.FWeightPrice }} / {{ scope.row.CWeightPrice }}</span>
+          <span v-show="!scope.row.FWeight"> - </span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column
+        prop="FWeight"
+        :label="'重量范围与金额('+unitText+'/元)'"
+        :align="'left'"
+        width="250"
+      >
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          <div v-show="scope.row.countWay === '2'">
+            <p v-for="(item, i) in scope.row.range" :key="i">
+              {{ item.range[0] / unit }} ~ {{ item.range[1] / unit }} / {{ item.price }}
+            </p>
+          </div>
+
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column
+        prop="maxSidelength"
+        label="最长边长(cm)"
+        width="120"
+        :align="'center'"
+      />
+      <el-table-column
+        prop="maxWeight"
+        :label="'最大重量('+unitText+')'"
+        width="120"
+        :align="'center'"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <span>{{ (scope.row.maxWeight / unit).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column
+        prop="maxWeight"
+        label="材积 / 周长"
+        width="120"
+        :align="'center'"
+      >
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          <span>{{ (scope.row.volume) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
+          <el-button type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
+
 </template>
 
 <script>
-import { getList } from '@/api/table'
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
-      list: null,
-      listLoading: true
+      tableData: [],
+      unitText: 'G',
+      unit: 1
     }
   },
   created() {
-    this.fetchData()
+    this.getAllChannelList()
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+    handleClick(row) {
+      console.log(row)
+    },
+    async getAllChannelList() {
+      const res = await this.$store.dispatch('channel/getAllChannelList')
+      console.log(res)
+      this.tableData = res.results || []
     }
   }
 }

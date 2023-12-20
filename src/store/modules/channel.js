@@ -1,4 +1,4 @@
-import { ChannelList } from '@/api/channel'
+import { ChannelList, AllChannelList } from '@/api/channel'
 
 const state = {}
 
@@ -7,6 +7,10 @@ const mutations = {}
 const actions = {
   async getChannelList({ commit }, body) {
     const res = await ChannelList(body)
+    return res
+  },
+  async getAllChannelList({ commit }, body) {
+    const res = await AllChannelList(body)
     return res
   }
 }

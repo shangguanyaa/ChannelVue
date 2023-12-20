@@ -7,3 +7,11 @@ export function ChannelList(data) {
     data
   })
 }
+
+export function AllChannelList(data) {
+  return request({
+    url: '/channel/getChannelList',
+    method: 'post',
+    data
+  })
+}
