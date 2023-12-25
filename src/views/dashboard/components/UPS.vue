@@ -16,7 +16,16 @@ export default {
     // eslint-disable-next-line vue/require-default-prop
     weight: { type: Number },
     // eslint-disable-next-line vue/require-default-prop
-    index: { type: Number }
+    index: { type: Number },
+    // eslint-disable-next-line vue/prop-name-casing
+    lwh_arr: {
+      type: Array,
+      default: () => { [] }
+    },
+    volume: {
+      type: Number,
+      default: () => { 0 }
+    }
   },
   data: () => ({
     privateAddress: true,
@@ -33,7 +42,8 @@ export default {
         console.log(false)
         this.newTotalPrice -= 30
       }
-      this.$emit('countPrice', this.newTotalPrice, this.index)
+      this.item.showInfo.totalPrice = this.newTotalPrice
+      // this.$emit('countPrice', this.newTotalPrice, this.index)
     },
     isToy: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
@@ -45,8 +55,12 @@ export default {
         console.log(false)
         this.newTotalPrice -= (1 * weight)
       }
-      this.$emit('countPrice', this.newTotalPrice, this.index)
+      this.item.showInfo.totalPrice = this.newTotalPrice
+      // this.$emit('countPrice', this.newTotalPrice, this.index)
     }
+  },
+  mounted() {
+    this.forUPSPrice(this.item, this.weight, this.lwh_arr, this.volume)
   },
   methods: {
     changeSettings() {
@@ -58,6 +72,37 @@ export default {
       val = val <= 21000 ? 21000 : val
       // 向上取整 Math.ceil
       return Math.ceil(val / 1000) * 1000
+    },
+
+    forUPSPrice(value, weight, LWH_arr, volume) {
+      const { range } = value
+      let price = 0
+      for (const item of range) {
+        if (this.forUPSWeight(weight) >= item.range[0] && this.forUPSWeight(weight) < item.range[1]) {
+          price = item.price
+          break
+        }
+      }
+      console.log(222)
+
+      let ChaoZhong = 0
+      if ((this.forUPSWeight(weight) > 30000 && this.forUPSWeight(weight) < 39000) || (LWH_arr.length === 3 && LWH_arr[0] >= 100 || LWH_arr[1] >= 76)) {
+        ChaoZhong = 160
+      }
+      if (this.forUPSWeight(weight) >= 39000 || volume > 300) {
+        ChaoZhong = (650 + 160)
+      }
+
+      console.log('超重', ChaoZhong)
+
+      const toy = 1 // 电子玩具类 + 1
+      const pre = 30 // 私人地址 30 元
+      const totalPrice = (price * (this.forUPSWeight(weight) / 1000) + (toy * this.forUPSWeight(weight) / 1000) + pre + ChaoZhong).toFixed(2)
+      console.log((toy * this.forUPSWeight(weight) / 1000))
+
+      console.log({ totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` })
+      this.$emit('countPrice', { totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` }, this.index)
+      return { totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` }
     }
   }
 }

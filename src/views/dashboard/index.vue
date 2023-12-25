@@ -7,17 +7,21 @@
       <div class="select">
         <el-card class="box-card">
           <div class="text item">
-            <span>目的地国家: </span>
-            <el-select v-model="selectCountry" filterable placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
+            <div class="every-div">
+              <span class="top-label">目的地国家: </span>
+              <el-select v-model="selectCountry" filterable placeholder="请选择">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
             <el-divider direction="vertical" />
-            <span>物品重量: </span>
-            <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
-              <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span>
-            </el-input>
+            <div class="every-div">
+              <span class="top-label">物品重量: </span>
+              <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
+                <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span>
+              </el-input>
+            </div>
             <el-divider direction="vertical" />
-            <span>长宽高(CM): </span>
+            <span class="top-label">长宽高(CM): </span>
             <el-input v-model="long" class="long-input" placeholder="长" /><el-divider
               direction="vertical"
             />
@@ -25,6 +29,34 @@
               direction="vertical"
             />
             <el-input v-model="high" class="long-input" placeholder="高" />
+            <el-divider direction="vertical" />
+            <div class="every-div margin-t-10">
+              <span class="top-label">发货地: </span>
+              <el-select v-model="selectCountry" filterable placeholder="深圳" disabled>
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
+            <el-divider direction="vertical" class="margin-t-10" />
+            <div class="every-div margin-t-10">
+              <span class="top-label">选择产品: </span>
+              <el-select v-model="selectCountry" filterable placeholder="儿童挖土机" disabled>
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
+            <el-divider direction="vertical" class="margin-t-10" />
+            <div class="every-div margin-t-10">
+              <span class="top-label">带电带磁: </span>
+              <el-select v-model="withElectricity" filterable placeholder="请选择货物类型">
+                <el-option v-for="item in ElectricityOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
+            <el-divider direction="vertical" class="margin-t-10" />
+            <div class="every-div margin-t-10">
+              <span class="top-label">渠道类型: </span>
+              <el-select v-model="channelType" filterable placeholder="请选择货物类型">
+                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
+              </el-select>
+            </div>
           </div>
           <div class="search">
             <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">搜索</el-button>
@@ -32,7 +64,12 @@
         </el-card>
       </div>
       <div class="list-box">
-        <channelList :list="channels" :weight="unit === 'KG' ? (weight * 1000) : weight" />
+        <channelList
+          :list="channels"
+          :weight="unit === 'KG' ? (weight * 1000) : weight"
+          :lwh_arr="LWH_arr"
+          :volume="volume"
+        />
       </div>
     </div>
   </div>
@@ -56,9 +93,42 @@ export default {
     channels: [],
     long: null,
     wide: null,
-    high: null
+    high: null,
+    volume: 0,
+    LWH_arr: [],
+    withElectricity: null,
+    ElectricityOptions: [
+      {
+        label: '不限',
+        value: null
+      },
+      {
+        label: '普货',
+        value: 0
+      },
+      {
+        label: '纯电',
+        value: 1
+      },
+      {
+        label: '带电带磁',
+        value: 2
+      }
+    ],
+    channelTypes: ['类型1', '类型2'],
+    channelType: null
   }),
+  created() {
+    this.getChannelTypes()
+  },
   methods: {
+    async getChannelTypes() {
+      const res = await this.$store.dispatch('channel/getChannelTypes')
+      if (res.code !== 200) {
+        return
+      }
+      this.channelTypes = res.results || ['获取类型失败']
+    },
     changeUnit() {
       if (this.unit === 'KG') {
         this.weight = this.weight * 1000
@@ -69,7 +139,7 @@ export default {
       }
     },
     search() {
-      let arr = []
+      const arr = []
       this.long && arr.push(parseFloat(this.long))
       this.wide && arr.push(parseFloat(this.wide))
       this.high && arr.push(parseFloat(this.high))
@@ -80,8 +150,8 @@ export default {
         })
         return
       }
-      const volume = arr.length === 3 ? arr[0] + ((arr[1] + arr[2]) * 2) : 0
-      console.log('材积 ', volume)
+      this.volume = arr.length === 3 ? arr[0] + ((arr[1] + arr[2]) * 2) : 0
+      console.log('材积 ', this.volume)
       if (!this.selectCountry) {
         this.$message({
           message: '请先选择目的地国家.',
@@ -97,9 +167,9 @@ export default {
         return
       }
       this.searchLoading = true
-      arr = arr.sort((a, b) => { return b - a })
+      this.LWH_arr = arr.sort((a, b) => { return b - a })
       this.channels = []
-      this.getList(arr, volume)
+      this.getList(this.LWH_arr, this.volume)
     },
     async getList(LWH_arr, volume) {
       const data = {}
@@ -126,6 +196,11 @@ export default {
   text-align: center;
   font-weight: 500;
   letter-spacing: 3px;
+}
+
+.top-label {
+  display: block;
+  width: 100px;
 }
 
 .input-with-select {
@@ -181,5 +256,19 @@ export default {
   flex-direction: column;
   height: 100%;
   padding-bottom: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  /* padding-right: 200px; */
+}
+.every-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 302px;
 }
 </style>

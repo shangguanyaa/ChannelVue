@@ -30,6 +30,12 @@
         </template>
       </el-table-column>
       <el-table-column
+
+        prop="channelType"
+        label="渠道类型"
+        width="150"
+      />
+      <el-table-column
         prop="FWeight"
         :label="'首重续重('+unitText+')'"
         width="120"
@@ -63,7 +69,6 @@
               {{ item.range[0] / unit }} ~ {{ item.range[1] / unit }} / {{ item.price }}
             </p>
           </div>
-
         </template>
       </el-table-column>
       <el-table-column
@@ -99,35 +104,70 @@
       >
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
+          <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :current-page="pageIndex"
+      :page-size="pageSize"
+      @current-change="currentChange"
+    />
+    <ChannelEdit :is_edit_open="editOpen" :row="editRowData" @closeEdit="closeEdit" @updateSuccess="updateSuccess" />
   </div>
 
 </template>
 
 <script>
 
+import ChannelEdit from './components/ChannelEdit'
+
 export default {
+  components: { ChannelEdit },
   data() {
     return {
       tableData: [],
       unitText: 'G',
-      unit: 1
+      unit: 1,
+      editOpen: false,
+      editRowData: {},
+      total: 0,
+      pageIndex: 1,
+      pageSize: 10
     }
   },
   created() {
     this.getAllChannelList()
   },
   methods: {
+    currentChange(page) {
+      this.pageIndex = page
+      this.getAllChannelList()
+    },
     handleClick(row) {
-      console.log(row)
+      this.editRowData = row
+      console.log(this.editRowData)
+      this.editOpen = true
     },
     async getAllChannelList() {
-      const res = await this.$store.dispatch('channel/getAllChannelList')
+      const data = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize
+      }
+      const res = await this.$store.dispatch('channel/getAllChannelList', data)
       console.log(res)
-      this.tableData = res.results || []
+      this.tableData = res.results.res || []
+      this.total = res.results.total || 0
+    },
+    closeEdit() {
+      this.editOpen = false
+    },
+    updateSuccess() {
+      this.closeEdit()
+      this.getAllChannelList()
     }
   }
 }

@@ -53,7 +53,8 @@ service.interceptors.response.use(
     } else {
       Notification({
         title: '操作成功',
-        type: 'success'
+        type: 'success',
+        message: res.message
       })
       return res
     }

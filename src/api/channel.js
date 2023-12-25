@@ -15,3 +15,19 @@ export function AllChannelList(data) {
     data
   })
 }
+
+export function ChannelTypes(data) {
+  return request({
+    url: '/channel/getChannelTypes',
+    method: 'post',
+    data
+  })
+}
+
+export function updateAnChannel(data) {
+  return request({
+    url: '/channel/updateAnChannel',
+    method: 'post',
+    data
+  })
+}

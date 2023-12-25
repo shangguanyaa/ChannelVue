@@ -23,7 +23,13 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
-              <UPS v-if="item.channelCode === 'UPS'" :item="item" :index="i" v-bind="$attrs" @countPrice="countPrice" />
+              <UPS
+                v-if="item.channelCode === 'UPS'"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -40,6 +46,7 @@ import UPS from './components/UPS'
 export default {
   name: 'ChannelList',
   components: { XiaoHuoOne, UPS },
+  inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
     list: { type: Array }
@@ -59,9 +66,15 @@ export default {
   methods: {
     countPrice(TotalPrice, index) {
       console.log(TotalPrice, index)
-      this.channelLists[index].showInfo.totalPrice = TotalPrice
+      this.channelLists[index].showInfo = TotalPrice
       console.log(this.list === this.channelLists)
       console.log(this.list)
+    },
+    Init(showInfo, index) {
+      console.log(111)
+      console.log('showInfo', showInfo)
+      console.log('index', index)
+      this.channelLists[index].showInfo = showInfo
     }
   }
 }
