@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
     <el-table
       :data="tableData"
       border
@@ -117,6 +118,7 @@
       @current-change="currentChange"
     />
     <ChannelEdit :is_edit_open="editOpen" :row="editRowData" @closeEdit="closeEdit" @updateSuccess="updateSuccess" />
+    <ChannelAdd :is_add_open="addOpen" :row="editRowData" @closeAdd="closeAdd" @updateSuccess="updateSuccess" />
   </div>
 
 </template>
@@ -124,9 +126,10 @@
 <script>
 
 import ChannelEdit from './components/ChannelEdit'
+import ChannelAdd from './components/ChannelAdd.vue'
 
 export default {
-  components: { ChannelEdit },
+  components: { ChannelEdit, ChannelAdd },
   data() {
     return {
       tableData: [],
@@ -136,13 +139,18 @@ export default {
       editRowData: {},
       total: 0,
       pageIndex: 1,
-      pageSize: 10
+      pageSize: 10,
+      addOpen: false
     }
   },
   created() {
     this.getAllChannelList()
   },
   methods: {
+    addView() {
+      console.log('打开添加渠道')
+      this.addOpen = true
+    },
     currentChange(page) {
       this.pageIndex = page
       this.getAllChannelList()
@@ -164,6 +172,9 @@ export default {
     },
     closeEdit() {
       this.editOpen = false
+    },
+    closeAdd() {
+      this.addOpen = false
     },
     updateSuccess() {
       this.closeEdit()

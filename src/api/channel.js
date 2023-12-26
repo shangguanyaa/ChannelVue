@@ -31,3 +31,11 @@ export function updateAnChannel(data) {
     data
   })
 }
+
+export function addChannel(data) {
+  return request({
+    url: '/channel/addChannel',
+    method: 'post',
+    data
+  })
+}

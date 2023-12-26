@@ -104,15 +104,15 @@ export default {
       },
       {
         label: '普货',
-        value: 0
+        value: '1'
       },
       {
         label: '纯电',
-        value: 1
+        value: '2'
       },
       {
         label: '带电带磁',
-        value: 2
+        value: '3'
       }
     ],
     channelTypes: ['类型1', '类型2'],
@@ -172,11 +172,14 @@ export default {
       this.getList(this.LWH_arr, this.volume)
     },
     async getList(LWH_arr, volume) {
+      this.searchLoading = false
       const data = {}
       data.country = this.selectCountry
       data.weight = this.unit === 'KG' ? this.weight * 1000 : this.weight
       data.LWH_arr = LWH_arr
       data.volume = volume
+      data.withElectricity = this.withElectricity
+      data.channelType = this.channelType
       console.log(data)
       const res = await this.$store.dispatch('channel/getChannelList', data)
       console.log(res.results)

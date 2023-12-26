@@ -2,16 +2,16 @@
   <div>
     <el-drawer
       ref="drawer"
-      :title="'编辑: ' + rowData.channelName"
+      title="添加渠道"
       :before-close="handleClose"
-      :visible.sync="is_edit_open"
+      :visible.sync="is_add_open"
       direction="rtl"
       custom-class="demo-drawer"
     >
       <div class="demo-drawer__content">
         <el-form ref="form" :model="rowData" label-width="80px">
           <el-form-item label="渠道名称">
-            <el-input v-model="rowData.channelName" />
+            <el-input v-model="rowData.channelName" placeholder="渠道名称" />
           </el-form-item>
           <el-form-item label="渠道代码">
             <el-input v-model="rowData.channelCode" placeholder="此代码为唯一的,不能和其他渠道相同" />
@@ -21,11 +21,6 @@
           </el-form-item>
           <el-form-item label="渠道类型">
             <el-input v-model="rowData.channelType" placeholder="渠道类型" />
-          </el-form-item>
-          <el-form-item label="支持类型">
-            <el-checkbox :checked="ele1" @change="chick1">普货</el-checkbox>
-            <el-checkbox :checked="ele2" @change="chick2">纯电</el-checkbox>
-            <el-checkbox :checked="ele3" @change="chick3">带电带磁</el-checkbox>
           </el-form-item>
           <el-form-item label="尺寸限制">
             <el-col :span="2">
@@ -103,7 +98,7 @@
             <div class="add-icon" @click="addRange"><i class="el-icon-circle-plus-outline" /></div>
           </template>
           <el-form-item>
-            <el-button type="primary" :loading="onLoading" @click="onSubmit">修改</el-button>
+            <el-button type="primary" :loading="onLoading" @click="onSubmit">新增</el-button>
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
@@ -115,10 +110,10 @@
 <script>
 
 export default {
-  name: 'ChannelEdit',
+  name: 'ChannelAdd',
   props: {
     // eslint-disable-next-line vue/prop-name-casing
-    is_edit_open: {
+    is_add_open: {
       type: Boolean,
       default: () => { false }
     },
@@ -129,69 +124,61 @@ export default {
   },
   data() {
     return {
-      rowData: {},
-      withEle: [],
-      ele1: false,
-      ele2: false,
-      ele3: false,
+      rowData: {
+        channelName: '',
+        channelCode: '',
+        channelType: '',
+        country: '',
+        long: null,
+        wide: null,
+        high: null,
+        maxSidelength: null,
+        maxWeight: null,
+        countWay: '1',
+        FWeight: null,
+        FWeightPrice: null,
+        CWeight: null,
+        CWeightPrice: null,
+        range: null
+      },
       onLoading: false
     }
   },
   watch: {
-    is_edit_open: function(newVal) {
-      if (newVal) {
-        this.rowData = JSON.parse(JSON.stringify(this.row))
-        this.withEle = this.rowData.withElectricity.split(',')
-        this.initCheckBoxs()
-        console.log(this.withEle)
-      } else {
-        this.rowData = {}
-      }
-    }
+    // is_edit_open: function(newVal) {
+    //   if (newVal) {
+    //     this.rowData = JSON.parse(JSON.stringify(this.row))
+    //   } else {
+    //     this.rowData = {}
+    //   }
+    // }
   },
   methods: {
-    chick1(val) {
-      this.chickCheck(val, 1)
-    },
-    chick2(val) {
-      this.chickCheck(val, 2)
-    },
-    chick3(val) {
-      this.chickCheck(val, 3)
-    },
-    chickCheck(val, index) {
-      if (val) {
-        this.withEle.push(`${index}`)
-      } else {
-        this.withEle.splice(this.withEle.indexOf(`${index}`), 1)
-      }
-      console.log(this.withEle)
-      this.initCheckBoxs()
-    },
-    initCheckBoxs() {
-      for (const item of this.withEle) {
-        switch (item) {
-          case '1':
-            this.ele1 = true
-            break
-          case '2':
-            this.ele2 = true
-            break
-          case '3':
-            this.ele3 = true
-            break
-          default:
-            break
-        }
+    initRowData() {
+      this.rowData = {
+        channelName: '',
+        channelCode: '',
+        channelType: '',
+        country: '',
+        long: null,
+        wide: null,
+        high: null,
+        maxSidelength: null,
+        maxWeight: null,
+        countWay: '1',
+        FWeight: null,
+        FWeightPrice: null,
+        CWeight: null,
+        CWeightPrice: null,
+        range: null
       }
     },
     handleClose() {
-      console.log(this.rowData, 'rowData')
-      this.$emit('closeEdit')
+      this.$emit('closeAdd')
+      this.initRowData()
     },
     async handleUndateChannel() {
       this.onLoading = true
-      this.rowData.withElectricity = this.withEle.toString()
       if (this.rowData.countWay === '1') {
         this.rowData.range = null
       } else {
@@ -201,8 +188,10 @@ export default {
         this.rowData.CWeight = null
       }
       // const data = this.rowData
-      const res = await this.$store.dispatch('channel/updateChannel', this.rowData)
-      if (res.results) {
+      const res = await this.$store.dispatch('channel/insertChannel', { rowData: this.rowData })
+      console.log(res)
+      if (res.code === 200) {
+        this.handleClose()
         this.$emit('updateSuccess')
       }
       this.onLoading = false
@@ -211,7 +200,7 @@ export default {
       if (!this.rowData.channelName) {
         this.$message({
           type: 'warning',
-          message: '请完善重量范围数据'
+          message: '请输入渠道名称'
         })
       }
       if (!this.rowData.channelCode) {
