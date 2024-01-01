@@ -30,6 +30,20 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <UPSJiaNaDa
+                v-if="item.channelCode === '加拿大UPS包税'"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <HKUPS
+                v-if="item.channelCode === 'HKUPS'"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -42,10 +56,12 @@
 import { iconColor } from '@/utils/channelIcon'
 import XiaoHuoOne from './components/XiaoHuo1'
 import UPS from './components/UPS'
+import UPSJiaNaDa from './components/UPS_JiaNaDa.vue'
+import HKUPS from './components/HKUPS.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS },
+  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop

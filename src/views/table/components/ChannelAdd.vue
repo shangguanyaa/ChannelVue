@@ -22,6 +22,11 @@
           <el-form-item label="渠道类型">
             <el-input v-model="rowData.channelType" placeholder="渠道类型" />
           </el-form-item>
+          <el-form-item label="支持类型">
+            <el-checkbox :checked="ele1" @change="chick1">普货</el-checkbox>
+            <el-checkbox :checked="ele2" @change="chick2">纯电</el-checkbox>
+            <el-checkbox :checked="ele3" @change="chick3">带电带磁</el-checkbox>
+          </el-form-item>
           <el-form-item label="尺寸限制">
             <el-col :span="2">
               长:
@@ -128,6 +133,7 @@ export default {
         channelName: '',
         channelCode: '',
         channelType: '',
+        AdvancedUnits: '',
         country: '',
         long: null,
         wide: null,
@@ -141,6 +147,10 @@ export default {
         CWeightPrice: null,
         range: null
       },
+      withEle: [],
+      ele1: false,
+      ele2: false,
+      ele3: false,
       onLoading: false
     }
   },
@@ -154,11 +164,47 @@ export default {
     // }
   },
   methods: {
+    chick1(val) {
+      this.chickCheck(val, 1)
+    },
+    chick2(val) {
+      this.chickCheck(val, 2)
+    },
+    chick3(val) {
+      this.chickCheck(val, 3)
+    },
+    chickCheck(val, index) {
+      if (val) {
+        this.withEle.push(`${index}`)
+      } else {
+        this.withEle.splice(this.withEle.indexOf(`${index}`), 1)
+      }
+      console.log(this.withEle)
+      this.initCheckBoxs()
+    },
+    initCheckBoxs() {
+      for (const item of this.withEle) {
+        switch (item) {
+          case '1':
+            this.ele1 = true
+            break
+          case '2':
+            this.ele2 = true
+            break
+          case '3':
+            this.ele3 = true
+            break
+          default:
+            break
+        }
+      }
+    },
     initRowData() {
       this.rowData = {
         channelName: '',
         channelCode: '',
         channelType: '',
+        AdvancedUnits: '',
         country: '',
         long: null,
         wide: null,
@@ -179,6 +225,8 @@ export default {
     },
     async handleUndateChannel() {
       this.onLoading = true
+
+      this.rowData.withElectricity = this.withEle.toString()
       if (this.rowData.countWay === '1') {
         this.rowData.range = null
       } else {
