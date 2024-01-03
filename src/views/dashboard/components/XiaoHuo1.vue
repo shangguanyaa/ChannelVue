@@ -41,22 +41,20 @@ export default {
     privateAddress: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
       if (newVal === true) {
-        // console.log(true)
-        this.YuChiCount(this.weight) < 10000 ? this.newTotalPrice += 50 : this.newTotalPrice += 30
+        // this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) < 10000 ? this.newTotalPrice += 50 : this.newTotalPrice += 30
+        this.newTotalPrice += 30
       } else {
-        // console.log(false)
-        this.YuChiCount(this.weight) < 10000 ? this.newTotalPrice -= 50 : this.newTotalPrice -= 30
+        // this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) < 10000 ? this.newTotalPrice -= 50 : this.newTotalPrice -= 30
+        this.newTotalPrice -= 30
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
     },
     isToy: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.YuChiCount(this.weight) / 1000
+      const weight = this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) / 1000
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += (2 * weight)
       } else {
-        console.log(false)
         this.newTotalPrice -= (2 * weight)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -64,7 +62,7 @@ export default {
     },
     Magnetized: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.YuChiCount(this.weight) / 1000
+      const weight = this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) / 1000
       if (newVal === true) {
         console.log(true)
         this.newTotalPrice += (2 * weight)
@@ -85,8 +83,7 @@ export default {
     isInteger(obj) {
       return obj % 1 === 0
     },
-
-    YuChiCount(weight) {
+    halfWeight(weight) {
       let currentScore = 0
       const floor = Math.floor((weight / 1000))
       if (this.isInteger(weight / 1000)) {
@@ -102,27 +99,58 @@ export default {
       }
     },
 
+    YuChiCount(weight, AdvancedUnits, volumeWight, LWH_arr) {
+      let currentScore = 0
+      let currentWeight = 0
+      let VWight = 0
+      if (LWH_arr.length !== 3) {
+        console.log('无 LWH_arr')
+        VWight = 0
+      } else {
+        VWight = ((LWH_arr[0] * LWH_arr[1] * LWH_arr[2]) / volumeWight * 1000).toFixed(2)
+        console.log(VWight)
+        if (VWight < 20000) {
+          VWight = this.halfWeight(VWight)
+          console.log('一半进阶: ' + VWight)
+        } else {
+          VWight = Math.ceil(VWight / 1000) * 1000
+          console.log('1KG进阶: ' + VWight)
+        }
+      }
+      if (AdvancedUnits === 500) {
+        currentWeight = this.halfWeight(weight)
+      } else {
+        currentWeight = Math.ceil(weight / 1000) * 1000
+      }
+      currentScore = currentWeight > VWight ? currentWeight : VWight
+      return currentScore
+    },
+
     PriceForXiaoDai1(value, weight, LWH_arr) {
-      const { FWeight, CWeight, FWeightPrice, CWeightPrice, channelCode } = value
+      const { FWeight, CWeight, FWeightPrice, CWeightPrice, channelCode, AdvancedUnits, volumeWight } = value
+      const price = parseFloat(value.showInfo.totalPrice)
+      const Weight = this.YuChiCount(weight, AdvancedUnits, volumeWight, LWH_arr) / 1000
       let totalPrice = 0
       if (channelCode === '小货包税2') {
         if (LWH_arr[0] >= 61 || LWH_arr[1] >= 45 || LWH_arr[2] >= 45) {
           return {
             totalPrice: 0,
             isShow: false,
-            msg: '最长边<61cm, 宽高<46cm方可'
+            msg: ['最长边<61cm, 宽高<46cm方可']
           }
         }
       }
       const pre = 30 // 私人地址 + 30
-      const toy = 2 * this.YuChiCount(weight) / 1000 // 玩具类 2元/KG
-      const Magnetized = 2 * this.YuChiCount(weight) / 1000 // 带磁 2元/KG
-      totalPrice = (((this.YuChiCount(weight) - FWeight) / CWeight) * CWeightPrice) + FWeightPrice + pre + toy + Magnetized
+      // const toy = 2 * this.YuChiCount(weight) / 1000 // 玩具类 2元/KG
+      // const Magnetized = 2 * this.YuChiCount(weight) / 1000 // 带磁 2元/KG
+      const toy = 2 * Weight // 玩具类 2元/KG
+      const Magnetized = 2 * Weight // 带磁 2元/KG
+      totalPrice = price + pre + toy + Magnetized
       // 私人地址不足10KG的, 需要加20
-      if (this.YuChiCount(weight) < 10000) {
-        totalPrice += 20
-      }
-      this.$emit('countPrice', { totalPrice, isShow: true, msg: '' }, this.index)
+      // if (this.YuChiCount(weight) < 10000) {
+      //   totalPrice += 20
+      // }
+      this.$emit('countPrice', { totalPrice, isShow: true, msg: [''] }, this.index)
       return { totalPrice, isShow: true, msg: '' }
     }
   }

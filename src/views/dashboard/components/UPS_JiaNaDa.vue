@@ -85,19 +85,19 @@ export default {
       }
 
       let ChaoZhong = 0
-      let msg = ''
+      const msg = []
       if ((this.forUPSWeight(weight) > 30000)) {
         ChaoZhong += 120
-        msg += '超重费用:120, '
+        msg.push('超重费用:120, ')
       }
       if (LWH_arr.length === 3 && LWH_arr[0] > 120) {
         ChaoZhong += 120
-        msg += '超长费用:120, '
+        msg.push('超长费用:120, ')
       }
       //  || (LWH_arr.length === 3 && LWH_arr[0] >= 100 || LWH_arr[1] >= 76)
       if (volume > 265 && volume < 400) {
         ChaoZhong += 420
-        msg += '大型货件:420'
+        msg.push('大型货件:420')
       }
 
       console.log('超重', ChaoZhong)
