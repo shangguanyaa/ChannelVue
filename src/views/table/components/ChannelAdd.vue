@@ -5,11 +5,12 @@
       title="添加渠道"
       :before-close="handleClose"
       :visible.sync="is_add_open"
+      :size="500"
       direction="rtl"
       custom-class="demo-drawer"
     >
       <div class="demo-drawer__content">
-        <el-form ref="form" :model="rowData" label-width="80px">
+        <el-form ref="form" :model="rowData" label-width="100px">
           <el-form-item label="渠道名称">
             <el-input v-model="rowData.channelName" placeholder="渠道名称" />
           </el-form-item>
@@ -28,19 +29,25 @@
             <el-checkbox :checked="ele3" @change="chick3">带电带磁</el-checkbox>
           </el-form-item>
           <el-form-item label="尺寸限制">
-            <el-col :span="2">
+            <el-col :span="1">
               长:
             </el-col>
             <el-col :span="6">
               <el-input v-model="rowData.long" placeholder="长" type="Number" />
             </el-col>
-            <el-col :span="2">
+            <el-col :span="1">
+              <el-divider direction="vertical" />
+            </el-col>
+            <el-col :span="1">
               宽:
             </el-col>
             <el-col :span="6">
               <el-input v-model="rowData.wide" placeholder="宽" type="Number" />
             </el-col>
-            <el-col :span="2">
+            <el-col :span="1">
+              <el-divider direction="vertical" />
+            </el-col>
+            <el-col :span="1">
               高:
             </el-col>
             <el-col :span="6">
@@ -52,6 +59,21 @@
           </el-form-item>
           <el-form-item label="最大重量">
             <el-input v-model="rowData.maxWeight" type="Number" />
+          </el-form-item>
+          <el-form-item label="进阶单位">
+            <el-radio-group v-model="rowData.AdvancedUnits">
+              <el-radio :label="500">0.5 KG  </el-radio>
+              <el-radio :label="1000">1 KG</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="计费重单位">
+            <el-input v-model="rowData.volumeWight" type="Number" placeholder="该渠道重量进阶单位" />
+          </el-form-item>
+          <el-form-item label="配送时效">
+            <el-input v-model="rowData.ageing" type="text" />
+          </el-form-item>
+          <el-form-item label="操作费">
+            <el-input v-model="rowData.operatePrice" type="Number" />
           </el-form-item>
           <el-form-item label="计算方式">
             <el-radio-group v-model="rowData.countWay">
@@ -107,6 +129,7 @@
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
+
       </div>
     </el-drawer>
   </div>
@@ -133,19 +156,22 @@ export default {
         channelName: '',
         channelCode: '',
         channelType: '',
-        AdvancedUnits: '',
+        AdvancedUnits: 1000,
         country: '',
-        long: null,
-        wide: null,
-        high: null,
-        maxSidelength: null,
-        maxWeight: null,
+        long: 99999,
+        wide: 99999,
+        high: 99999,
+        maxSidelength: 99999,
+        maxWeight: 99999999,
         countWay: '1',
         FWeight: null,
         FWeightPrice: null,
         CWeight: null,
         CWeightPrice: null,
-        range: null
+        range: null,
+        ageing: '6-10天',
+        volumeWight: 6000,
+        operatePrice: 0
       },
       withEle: [],
       ele1: false,
@@ -204,7 +230,7 @@ export default {
         channelName: '',
         channelCode: '',
         channelType: '',
-        AdvancedUnits: '',
+        AdvancedUnits: 1000,
         country: '',
         long: null,
         wide: null,
@@ -216,7 +242,9 @@ export default {
         FWeightPrice: null,
         CWeight: null,
         CWeightPrice: null,
-        range: null
+        range: null,
+        ageing: '6-10天',
+        volumeWight: 6000
       }
     },
     handleClose() {

@@ -7,11 +7,31 @@
       <div v-for="(item, i) in channelLists" :key="item.channelID + i" class="item-channel">
         <el-card v-if="item.showInfo.isShow" class="box-card">
           <div slot="header" class="clearfix">
-            <div class="title-left">
-              <span class="channel-icon" :style="{ 'background-color': iconColor[item.channelCode] }" />
-              <span>{{ item.channelName }}</span>
-            </div>
-            <div class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
+            <el-row>
+              <el-col :span="12">
+                <div class="title-left">
+                  <span class="channel-icon" :style="{ 'background-color': iconColor[item.channelCode] }" />
+                  <span>{{ item.channelName }}</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                {{ item.ageing }}
+              </el-col>
+              <el-col :span="6">
+                <el-popover
+                  placement="top-end"
+                  title="附加费用"
+                  width="200"
+                  trigger="hover"
+                >
+                  <div v-for="(msg, index) in item.showInfo.msg" :key="index">
+                    {{ msg }}
+                  </div>
+                  <div slot="reference" class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
+                </el-popover>
+
+              </el-col>
+            </el-row>
           </div>
           <el-collapse class="item-collapse">
             <el-collapse-item>
@@ -44,6 +64,13 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <LiChuang
+                v-if="['力创欧洲空派超大', '力创欧洲海派超大'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -58,10 +85,11 @@ import XiaoHuoOne from './components/XiaoHuo1'
 import UPS from './components/UPS'
 import UPSJiaNaDa from './components/UPS_JiaNaDa.vue'
 import HKUPS from './components/HKUPS.vue'
+import LiChuang from './components/LiChuang.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS },
+  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
@@ -80,17 +108,10 @@ export default {
     this.channelLists = [...this._props.list]
   },
   methods: {
-    countPrice(TotalPrice, index) {
-      console.log(TotalPrice, index)
+    countPrice(TotalPrice, index, from) {
+      console.log('触发了父组件重置数据')
+      console.log(TotalPrice, index, from)
       this.channelLists[index].showInfo = TotalPrice
-      console.log(this.list === this.channelLists)
-      console.log(this.list)
-    },
-    Init(showInfo, index) {
-      console.log(111)
-      console.log('showInfo', showInfo)
-      console.log('index', index)
-      this.channelLists[index].showInfo = showInfo
     }
   }
 }
@@ -107,9 +128,7 @@ export default {
 }
 
 .clearfix {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .total-price {
@@ -117,6 +136,7 @@ export default {
   font-weight: 700;
   color: red;
   font-family: '微软雅黑';
+  text-align: right;
 }
 
 .no-data {

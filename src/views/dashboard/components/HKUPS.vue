@@ -3,6 +3,21 @@
     <el-checkbox v-model="privateAddress" @change="changeSettings">私人地址</el-checkbox>
     <el-checkbox v-model="isToy" @change="changeSettings">玩具类</el-checkbox>
     <el-checkbox v-model="Ele" @change="changeSettings">带电带磁</el-checkbox>
+    <el-descriptions title="渠道信息" :column="3" border>
+      <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
+        {{ item.channelName || '-' }}
+      </el-descriptions-item>
+      <el-descriptions-item label="渠道类型">{{ item.channelType || '-' }}</el-descriptions-item>
+      <el-descriptions-item label="配送时效">{{ item.ageing || '-' }}</el-descriptions-item>
+      <el-descriptions-item label="其他附加费用">
+        <p v-for="(msg, i) in item.showInfo.msg" :key="i">
+          {{ msg }}
+        </p>
+      </el-descriptions-item>
+      <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left' }">
+        {{ item.remark || '无备注' }}
+      </el-descriptions-item>
+    </el-descriptions>
     <!-- <el-checkbox v-model="Magnetized" @change="changeSettings">带磁</el-checkbox> -->
   </div>
 </template>
@@ -38,10 +53,8 @@ export default {
     privateAddress: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += 30
       } else {
-        console.log(false)
         this.newTotalPrice -= 30
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -50,10 +63,8 @@ export default {
     Ele: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += 25
       } else {
-        console.log(false)
         this.newTotalPrice -= 25
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -89,16 +100,11 @@ export default {
     forUPSPrice(value, weight, LWH_arr, volume) {
       // const { range } = value
       const price = parseFloat(value.showInfo.totalPrice)
-      // for (const item of range) {
-      //   if (this.forUPSWeight(weight) >= item.range[0] && this.forUPSWeight(weight) < item.range[1]) {
-      //     price = item.price
-      //     break
-      //   }
-      // }
+      const CountWeight = value.showInfo.CountWeight
 
       let ChaoZhong = 0
       const msg = []
-      if ((this.forUPSWeight(weight) > 32000)) {
+      if ((CountWeight > 32000)) {
         ChaoZhong += 108
         msg.push('单件始终 >= 32 KG: 108元')
       }
@@ -118,10 +124,9 @@ export default {
       const toy = 3 // 电子玩具类 + 1
       const pre = 30 // 私人地址 30 元
       const ele = 25 // 带电带磁 25 元一单
-      const totalPrice = (price + (this.forUPSWeight(weight) / 1000 * toy) + pre + ele).toFixed()
+      const totalPrice = (price + (CountWeight / 1000 * toy) + pre + ele + ChaoZhong).toFixed()
 
-      console.log({ totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` })
-      this.$emit('countPrice', { totalPrice, isShow: true, msg }, this.index)
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'HKUPS.vue')
     }
   }
 }

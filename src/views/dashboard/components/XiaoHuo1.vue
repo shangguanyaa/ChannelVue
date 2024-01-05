@@ -64,10 +64,8 @@ export default {
       this.newTotalPrice = this.item.showInfo.totalPrice
       const weight = this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) / 1000
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += (2 * weight)
       } else {
-        console.log(false)
         this.newTotalPrice -= (2 * weight)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -104,17 +102,13 @@ export default {
       let currentWeight = 0
       let VWight = 0
       if (LWH_arr.length !== 3) {
-        console.log('无 LWH_arr')
         VWight = 0
       } else {
         VWight = ((LWH_arr[0] * LWH_arr[1] * LWH_arr[2]) / volumeWight * 1000).toFixed(2)
-        console.log(VWight)
         if (VWight < 20000) {
           VWight = this.halfWeight(VWight)
-          console.log('一半进阶: ' + VWight)
         } else {
           VWight = Math.ceil(VWight / 1000) * 1000
-          console.log('1KG进阶: ' + VWight)
         }
       }
       if (AdvancedUnits === 500) {
@@ -127,7 +121,7 @@ export default {
     },
 
     PriceForXiaoDai1(value, weight, LWH_arr) {
-      const { FWeight, CWeight, FWeightPrice, CWeightPrice, channelCode, AdvancedUnits, volumeWight } = value
+      const { channelCode, AdvancedUnits, volumeWight } = value
       const price = parseFloat(value.showInfo.totalPrice)
       const Weight = this.YuChiCount(weight, AdvancedUnits, volumeWight, LWH_arr) / 1000
       let totalPrice = 0
@@ -150,7 +144,7 @@ export default {
       // if (this.YuChiCount(weight) < 10000) {
       //   totalPrice += 20
       // }
-      this.$emit('countPrice', { totalPrice, isShow: true, msg: [''] }, this.index)
+      this.$emit('countPrice', { totalPrice, isShow: true, msg: [''] }, this.index, 'XiaoHuo1.vue')
       return { totalPrice, isShow: true, msg: '' }
     }
   }

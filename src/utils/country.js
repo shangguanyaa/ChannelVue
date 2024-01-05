@@ -111,6 +111,6 @@ module.exports = {
     {
       label: '美国',
       value: '美国'
-    },
+    }
   ]
 }

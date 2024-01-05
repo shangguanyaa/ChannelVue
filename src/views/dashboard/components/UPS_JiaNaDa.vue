@@ -36,10 +36,8 @@ export default {
     privateAddress: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += 30
       } else {
-        console.log(false)
         this.newTotalPrice -= 30
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -47,12 +45,10 @@ export default {
     },
     isToy: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.forUPSWeight(this.weight) / 1000
+      const weight = this.item.showInfo.CountWeight / 1000
       if (newVal === true) {
-        console.log(true)
         this.newTotalPrice += (3 * weight)
       } else {
-        console.log(false)
         this.newTotalPrice -= (3 * weight)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
@@ -60,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.forUPSPrice(this.item, this.weight, this.lwh_arr, this.volume)
+    this.forUPSPrice(this.item, this.lwh_arr, this.volume)
   },
   methods: {
     changeSettings() {
@@ -74,19 +70,14 @@ export default {
       return Math.ceil(val / 1000) * 1000
     },
 
-    forUPSPrice(value, weight, LWH_arr, volume) {
-      const { range } = value
-      let price = 0
-      for (const item of range) {
-        if (this.forUPSWeight(weight) >= item.range[0] && this.forUPSWeight(weight) < item.range[1]) {
-          price = item.price
-          break
-        }
-      }
+    forUPSPrice(value, LWH_arr, volume) {
+      const { showInfo } = value
+      const price = parseFloat(showInfo.totalPrice)
+      const CountWeight = showInfo.CountWeight
 
       let ChaoZhong = 0
       const msg = []
-      if ((this.forUPSWeight(weight) > 30000)) {
+      if ((CountWeight > 30000)) {
         ChaoZhong += 120
         msg.push('超重费用:120, ')
       }
@@ -100,16 +91,14 @@ export default {
         msg.push('大型货件:420')
       }
 
-      console.log('超重', ChaoZhong)
+      console.log('msg: ')
+      console.log(msg)
 
       const toy = 3 // 电子玩具类 + 3
       const pre = 0 // 私人地址 30 元
-      const totalPrice = (price * (this.forUPSWeight(weight) / 1000) + (toy * this.forUPSWeight(weight) / 1000) + pre + ChaoZhong).toFixed(2)
-      console.log((toy * this.forUPSWeight(weight) / 1000))
+      const totalPrice = (price + (toy * CountWeight / 1000) + pre + ChaoZhong).toFixed(2)
 
-      console.log({ totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` })
-      this.$emit('countPrice', { totalPrice, isShow: true, msg }, this.index)
-      return { totalPrice, isShow: true, msg: `超重费用: ${ChaoZhong}` }
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'UPS_JiaNaDa.vue')
     }
   }
 }
