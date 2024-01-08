@@ -59,7 +59,8 @@
             </div>
           </div>
           <div class="search">
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">试算</el-button>
+            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="paiXu('price')">排序</el-button>
           </div>
         </el-card>
       </div>
@@ -185,6 +186,15 @@ export default {
       console.log(res.results)
       this.channels = res.results || []
       this.searchLoading = false
+    },
+    paiXu(way) {
+      if (way === 'price') {
+        const data = this.channels
+        data.sort(function(a, b) {
+          return parseFloat(a.showInfo.totalPrice) > parseFloat(b.showInfo.totalPrice) ? 1 : -1
+        })
+        console.log(data)
+      }
     }
   }
 }

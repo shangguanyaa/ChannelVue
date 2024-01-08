@@ -176,8 +176,9 @@ export default {
 
 .channel-icon {
   display: block;
-  width: 5px;
-  height: 100%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   margin-right: 6px;
 }
 </style>
