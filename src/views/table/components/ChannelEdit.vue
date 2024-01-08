@@ -5,11 +5,12 @@
       :title="'编辑: ' + rowData.channelName"
       :before-close="handleClose"
       :visible.sync="is_edit_open"
+      :size="500"
       direction="rtl"
       custom-class="demo-drawer"
     >
       <div class="demo-drawer__content">
-        <el-form ref="form" :model="rowData" label-width="80px">
+        <el-form ref="form" :model="rowData" label-width="100px">
           <el-form-item label="渠道名称">
             <el-input v-model="rowData.channelName" />
           </el-form-item>
@@ -50,13 +51,41 @@
           <el-form-item label="最长边长">
             <el-input v-model="rowData.maxSidelength" type="Number" />
           </el-form-item>
+          <el-form-item label="最大周长">
+            <el-input v-model="rowData.volume" type="Number" placeholder="长 + (宽 + 高) * 2" />
+          </el-form-item>
           <el-form-item label="最大重量">
             <el-input v-model="rowData.maxWeight" type="Number" />
+          </el-form-item>
+          <el-form-item label="进阶单位">
+            <el-radio-group v-model="rowData.AdvancedUnits">
+              <el-radio :label="500">0.5 KG  </el-radio>
+              <el-radio :label="1000">1 KG</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="计费重单位">
+            <el-input v-model="rowData.volumeWight" type="Number" placeholder="该渠道重量进阶单位" />
+          </el-form-item>
+          <el-form-item label="配送时效">
+            <el-input v-model="rowData.ageing" type="text" />
+          </el-form-item>
+          <el-form-item label="操作费">
+            <el-input v-model="rowData.operatePrice" type="Number" />
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="rowData.remark" type="textarea" placeholder="备注" />
+          </el-form-item>
+          <el-form-item label="智能生成区间">
+            <el-input v-model="AIRange" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
+          </el-form-item>
+          <el-form-item label="智能生成价格">
+            <el-input v-model="AIPrice" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
           </el-form-item>
           <el-form-item label="计算方式">
             <el-radio-group v-model="rowData.countWay">
               <el-radio :label="'1'">首重续重</el-radio>
               <el-radio :label="'2'">重量范围</el-radio>
+              <el-radio :label="'3'">重量对应价格</el-radio>
             </el-radio-group>
           </el-form-item>
           <template v-if="rowData.countWay === '1'">
@@ -102,9 +131,24 @@
             </el-form-item>
             <div class="add-icon" @click="addRange"><i class="el-icon-circle-plus-outline" /></div>
           </template>
+          <template v-if="rowData.countWay === '3'">
+            <div class="range-title">
+              <span style="font-size: 20px;">范围设置</span>
+            </div>
+            <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
+              <div class="range-item">
+                <el-input v-model="item.range" type="Number" placeholder="重量" />
+                <el-divider direction="vertical" />
+                <el-input v-model="item.price" type="Number" placeholder="价格" />
+                <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
+              </div>
+            </el-form-item>
+            <div class="add-icon" @click="addRangePrice"><i class="el-icon-circle-plus-outline" /></div>
+          </template>
           <el-form-item>
             <el-button type="primary" :loading="onLoading" @click="onSubmit">修改</el-button>
             <el-button>取消</el-button>
+            <el-button @click="toDoAI">智能生成</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -134,7 +178,9 @@ export default {
       ele1: false,
       ele2: false,
       ele3: false,
-      onLoading: false
+      onLoading: false,
+      AIRange: '',
+      AIPrice: ''
     }
   },
   watch: {
@@ -147,9 +193,30 @@ export default {
       } else {
         this.rowData = {}
       }
+    },
+    'rowData.countWay': function(newVal, oldVal) {
+      if (oldVal === '3' && newVal === '2') {
+        this.rowData.range = []
+      }
+      if (oldVal === '2' && newVal === '3') {
+        this.rowData.range = []
+      }
     }
   },
   methods: {
+    toDoAI() {
+      const range = []
+      const rangeArr = this.AIRange.split(',')
+      const priceArr = this.AIPrice.split(' ')
+      for (const key in rangeArr) {
+        range.push({
+          range: rangeArr[key],
+          price: priceArr[key]
+        })
+      }
+      console.log(range)
+      this.rowData.range = range
+    },
     chick1(val) {
       this.chickCheck(val, 1)
     },
@@ -258,6 +325,18 @@ export default {
     },
     removeRange(index) {
       this.rowData.range.splice(index, 1)
+    },
+    addRangePrice() {
+      if (!this.rowData.range) {
+        this.rowData.range = []
+      }
+      this.rowData.range.push({
+        range: null,
+        price: null
+      })
+    },
+    doLogRowData() {
+      console.log(this.rowData)
     }
   }
 }

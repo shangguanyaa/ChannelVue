@@ -57,8 +57,11 @@
           <el-form-item label="最长边长">
             <el-input v-model="rowData.maxSidelength" type="Number" />
           </el-form-item>
+          <el-form-item label="最大周长">
+            <el-input v-model="rowData.volume" type="Number" />
+          </el-form-item>
           <el-form-item label="最大重量">
-            <el-input v-model="rowData.maxWeight" type="Number" />
+            <el-input v-model="rowData.maxWeight" type="Number" placeholder="长 + (宽 + 高) * 2" />
           </el-form-item>
           <el-form-item label="进阶单位">
             <el-radio-group v-model="rowData.AdvancedUnits">
@@ -75,10 +78,14 @@
           <el-form-item label="操作费">
             <el-input v-model="rowData.operatePrice" type="Number" />
           </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="rowData.remark" type="textarea" placeholder="备注" />
+          </el-form-item>
           <el-form-item label="计算方式">
             <el-radio-group v-model="rowData.countWay">
               <el-radio :label="'1'">首重续重</el-radio>
               <el-radio :label="'2'">重量范围</el-radio>
+              <el-radio :label="'3'">重量对应价格</el-radio>
             </el-radio-group>
           </el-form-item>
           <template v-if="rowData.countWay === '1'">
@@ -124,9 +131,23 @@
             </el-form-item>
             <div class="add-icon" @click="addRange"><i class="el-icon-circle-plus-outline" /></div>
           </template>
+          <template v-if="rowData.countWay === '3'">
+            <div class="range-title">
+              <span style="font-size: 20px;">范围设置</span>
+            </div>
+            <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
+              <div class="range-item">
+                <el-input v-model="item.range" type="Number" placeholder="重量" />
+                <el-divider direction="vertical" />
+                <el-input v-model="item.price" type="Number" placeholder="价格" />
+                <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
+              </div>
+            </el-form-item>
+            <div class="add-icon" @click="addRangePrice"><i class="el-icon-circle-plus-outline" /></div>
+          </template>
           <el-form-item>
             <el-button type="primary" :loading="onLoading" @click="onSubmit">新增</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="doLogRowData">开发调试按钮</el-button>
           </el-form-item>
         </el-form>
 
@@ -171,7 +192,9 @@ export default {
         range: null,
         ageing: '6-10天',
         volumeWight: 6000,
-        operatePrice: 0
+        operatePrice: 0,
+        remark: null,
+        volume: 99999
       },
       withEle: [],
       ele1: false,
@@ -181,13 +204,14 @@ export default {
     }
   },
   watch: {
-    // is_edit_open: function(newVal) {
-    //   if (newVal) {
-    //     this.rowData = JSON.parse(JSON.stringify(this.row))
-    //   } else {
-    //     this.rowData = {}
-    //   }
-    // }
+    'rowData.countWay': function(newVal, oldVal) {
+      if (oldVal === '3' && newVal === '2') {
+        this.rowData.range = []
+      }
+      if (oldVal === '2' && newVal === '3') {
+        this.rowData.range = []
+      }
+    }
   },
   methods: {
     chick1(val) {
@@ -232,11 +256,11 @@ export default {
         channelType: '',
         AdvancedUnits: 1000,
         country: '',
-        long: null,
-        wide: null,
-        high: null,
-        maxSidelength: null,
-        maxWeight: null,
+        long: 99999,
+        wide: 99999,
+        high: 99999,
+        maxSidelength: 99999,
+        maxWeight: 99999999,
         countWay: '1',
         FWeight: null,
         FWeightPrice: null,
@@ -244,7 +268,10 @@ export default {
         CWeightPrice: null,
         range: null,
         ageing: '6-10天',
-        volumeWight: 6000
+        volumeWight: 6000,
+        operatePrice: 0,
+        remark: null,
+        volume: 99999
       }
     },
     handleClose() {
@@ -321,8 +348,20 @@ export default {
         range: [null, null]
       })
     },
+    addRangePrice() {
+      if (!this.rowData.range) {
+        this.rowData.range = []
+      }
+      this.rowData.range.push({
+        range: null,
+        price: null
+      })
+    },
     removeRange(index) {
       this.rowData.range.splice(index, 1)
+    },
+    doLogRowData() {
+      console.log(this.rowData)
     }
   }
 }

@@ -111,6 +111,10 @@ module.exports = {
     {
       label: '美国',
       value: '美国'
+    },
+    {
+      label: '巴西',
+      value: '巴西'
     }
   ]
 }

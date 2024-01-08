@@ -71,6 +71,20 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <XiangGangDHLUS
+                v-if="['香港DHL_美国'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <TJShenZhenUPS
+                v-if="['深圳UPS红单小货'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -86,10 +100,12 @@ import UPS from './components/UPS'
 import UPSJiaNaDa from './components/UPS_JiaNaDa.vue'
 import HKUPS from './components/HKUPS.vue'
 import LiChuang from './components/LiChuang.vue'
+import XiangGangDHLUS from './components/XiangGangDHLUS.vue'
+import TJShenZhenUPS from './components/TJShenZhenUPS.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang },
+  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
