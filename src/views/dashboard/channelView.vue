@@ -85,6 +85,20 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <TJShenZhenLianBang
+                v-if="['泰嘉_深圳联邦'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <TJDHL6000
+                v-if="['泰嘉-DHL6000专线'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -102,10 +116,12 @@ import HKUPS from './components/HKUPS.vue'
 import LiChuang from './components/LiChuang.vue'
 import XiangGangDHLUS from './components/XiangGangDHLUS.vue'
 import TJShenZhenUPS from './components/TJShenZhenUPS.vue'
+import TJShenZhenLianBang from './components/TJShenZhenLianBang.vue'
+import TJDHL6000 from './components/TJDHL6000.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS },
+  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS, TJShenZhenLianBang, TJDHL6000 },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
