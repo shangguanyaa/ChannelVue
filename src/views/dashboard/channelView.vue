@@ -99,6 +99,34 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <TJFedExIP
+                v-if="['香港FedExIPPAK', '香港FededIP'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <TJDianChiUSA
+                v-if="['电池-中美专线', '电池-中美专线(高重量)'].includes(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <TJDianChiFaGuo
+                v-if="start(item.channelCode)"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <TJXiangGangXiaoHuo
+                v-if="item.channelCode === '香港UPS小货价'"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -118,10 +146,14 @@ import XiangGangDHLUS from './components/XiangGangDHLUS.vue'
 import TJShenZhenUPS from './components/TJShenZhenUPS.vue'
 import TJShenZhenLianBang from './components/TJShenZhenLianBang.vue'
 import TJDHL6000 from './components/TJDHL6000.vue'
+import TJFedExIP from './components/TJFedExIP.vue'
+import TJDianChiUSA from './components/TJDianChiUSA.vue'
+import TJDianChiFaGuo from './components/TJDianChiFaGuo.vue'
+import TJXiangGangXiaoHuo from './components/TJXiangGangXiaoHuo.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS, TJShenZhenLianBang, TJDHL6000 },
+  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS, TJShenZhenLianBang, TJDHL6000, TJFedExIP, TJDianChiUSA, TJDianChiFaGuo, TJXiangGangXiaoHuo },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
@@ -140,6 +172,20 @@ export default {
     this.channelLists = [...this._props.list]
   },
   methods: {
+    start(val) {
+      const arr = [
+        '电池-法国专线(1)',
+        '电池-法国专线(2)',
+        '电池-法国专线(3)',
+        '电池-法国专线(4)',
+        '电池-法国专线(5)',
+        '电池-法国专线(6)',
+        '电池-法国专线(7)',
+        '电池-法国专线(8)',
+        '电池-法国专线(9)'
+      ]
+      return arr.includes(val)
+    },
     countPrice(TotalPrice, index, from) {
       console.log('触发了父组件重置数据')
       console.log(TotalPrice, index, from)

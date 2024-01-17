@@ -67,9 +67,10 @@
       <div class="list-box">
         <channelList
           :list="channels"
-          :weight="unit === 'KG' ? (weight * 1000) : weight"
+          :weight="unit === 'KG' ? Number((weight * 1000)) : Number(weight)"
           :lwh_arr="LWH_arr"
           :volume="volume"
+          :country="selectCountry"
         />
       </div>
     </div>

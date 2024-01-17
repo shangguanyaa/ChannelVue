@@ -67,6 +67,7 @@
             <el-radio-group v-model="rowData.AdvancedUnits">
               <el-radio :label="500">0.5 KG  </el-radio>
               <el-radio :label="1000">1 KG</el-radio>
+              <el-radio :label="0">不进阶</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="计费重单位">
@@ -78,6 +79,9 @@
           <el-form-item label="操作费">
             <el-input v-model="rowData.operatePrice" type="Number" />
           </el-form-item>
+          <el-form-item label="挂号费">
+            <el-input v-model="rowData.registerPrice" type="Number" />
+          </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="rowData.remark" type="textarea" placeholder="备注" />
           </el-form-item>
@@ -85,7 +89,9 @@
             <el-radio-group v-model="rowData.countWay">
               <el-radio :label="'1'">首重续重</el-radio>
               <el-radio :label="'2'">重量范围</el-radio>
+              <br>
               <el-radio :label="'3'">重量对应价格</el-radio>
+              <el-radio :label="'4'">直接计算</el-radio>
             </el-radio-group>
           </el-form-item>
           <template v-if="rowData.countWay === '1'">
@@ -145,6 +151,14 @@
             </el-form-item>
             <div class="add-icon" @click="addRangePrice"><i class="el-icon-circle-plus-outline" /></div>
           </template>
+          <template v-if="rowData.countWay === '4'">
+            <div class="range-title">
+              <span style="font-size: 20px;">直接计算参数设置</span>
+            </div>
+            <el-form-item label="价格">
+              <el-input v-model="rowData.FWeightPrice" placeholder="每KG价格" />
+            </el-form-item>
+          </template>
           <el-form-item>
             <el-button type="primary" :loading="onLoading" @click="onSubmit">新增</el-button>
             <el-button @click="doLogRowData">开发调试按钮</el-button>
@@ -194,7 +208,8 @@ export default {
         volumeWight: 6000,
         operatePrice: 0,
         remark: null,
-        volume: 99999
+        volume: 99999,
+        registerPrice: 0
       },
       withEle: [],
       ele1: false,
@@ -271,7 +286,8 @@ export default {
         volumeWight: 6000,
         operatePrice: 0,
         remark: null,
-        volume: 99999
+        volume: 99999,
+        registerPrice: 0
       }
     },
     handleClose() {
@@ -282,9 +298,9 @@ export default {
       this.onLoading = true
 
       this.rowData.withElectricity = this.withEle.toString()
-      if (this.rowData.countWay === '1') {
+      if (this.rowData.countWay === '1' || this.rowData.countWay === '4') {
         this.rowData.range = null
-      } else {
+      } else if (this.rowData.countWay === '2' || this.rowData.countWay === '3') {
         this.rowData.FWeight = null
         this.rowData.FWeightPrice = null
         this.rowData.CWeight = null
@@ -300,6 +316,7 @@ export default {
       this.onLoading = false
     },
     onSubmit() {
+      console.log(this.rowData.FWeightPrice)
       if (!this.rowData.channelName) {
         this.$message({
           type: 'warning',
@@ -326,7 +343,8 @@ export default {
           })
           return
         }
-      } else {
+      }
+      if (this.rowData.countWay === '2') {
         for (const item of this.rowData.range) {
           if (!item.price || !item.range[0] || !item.range[1]) {
             this.$message({
@@ -335,6 +353,15 @@ export default {
             })
             return
           }
+        }
+      }
+      if (this.rowData.countWay === '4') {
+        if (!this.rowData.FWeightPrice) {
+          this.$message({
+            type: 'warning',
+            message: '请完善价格数据'
+          })
+          return
         }
       }
       this.handleUndateChannel()

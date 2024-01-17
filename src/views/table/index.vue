@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
+    <div class="header">
+      <el-input v-model="keywords" placeholder="请输入关键词" class="input-with-select">
+        <el-button slot="append" icon="el-icon-search" @click="getAllChannelList" />
+      </el-input>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
+    </div>
     <el-table
       :data="tableData"
       border
@@ -16,22 +21,34 @@
         prop="country"
         label="支持国家"
         width="300"
-      />
+        :show-overflow-tooltip="true"
+      >
+        <template slot-scope="scope">
+          <el-popover
+            placement="top-start"
+            title="所有支持国家"
+            width="500"
+            trigger="hover"
+            :content="scope.row.country"
+          >
+            <span slot="reference">{{ scope.row.country }}</span>
+          </el-popover>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="province"
-        label="省份"
+        label="计算类型"
         width="120"
         :align="'center'"
       >
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.countWay === '1' ? 'primary' : 'success'"
+            :type="['primary', 'success', 'info', 'warning'][Number(scope.row.countWay) - 1]"
             disable-transitions
-          >{{ scope.row.countWay === '1' ? '首重续重' : '重量范围' }}</el-tag>
+          >{{ ['首重续重', '重量范围', '重量对应价格', '直接计算'][Number(scope.row.countWay) - 1] }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-
         prop="channelType"
         label="渠道类型"
         width="150"
@@ -140,7 +157,8 @@ export default {
       total: 0,
       pageIndex: 1,
       pageSize: 10,
-      addOpen: false
+      addOpen: false,
+      keywords: ''
     }
   },
   created() {
@@ -163,7 +181,8 @@ export default {
     async getAllChannelList() {
       const data = {
         pageIndex: this.pageIndex,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        keywords: this.keywords
       }
       const res = await this.$store.dispatch('channel/getAllChannelList', data)
       console.log(res)
@@ -183,3 +202,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.input-with-select {
+  width: 300px;
+}
+
+</style>
