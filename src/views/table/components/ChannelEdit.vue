@@ -79,12 +79,7 @@
           <el-form-item label="备注">
             <el-input v-model="rowData.remark" type="textarea" placeholder="备注" />
           </el-form-item>
-          <el-form-item label="智能生成区间">
-            <el-input v-model="AIRange" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
-          </el-form-item>
-          <el-form-item label="智能生成价格">
-            <el-input v-model="AIPrice" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
-          </el-form-item>
+
           <el-form-item label="计算方式">
             <el-radio-group v-model="rowData.countWay">
               <el-radio :label="'1'">首重续重</el-radio>
@@ -141,6 +136,12 @@
             <div class="range-title">
               <span style="font-size: 20px;">范围设置</span>
             </div>
+            <el-form-item label="智能生成区间">
+              <el-input v-model="AIRange" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
+            </el-form-item>
+            <el-form-item label="智能生成价格">
+              <el-input v-model="AIPrice" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
+            </el-form-item>
             <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
               <div class="range-item">
                 <el-input v-model="item.range" type="Number" placeholder="重量" />

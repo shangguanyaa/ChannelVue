@@ -19,20 +19,26 @@
         >
           <el-button type="primary">上传excel</el-button>
         </el-upload>
-        <el-button type="primary">批量添加</el-button>
+        <el-button type="primary" :disabled="tableData.length === 0" @click="handleBulkCreate">批量添加</el-button>
       </div>
       <div class="data">
         <div class="table">
           <el-table
             :data="tableData"
-            border
+            :border="true"
             style="width: 100%"
+            :row-class-name="tableRowClassName"
           >
             <el-table-column
               fixed
               prop="stockSKU"
               label="库存SKU"
               width="250"
+            />
+            <el-table-column
+              prop="brandName"
+              label="品牌名称"
+              width="150"
             />
             <el-table-column
               prop="PEName"
@@ -51,16 +57,52 @@
             />
             <el-table-column
               prop="PWeight"
-              label="产品重量"
+              label="开发估重 G"
               width="100"
+            />
+            <el-table-column
+              prop="completeORpart"
+              label="整车零部件"
+              width="100"
+            />
+            <el-table-column
+              prop="cost"
+              label="商品成本"
+              width="100"
+            />
+            <el-table-column
+              prop="productType"
+              label="电池"
+              width="100"
+            />
+            <el-table-column
+              prop="isTort"
+              label="是否侵权"
+              width="100"
+            />
+            <el-table-column
+              prop="liability"
+              label="责任人"
+              width="100"
+            />
+            <el-table-column
+              prop="presaleRemark"
+              label="售前危机预防和培训"
+              width="180"
+            />
+            <el-table-column
+              prop="remark"
+              label="特殊发货备注"
+              width="180"
             />
             <el-table-column
               fixed="right"
               label="操作"
+              width="120"
             >
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
-                <el-button type="text" size="small">删除</el-button>
+                <el-button type="text" size="small" @click="handleDelete(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -86,8 +128,23 @@ export default {
     tableData: []
   }),
   methods: {
+    tableRowClassName({ row, rowIndex }) {
+      row.rowIndex = rowIndex
+    },
+    handleDelete(row) {
+      console.log(row.rowIndex)
+    },
+    handleClick(row) {
+      console.log(row)
+    },
     handleClose(done) {
-      this.$emit('close')
+      this.$emit('close', false)
+    },
+    async handleBulkCreate() {
+      const res = await this.$store.dispatch('products/bulkCreate', { PList: this.tableData })
+      if (res.code === 200) {
+        this.$emit('close', true)
+      }
     },
     async onChange(file) {
       /**

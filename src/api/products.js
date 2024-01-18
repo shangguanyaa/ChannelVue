@@ -8,34 +8,35 @@ export function ProductsList(data) {
   })
 }
 
-// export function AllChannelList(data) {
-//   return request({
-//     url: '/channel/getChannelList',
-//     method: 'post',
-//     data
-//   })
-// }
+export function bulkInsert(data) {
+  return request({
+    url: '/product/bulkInsert',
+    method: 'post',
+    data
+  })
+}
 
-// export function ChannelTypes(data) {
-//   return request({
-//     url: '/channel/getChannelTypes',
-//     method: 'post',
-//     data
-//   })
-// }
+export function editProduct(data) {
+  return request({
+    url: '/product/editProduct',
+    method: 'post',
+    data
+  })
+}
 
-// export function updateAnChannel(data) {
-//   return request({
-//     url: '/channel/updateAnChannel',
-//     method: 'post',
-//     data
-//   })
-// }
+export function destroyProducts(data) {
+  return request({
+    url: '/product/deleteProducts',
+    method: 'post',
+    data
+  })
+}
 
-// export function addChannel(data) {
-//   return request({
-//     url: '/channel/addChannel',
-//     method: 'post',
-//     data
-//   })
-// }
+export function createProducts(data) {
+  return request({
+    url: '/product/addProduct',
+    method: 'post',
+    data
+  })
+}
+
