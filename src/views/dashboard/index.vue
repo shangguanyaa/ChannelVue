@@ -76,7 +76,7 @@
                   <el-descriptions-item label="库存SKU">{{ selectedProduct.stockSKU }}</el-descriptions-item>
                   <el-descriptions-item label="SKU英文名">{{ selectedProduct.PEName }}</el-descriptions-item>
                   <el-descriptions-item label="SKU中文名">{{ selectedProduct.PZName }}</el-descriptions-item>
-                  <el-descriptions-item :label-style="{'width': '150px'}" label="收钱危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
+                  <el-descriptions-item :label-style="{'width': '150px'}" label="售前危机预防">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
                   <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
                   <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
                   <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
