@@ -79,11 +79,11 @@
                   <el-descriptions-item :label-style="{'width': '150px'}" label="售前危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
                   <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
                   <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
-                  <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
                   <el-descriptions-item label="预估尺寸 CM">{{ selectedProduct.Dimensions }}</el-descriptions-item>
                   <el-descriptions-item label="电池">{{ selectedProduct.productType }}</el-descriptions-item>
                   <el-descriptions-item label="开发估重 G">{{ selectedProduct.PWeight }}</el-descriptions-item>
                   <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
+                  <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
                 </el-descriptions>
                 <span slot="reference">产品中文SKU: {{ selectedProduct.PZName }}</span>
               </el-popover>

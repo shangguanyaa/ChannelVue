@@ -37,7 +37,7 @@
           <el-form-item label="成本价">
             <el-input v-model="rowData.cost" type="Number" />
           </el-form-item>
-          <el-form-item label="发货前备注">
+          <el-form-item label="售前危机预防和培训">
             <el-input v-model="rowData.presaleRemark" />
           </el-form-item>
           <el-form-item label="是否侵权">
