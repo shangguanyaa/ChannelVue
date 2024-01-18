@@ -7,7 +7,7 @@ import store from '@/store'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 15000 // request timeout
 })
 
 // request interceptor
@@ -30,7 +30,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    if (res.code !== 200) {
+    if (res.code !== 200 && res.code !== 201) {
       Message({
         message: res.message || 'Error',
         type: 'error',
@@ -51,11 +51,13 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      Notification({
-        title: '操作成功',
-        type: 'success',
-        message: res.message
-      })
+      if (res.code === 200) {
+        Notification({
+          title: '操作成功',
+          type: 'success',
+          message: res.message
+        })
+      }
       return res
     }
   },

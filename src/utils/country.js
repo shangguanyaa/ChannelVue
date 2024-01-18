@@ -1,124 +1,375 @@
 module.exports = {
+  // country: [
+  //   {
+  //     label: '荷兰',
+  //     value: '荷兰'
+  //   },
+  //   {
+  //     label: '德国',
+  //     value: '德国'
+  //   },
+  //   {
+  //     label: '比利时',
+  //     value: '比利时'
+  //   },
+  //   {
+  //     label: '卢森堡',
+  //     value: '卢森堡'
+  //   },
+  //   {
+  //     label: '法国',
+  //     value: '法国'
+  //   },
+  //   {
+  //     label: '奥地利',
+  //     value: '奥地利'
+  //   },
+  //   {
+  //     label: '意大利',
+  //     value: '意大利'
+  //   },
+  //   {
+  //     label: '西班牙',
+  //     value: '西班牙'
+  //   },
+  //   {
+  //     label: '爱尔兰',
+  //     value: '爱尔兰'
+  //   },
+  //   {
+  //     label: '捷克',
+  //     value: '捷克'
+  //   },
+  //   {
+  //     label: '波兰',
+  //     value: '波兰'
+  //   },
+  //   {
+  //     label: '爱沙尼亚',
+  //     value: '爱沙尼亚'
+  //   },
+  //   {
+  //     label: '立陶宛',
+  //     value: '立陶宛'
+  //   },
+  //   {
+  //     label: '拉脱维亚',
+  //     value: '拉脱维亚'
+  //   },
+  //   {
+  //     label: '斯洛文尼亚',
+  //     value: '斯洛文尼亚'
+  //   },
+  //   {
+  //     label: '斯洛伐克',
+  //     value: '斯洛伐克'
+  //   },
+  //   {
+  //     label: '葡萄牙',
+  //     value: '葡萄牙'
+  //   },
+  //   {
+  //     label: '匈牙利',
+  //     value: '匈牙利'
+  //   },
+  //   {
+  //     label: '瑞典',
+  //     value: '瑞典'
+  //   },
+  //   {
+  //     label: '克罗地亚',
+  //     value: '克罗地亚'
+  //   },
+  //   {
+  //     label: '芬兰',
+  //     value: '芬兰'
+  //   },
+  //   {
+  //     label: '保加利亚',
+  //     value: '保加利亚'
+  //   },
+  //   {
+  //     label: '希腊',
+  //     value: '希腊'
+  //   },
+  //   {
+  //     label: '罗马尼亚',
+  //     value: '罗马尼亚'
+  //   },
+  //   {
+  //     label: '英国',
+  //     value: '英国'
+  //   },
+  //   {
+  //     label: '丹麦',
+  //     value: '丹麦'
+  //   },
+  //   {
+  //     label: '加拿大',
+  //     value: '加拿大'
+  //   },
+  //   {
+  //     label: '美国',
+  //     value: '美国'
+  //   },
+  //   {
+  //     label: '韩国',
+  //     value: '韩国'
+  //   },
+  //   {
+  //     label: '巴西',
+  //     value: '巴西'
+  //   }
+  // ]
   country: [
-    {
-      label: '荷兰',
-      value: '荷兰'
-    },
-    {
-      label: '德国',
-      value: '德国'
-    },
-    {
-      label: '比利时',
-      value: '比利时'
-    },
-    {
-      label: '卢森堡',
-      value: '卢森堡'
-    },
-    {
-      label: '法国',
-      value: '法国'
-    },
-    {
-      label: '奥地利',
-      value: '奥地利'
-    },
-    {
-      label: '意大利',
-      value: '意大利'
-    },
-    {
-      label: '西班牙',
-      value: '西班牙'
-    },
-    {
-      label: '爱尔兰',
-      value: '爱尔兰'
-    },
-    {
-      label: '捷克',
-      value: '捷克'
-    },
-    {
-      label: '波兰',
-      value: '波兰'
-    },
-    {
-      label: '爱沙尼亚',
-      value: '爱沙尼亚'
-    },
-    {
-      label: '立陶宛',
-      value: '立陶宛'
-    },
-    {
-      label: '拉脱维亚',
-      value: '拉脱维亚'
-    },
-    {
-      label: '斯洛文尼亚',
-      value: '斯洛文尼亚'
-    },
-    {
-      label: '斯洛伐克',
-      value: '斯洛伐克'
-    },
-    {
-      label: '葡萄牙',
-      value: '葡萄牙'
-    },
-    {
-      label: '匈牙利',
-      value: '匈牙利'
-    },
-    {
-      label: '瑞典',
-      value: '瑞典'
-    },
-    {
-      label: '克罗地亚',
-      value: '克罗地亚'
-    },
-    {
-      label: '芬兰',
-      value: '芬兰'
-    },
-    {
-      label: '保加利亚',
-      value: '保加利亚'
-    },
-    {
-      label: '希腊',
-      value: '希腊'
-    },
-    {
-      label: '罗马尼亚',
-      value: '罗马尼亚'
-    },
-    {
-      label: '英国',
-      value: '英国'
-    },
-    {
-      label: '丹麦',
-      value: '丹麦'
-    },
-    {
-      label: '加拿大',
-      value: '加拿大'
-    },
-    {
-      label: '美国',
-      value: '美国'
-    },
-    {
-      label: '韩国',
-      value: '韩国'
-    },
-    {
-      label: '巴西',
-      value: '巴西'
-    }
+    { code: 'HK', en: 'Hong Kong', label: '香港' },
+    { code: 'TW', en: 'Taiwan', label: '台湾' },
+    { code: 'MO', en: 'Macao', label: '澳门' },
+    { code: 'US', en: 'United States of America (USA)', label: '美国' },
+    { code: 'AR', en: 'Argentina', label: '阿根廷' },
+    { code: 'AD', en: 'Andorra', label: '安道尔' },
+    { code: 'AE', en: 'United Arab Emirates', label: '阿联酋' },
+    { code: 'AF', en: 'Afghanistan', label: '阿富汗' },
+    { code: 'AG', en: 'Antigua & Barbuda', label: '安提瓜和巴布达' },
+    { code: 'AI', en: 'Anguilla', label: '安圭拉' },
+    { code: 'AL', en: 'Albania', label: '阿尔巴尼亚' },
+    { code: 'AM', en: 'Armenia', label: '亚美尼亚' },
+    { code: 'AO', en: 'Angola', label: '安哥拉' },
+    { code: 'AQ', en: 'Antarctica', label: '南极洲' },
+    { code: 'AS', en: 'American Samoa', label: '美属萨摩亚' },
+    { code: 'AT', en: 'Austria', label: '奥地利' },
+    { code: 'AU', en: 'Australia', label: '澳大利亚' },
+    { code: 'AW', en: 'Aruba', label: '阿鲁巴' },
+    { code: 'AX', en: 'Aland Island', label: '奥兰群岛' },
+    { code: 'AZ', en: 'Azerbaijan', label: '阿塞拜疆' },
+    { code: 'BA', en: 'Bosnia & Herzegovina', label: '波黑' },
+    { code: 'BB', en: 'Barbados', label: '巴巴多斯' },
+    { code: 'BD', en: 'Bangladesh', label: '孟加拉' },
+    { code: 'BE', en: 'Belgium', label: '比利时' },
+    { code: 'BF', en: 'Burkina', label: '布基纳法索' },
+    { code: 'BG', en: 'Bulgaria', label: '保加利亚' },
+    { code: 'BH', en: 'Bahrain', label: '巴林' },
+    { code: 'BI', en: 'Burundi', label: '布隆迪' },
+    { code: 'BJ', en: 'Benin', label: '贝宁' },
+    { code: 'BL', en: 'Saint Barthélemy', label: '圣巴泰勒米岛' },
+    { code: 'BM', en: 'Bermuda', label: '百慕大' },
+    { code: 'BN', en: 'Brunei', label: '文莱' },
+    { code: 'BO', en: 'Bolivia', label: '玻利维亚' },
+    { code: 'BQ', en: 'Caribbean Netherlands', label: '荷兰加勒比区' },
+    { code: 'BR', en: 'Brazil', label: '巴西' },
+    { code: 'BS', en: 'The Bahamas', label: '巴哈马' },
+    { code: 'BT', en: 'Bhutan', label: '不丹' },
+    { code: 'BV', en: 'Bouvet Island', label: '布韦岛' },
+    { code: 'BW', en: 'Botswana', label: '博茨瓦纳' },
+    { code: 'BY', en: 'Belarus', label: '白俄罗斯' },
+    { code: 'BZ', en: 'Belize', label: '伯利兹' },
+    { code: 'CA', en: 'Canada', label: '加拿大' },
+    { code: 'CC', en: 'Cocos (Keeling) Islands', label: '科科斯群岛' },
+    { code: 'CD', en: 'Democratic Republic of the Congo', label: '刚果（金）' },
+    { code: 'CF', en: 'Central African Republic', label: '中非' },
+    { code: 'CG', en: 'Republic of the Congo', label: '刚果（布）' },
+    { code: 'CH', en: 'Switzerland', label: '瑞士' },
+    { code: 'CI', en: "Cote d'Ivoire", label: '科特迪瓦' },
+    { code: 'CK', en: 'Cook Islands', label: '库克群岛' },
+    { code: 'CL', en: 'Chile', label: '智利' },
+    { code: 'CM', en: 'Cameroon', label: '喀麦隆' },
+    { code: 'label', en: 'China', label: '中国' },
+    { code: 'CO', en: 'Colombia', label: '哥伦比亚' },
+    { code: 'CR', en: 'Costa Rica', label: '哥斯达黎加' },
+    { code: 'CU', en: 'Cuba', label: '古巴' },
+    { code: 'CV', en: 'Cape Verde', label: '佛得角' },
+    { code: 'CW', en: 'Curacao', label: '库拉索' },
+    { code: 'CX', en: 'Christmas Island', label: '圣诞岛' },
+    { code: 'CY', en: 'Cyprus', label: '塞浦路斯' },
+    { code: 'CZ', en: 'Czech Republic', label: '捷克' },
+    { code: 'DE', en: 'Germany', label: '德国' },
+    { code: 'DJ', en: 'Djibouti', label: '吉布提' },
+    { code: 'DK', en: 'Denmark', label: '丹麦' },
+    { code: 'DM', en: 'Dominica', label: '多米尼克' },
+    { code: 'DO', en: 'Dominican Republic', label: '多米尼加' },
+    { code: 'DZ', en: 'Algeria', label: '阿尔及利亚' },
+    { code: 'EC', en: 'Ecuador', label: '厄瓜多尔' },
+    { code: 'EE', en: 'Estonia', label: '爱沙尼亚' },
+    { code: 'EG', en: 'Egypt', label: '埃及' },
+    { code: 'EH', en: 'Western Sahara', label: '西撒哈拉' },
+    { code: 'ER', en: 'Eritrea', label: '厄立特里亚' },
+    { code: 'ES', en: 'Spain', label: '西班牙' },
+    { code: 'ET', en: 'Ethiopia', label: '埃塞俄比亚' },
+    { code: 'FI', en: 'Finland', label: '芬兰' },
+    { code: 'FJ', en: 'Fiji', label: '斐济群岛' },
+    { code: 'FK', en: 'Falkland Islands', label: '马尔维纳斯群岛（福克兰）' },
+    { code: 'FM', en: 'Federated States of Micronesia', label: '密克罗尼西亚联邦' },
+    { code: 'FO', en: 'Faroe Islands', label: '法罗群岛' },
+    { code: 'FR', en: 'France', label: '法国 法国' },
+    { code: 'GA', en: 'Gabon', label: '加蓬' },
+    { code: 'GB', en: 'Great Britain (United Kingdom; England)', label: '英国' },
+    { code: 'GD', en: 'Grenada', label: '格林纳达' },
+    { code: 'GE', en: 'Georgia', label: '格鲁吉亚' },
+    { code: 'GF', en: 'French Guiana', label: '法属圭亚那' },
+    { code: 'GG', en: 'Guernsey', label: '根西岛' },
+    { code: 'GH', en: 'Ghana', label: '加纳' },
+    { code: 'GI', en: 'Gibraltar', label: '直布罗陀' },
+    { code: 'GL', en: 'Greenland', label: '格陵兰' },
+    { code: 'GM', en: 'Gambia', label: '冈比亚' },
+    { code: 'GN', en: 'Guinea', label: '几内亚' },
+    { code: 'GP', en: 'Guadeloupe', label: '瓜德罗普' },
+    { code: 'GQ', en: 'Equatorial Guinea', label: '赤道几内亚' },
+    { code: 'GR', en: 'Greece', label: '希腊' },
+    { code: 'GS', en: 'South Georgia and the South Sandwich Islands', label: '南乔治亚岛和南桑威奇群岛' },
+    { code: 'GT', en: 'Guatemala', label: '危地马拉' },
+    { code: 'GU', en: 'Guam', label: '关岛' },
+    { code: 'GW', en: 'Guinea-Bissau', label: '几内亚比绍' },
+    { code: 'GY', en: 'Guyana', label: '圭亚那' },
+    { code: 'HM', en: 'Heard Island and McDonald Islands', label: '赫德岛和麦克唐纳群岛' },
+    { code: 'HN', en: 'Honduras', label: '洪都拉斯' },
+    { code: 'HR', en: 'Croatia', label: '克罗地亚' },
+    { code: 'HT', en: 'Haiti', label: '海地' },
+    { code: 'HU', en: 'Hungary', label: '匈牙利' },
+    { code: 'ID', en: 'Indonesia', label: '印尼' },
+    { code: 'IE', en: 'Ireland', label: '爱尔兰' },
+    { code: 'IL', en: 'Israel', label: '以色列' },
+    { code: 'IM', en: 'Isle of Man', label: '马恩岛' },
+    { code: 'IN', en: 'India', label: '印度' },
+    { code: 'IO', en: 'British Indian Ocean Territory', label: '英属印度洋领地' },
+    { code: 'IQ', en: 'Iraq', label: '伊拉克' },
+    { code: 'IR', en: 'Iran', label: '伊朗' },
+    { code: 'IS', en: 'Iceland', label: '冰岛' },
+    { code: 'IT', en: 'Italy', label: '意大利' },
+    { code: 'JE', en: 'Jersey', label: '泽西岛' },
+    { code: 'JM', en: 'Jamaica', label: '牙买加' },
+    { code: 'JO', en: 'Jordan', label: '约旦' },
+    { code: 'JP', en: 'Japan', label: '日本' },
+    { code: 'KE', en: 'Kenya', label: '肯尼亚' },
+    { code: 'KG', en: 'Kyrgyzstan', label: '吉尔吉斯斯坦' },
+    { code: 'KH', en: 'Cambodia', label: '柬埔寨' },
+    { code: 'KI', en: 'Kiribati', label: '基里巴斯' },
+    { code: 'KM', en: 'The Comoros', label: '科摩罗' },
+    { code: 'KN', en: 'St. Kitts & Nevis', label: '圣基茨和尼维斯' },
+    { code: 'KP', en: 'North Korea', label: '朝鲜' },
+    { code: 'KR', en: 'South Korea', label: '韩国' },
+    { code: 'KW', en: 'Kuwait', label: '科威特' },
+    { code: 'KY', en: 'Cayman Islands', label: '开曼群岛' },
+    { code: 'KZ', en: 'Kazakhstan', label: '哈萨克斯坦' },
+    { code: 'LA', en: 'Laos', label: '老挝' },
+    { code: 'LB', en: 'Lebanon', label: '黎巴嫩' },
+    { code: 'LC', en: 'St. Lucia', label: '圣卢西亚' },
+    { code: 'LI', en: 'Liechtenstein', label: '列支敦士登' },
+    { code: 'LK', en: 'Sri Lanka', label: '斯里兰卡' },
+    { code: 'LR', en: 'Liberia', label: '利比里亚' },
+    { code: 'LS', en: 'Lesotho', label: '莱索托' },
+    { code: 'LT', en: 'Lithuania', label: '立陶宛' },
+    { code: 'LU', en: 'Luxembourg', label: '卢森堡' },
+    { code: 'LV', en: 'Latvia', label: '拉脱维亚' },
+    { code: 'LY', en: 'Libya', label: '利比亚' },
+    { code: 'MA', en: 'Morocco', label: '摩洛哥' },
+    { code: 'MC', en: 'Monaco', label: '摩纳哥' },
+    { code: 'MD', en: 'Moldova', label: '摩尔多瓦' },
+    { code: 'ME', en: 'Montenegro', label: '黑山' },
+    { code: 'MF', en: 'Saint Martin (France)', label: '法属圣马丁' },
+    { code: 'MG', en: 'Madagascar', label: '马达加斯加' },
+    { code: 'MH', en: 'Marshall islands', label: '马绍尔群岛' },
+    { code: 'MK', en: 'Republic of Macedonia (FYROM)', label: '马其顿' },
+    { code: 'ML', en: 'Mali', label: '马里' },
+    { code: 'MM', en: 'Myanmar (Burma)', label: '缅甸' },
+    { code: 'MN', en: 'Mongolia', label: '蒙古国' },
+    { code: 'MP', en: 'Northern Mariana Islands', label: '北马里亚纳群岛' },
+    { code: 'MQ', en: 'Martinique', label: '马提尼克' },
+    { code: 'MR', en: 'Mauritania', label: '毛里塔尼亚' },
+    { code: 'MS', en: 'Montserrat', label: '蒙塞拉特岛' },
+    { code: 'MT', en: 'Malta', label: '马耳他' },
+    { code: 'MU', en: 'Mauritius', label: '毛里求斯' },
+    { code: 'MV', en: 'Maldives', label: '马尔代夫' },
+    { code: 'MW', en: 'Malawi', label: '马拉维' },
+    { code: 'MX', en: 'Mexico', label: '墨西哥' },
+    { code: 'MY', en: 'Malaysia', label: '马来西亚' },
+    { code: 'MZ', en: 'Mozambique', label: '莫桑比克' },
+    { code: 'NA', en: 'Namibia', label: '纳米比亚' },
+    { code: 'NC', en: 'New Caledonia', label: '新喀里多尼亚' },
+    { code: 'NE', en: 'Niger', label: '尼日尔' },
+    { code: 'NF', en: 'Norfolk Island', label: '诺福克岛' },
+    { code: 'NG', en: 'Nigeria', label: '尼日利亚' },
+    { code: 'NI', en: 'Nicaragua', label: '尼加拉瓜' },
+    { code: 'NL', en: 'Netherlands', label: '荷兰' },
+    { code: 'NO', en: 'Norway', label: '挪威' },
+    { code: 'NP', en: 'Nepal', label: '尼泊尔' },
+    { code: 'NR', en: 'Nauru', label: '瑙鲁' },
+    { code: 'NU', en: 'Niue', label: '纽埃' },
+    { code: 'NZ', en: 'New Zealand', label: '新西兰' },
+    { code: 'OM', en: 'Oman', label: '阿曼' },
+    { code: 'PA', en: 'Panama', label: '巴拿马' },
+    { code: 'PE', en: 'Peru', label: '秘鲁' },
+    { code: 'PF', en: 'French polynesia', label: '法属波利尼西亚' },
+    { code: 'PG', en: 'Papua New Guinea', label: '巴布亚新几内亚' },
+    { code: 'PH', en: 'The Philippines', label: '菲律宾' },
+    { code: 'PK', en: 'Pakistan', label: '巴基斯坦' },
+    { code: 'PL', en: 'Poland', label: '波兰' },
+    { code: 'PM', en: 'Saint-Pierre and Miquelon', label: '圣皮埃尔和密克隆' },
+    { code: 'PN', en: 'Pitcairn Islands', label: '皮特凯恩群岛' },
+    { code: 'PR', en: 'Puerto Rico', label: '波多黎各' },
+    { code: 'PS', en: 'Palestinian territories', label: '巴勒斯坦' },
+    { code: 'PT', en: 'Portugal', label: '葡萄牙' },
+    { code: 'PW', en: 'Palau', label: '帕劳' },
+    { code: 'PY', en: 'Paraguay', label: '巴拉圭' },
+    { code: 'QA', en: 'Qatar', label: '卡塔尔' },
+    { code: 'RE', en: 'Réunion', label: '留尼汪' },
+    { code: 'RO', en: 'Romania', label: '罗马尼亚' },
+    { code: 'RS', en: 'Serbia', label: '塞尔维亚' },
+    { code: 'RU', en: 'Russian Federation', label: '俄罗斯' },
+    { code: 'RW', en: 'Rwanda', label: '卢旺达' },
+    { code: 'SA', en: 'Saudi Arabia', label: '沙特阿拉伯' },
+    { code: 'SB', en: 'Solomon Islands', label: '所罗门群岛' },
+    { code: 'SC', en: 'Seychelles', label: '塞舌尔' },
+    { code: 'SD', en: 'Sudan', label: '苏丹' },
+    { code: 'SE', en: 'Sweden', label: '瑞典' },
+    { code: 'SG', en: 'Singapore', label: '新加坡' },
+    { code: 'SH', en: 'St. Helena & Dependencies', label: '圣赫勒拿' },
+    { code: 'SI', en: 'Slovenia', label: '斯洛文尼亚' },
+    { code: 'SJ', en: 'Svalbard and Jan Mayen', label: '斯瓦尔巴群岛和扬马延岛' },
+    { code: 'SK', en: 'Slovakia', label: '斯洛伐克' },
+    { code: 'SL', en: 'Sierra Leone', label: '塞拉利昂' },
+    { code: 'SM', en: 'San Marino', label: '圣马力诺' },
+    { code: 'SN', en: 'Senegal', label: '塞内加尔' },
+    { code: 'SO', en: 'Somalia', label: '索马里' },
+    { code: 'SR', en: 'Suriname', label: '苏里南' },
+    { code: 'SS', en: 'South Sudan', label: '南苏丹' },
+    { code: 'ST', en: 'Sao Tome & Principe', label: '圣多美和普林西比' },
+    { code: 'SV', en: 'El Salvador', label: '萨尔瓦多' },
+    { code: 'SX', en: 'Sint Maarten', label: '荷属圣马丁' },
+    { code: 'SY', en: 'Syria', label: '叙利亚' },
+    { code: 'SZ', en: 'Swaziland', label: '斯威士兰' },
+    { code: 'TC', en: 'Turks & Caicos Islands', label: '特克斯和凯科斯群岛' },
+    { code: 'TD', en: 'Chad', label: '乍得' },
+    { code: 'TF', en: 'French Southern Territories', label: '法属南部领地' },
+    { code: 'TG', en: 'Togo', label: '多哥' },
+    { code: 'TH', en: 'Thailand', label: '泰国' },
+    { code: 'TJ', en: 'Tajikistan', label: '塔吉克斯坦' },
+    { code: 'TK', en: 'Tokelau', label: '托克劳' },
+    { code: 'TL', en: 'Timor-Leste (East Timor)', label: '东帝汶' },
+    { code: 'TM', en: 'Turkmenistan', label: '土库曼斯坦' },
+    { code: 'TN', en: 'Tunisia', label: '突尼斯' },
+    { code: 'TO', en: 'Tonga', label: '汤加' },
+    { code: 'TR', en: 'Turkey', label: '土耳其' },
+    { code: 'TT', en: 'Trinidad & Tobago', label: '特立尼达和多巴哥' },
+    { code: 'TV', en: 'Tuvalu', label: '图瓦卢' },
+    { code: 'TZ', en: 'Tanzania', label: '坦桑尼亚' },
+    { code: 'UA', en: 'Ukraine', label: '乌克兰' },
+    { code: 'UG', en: 'Uganda', label: '乌干达' },
+    { code: 'UM', en: 'United States Minor Outlying Islands', label: '美国本土外小岛屿' },
+    { code: 'UY', en: 'Uruguay', label: '乌拉圭' },
+    { code: 'UZ', en: 'Uzbekistan', label: '乌兹别克斯坦' },
+    { code: 'VA', en: 'Vatican City (The Holy See)', label: '梵蒂冈' },
+    { code: 'VC', en: 'St. Vincent & the Grenadines', label: '圣文森特和格林纳丁斯' },
+    { code: 'VE', en: 'Venezuela', label: '委内瑞拉' },
+    { code: 'VG', en: 'British Virgin Islands', label: '英属维尔京群岛' },
+    { code: 'VI', en: 'United States Virgin Islands', label: '美属维尔京群岛' },
+    { code: 'VN', en: 'Vietnam', label: '越南' },
+    { code: 'VU', en: 'Vanuatu', label: '瓦努阿图' },
+    { code: 'WF', en: 'Wallis and Futuna', label: '瓦利斯和富图纳' },
+    { code: 'WS', en: 'Samoa', label: '萨摩亚' },
+    { code: 'YE', en: 'Yemen', label: '也门' },
+    { code: 'YT', en: 'Mayotte', label: '马约特' },
+    { code: 'ZA', en: 'South Africa', label: '南非' },
+    { code: 'ZM', en: 'Zambia', label: '赞比亚' },
+    { code: 'ZW', en: 'Zimbabwe', label: '津巴布韦' }
   ]
 }

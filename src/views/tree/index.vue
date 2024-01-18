@@ -7,8 +7,8 @@
           <el-button type="primary" icon="el-icon-plus" @click="addProduct">新增产品</el-button>
           <el-button type="primary" icon="el-icon-download" :loading="downloadTime" @click="downloadTem">下载模板文件</el-button>
         </div>
-        <el-input v-model="keywords" placeholder="请输入关键词" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" />
+        <el-input v-model="keywords" placeholder="请输入库存SKU关键词" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getProductsList" />
         </el-input>
       </el-card>
     </div>
@@ -158,7 +158,7 @@ export default {
   methods: {
     async getProductsList() {
       this.loading = true
-      const res = await this.$store.dispatch('products/getProductsList', { pageSize: this.pageSize, pageIndex: this.pageIndex })
+      const res = await this.$store.dispatch('products/getProductsList', { pageSize: this.pageSize, pageIndex: this.pageIndex, keywords: this.keywords })
       if (res.code === 200 && res.results.total !== 0) {
         this.productsList = res.results.res
       }

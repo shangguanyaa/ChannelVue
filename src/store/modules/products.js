@@ -1,4 +1,4 @@
-import { ProductsList, bulkInsert, editProduct, destroyProducts, createProducts } from '@/api/products'
+import { ProductsList, bulkInsert, editProduct, destroyProducts, createProducts, ProductsListForIndex } from '@/api/products'
 
 const state = {}
 
@@ -7,6 +7,10 @@ const mutations = {}
 const actions = {
   async getProductsList({ commit }, body) {
     const res = await ProductsList(body)
+    return res
+  },
+  async getProductsListForIndex({ commit }, body) {
+    const res = await ProductsListForIndex(body)
     return res
   },
   async bulkCreate({ commit }, body) {

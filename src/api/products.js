@@ -8,6 +8,14 @@ export function ProductsList(data) {
   })
 }
 
+export function ProductsListForIndex(data) {
+  return request({
+    url: '/product/ProductsListForIndex',
+    method: 'post',
+    data
+  })
+}
+
 export function bulkInsert(data) {
   return request({
     url: '/product/bulkInsert',

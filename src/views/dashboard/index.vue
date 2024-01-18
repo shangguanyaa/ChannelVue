@@ -5,16 +5,17 @@
         <h1>物流渠道比价系统(定制)</h1>
       </div>
       <div class="select">
-        <el-card class="box-card">
+        <el-card v-loading="cardLoading" class="box-card">
           <div class="text item">
             <div class="every-div">
-              <span class="top-label">目的地国家: </span>
+              <span style="color: red;">*</span><span class="top-label">目的地国家: </span>
               <el-select v-model="selectCountry" filterable placeholder="请选择">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label" />
               </el-select>
             </div>
             <el-divider direction="vertical" />
             <div class="every-div">
+              <span style="color: red;">*</span>
               <span class="top-label">物品重量: </span>
               <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
                 <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span>
@@ -38,9 +39,9 @@
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
             <div class="every-div margin-t-10">
-              <span class="top-label">选择产品: </span>
-              <el-select v-model="selectCountry" filterable placeholder="儿童挖土机" disabled>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              <span class="top-label">渠道类型: </span>
+              <el-select v-model="channelType" filterable placeholder="请选择货物类型">
+                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
               </el-select>
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
@@ -52,10 +53,40 @@
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
             <div class="every-div margin-t-10">
-              <span class="top-label">渠道类型: </span>
-              <el-select v-model="channelType" filterable placeholder="请选择货物类型">
-                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
-              </el-select>
+              <span class="top-label">选择产品: </span>
+              <el-autocomplete
+                v-model="stockSKU"
+                :fetch-suggestions="querySearchAsync"
+                placeholder="请输入库存SKU"
+                @select="handleSelectProduct"
+              />
+            </div>
+            <el-divider v-show="stockSKU" direction="vertical" class="margin-t-10" />
+            <div v-show="stockSKU" class="every-div margin-t-10">
+              <el-popover
+                placement="right"
+                width="400"
+                trigger="hover"
+              >
+                <el-descriptions class="margin-top" title="带边框列表" :column="1" border>
+                  <template slot="extra">
+                    <el-button type="primary" size="small">操作</el-button>
+                  </template>
+                  <el-descriptions-item label="品牌名称">{{ selectedProduct.brandName }}</el-descriptions-item>
+                  <el-descriptions-item label="库存SKU">{{ selectedProduct.stockSKU }}</el-descriptions-item>
+                  <el-descriptions-item label="SKU英文名">{{ selectedProduct.PEName }}</el-descriptions-item>
+                  <el-descriptions-item label="SKU中文名">{{ selectedProduct.PZName }}</el-descriptions-item>
+                  <el-descriptions-item :label-style="{'width': '150px'}" label="收钱危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
+                  <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
+                  <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
+                  <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
+                  <el-descriptions-item label="预估尺寸 CM">{{ selectedProduct.Dimensions }}</el-descriptions-item>
+                  <el-descriptions-item label="电池">{{ selectedProduct.productType }}</el-descriptions-item>
+                  <el-descriptions-item label="开发估重 G">{{ selectedProduct.PWeight }}</el-descriptions-item>
+                  <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
+                </el-descriptions>
+                <span slot="reference">产品中文SKU: {{ selectedProduct.PZName }}</span>
+              </el-popover>
             </div>
           </div>
           <div class="search">
@@ -118,17 +149,81 @@ export default {
       }
     ],
     channelTypes: ['类型1', '类型2'],
-    channelType: null
+    channelType: null,
+    stockSKU: '',
+    selectedProduct: {},
+    cardLoading: false
   }),
   created() {
     this.getChannelTypes()
   },
   methods: {
+    async querySearchAsync(queryString, cb) {
+      const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, keywords: queryString })
+      const productList = []
+      if (res.code !== 201) {
+        productList.push({
+          value: '服务器错误'
+        })
+      } else if (res.code === 201 && res.results.total === 0) {
+        productList.push({
+          value: '无数据'
+        })
+      } else {
+        for (const item of res.results.res) {
+          item.value = item.stockSKU
+          productList.push(item)
+        }
+      }
+      cb(productList)
+    },
+    handleSelectProduct(item) {
+      console.log(item)
+      this.selectedProduct = item
+      const Dimensions = item.Dimensions.split('*')
+      console.log(Dimensions)
+      if (!Array.isArray(Dimensions) || Dimensions.length !== 3) {
+        this.$message({
+          type: 'warning',
+          message: '当前选择的SKU, 长宽高数据不合法, 无法自动输入'
+        })
+      } else {
+        this.long = Dimensions[0]
+        this.wide = Dimensions[1]
+        this.high = Dimensions[2]
+      }
+      const obj = {
+        '普货': '1',
+        '纯电': '2',
+        '带电': '3',
+        '带电带磁': '3'
+      }
+      if (!item.productType || !['普货', '纯电', '带电', '带电带磁'].includes(item.productType)) {
+        this.$message({
+          type: 'warning',
+          message: '当前选择的SKU, 带电带磁货物类型非法, 请检查'
+        })
+      } else {
+        this.withElectricity = obj[item.productType]
+      }
+      if (!item.PWeight) {
+        this.$message({
+          type: 'warning',
+          message: '当前选择的SKU, 重量数据非法, 请检查'
+        })
+      } else {
+        this.weight = item.PWeight
+      }
+    },
     async getChannelTypes() {
+      this.cardLoading = true
       const res = await this.$store.dispatch('channel/getChannelTypes')
       if (res.code !== 200) {
+        this.cardLoading = false
+        this.channelTypes = ['获取类型失败']
         return
       }
+      this.cardLoading = false
       this.channelTypes = res.results || ['获取类型失败']
     },
     changeUnit() {
