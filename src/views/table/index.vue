@@ -6,7 +6,7 @@
       </el-input>
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
     </div>
-    <el-table
+    <div class="table"><el-table
       :data="tableData"
       border
       style="width: 100%"
@@ -125,14 +125,15 @@
           <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table></div>
     <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
       :current-page="pageIndex"
+      :page-sizes="[10, 20, 50, 100, 200, 500]"
       :page-size="pageSize"
-      @current-change="currentChange"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
     />
     <ChannelEdit :is_edit_open="editOpen" :row="editRowData" @closeEdit="closeEdit" @updateSuccess="updateSuccess" />
     <ChannelAdd :is_add_open="addOpen" :row="editRowData" @closeAdd="closeAdd" @updateSuccess="updateSuccess" />
@@ -165,6 +166,14 @@ export default {
     this.getAllChannelList()
   },
   methods: {
+    handleSizeChange(size) {
+      this.pageSize = size
+      this.getAllChannelList()
+    },
+    handleCurrentChange(index) {
+      this.pageIndex = index
+      this.getAllChannelList()
+    },
     addView() {
       console.log('打开添加渠道')
       this.addOpen = true
@@ -214,5 +223,7 @@ export default {
 .input-with-select {
   width: 300px;
 }
-
+.table {
+  margin-bottom: 20px;
+}
 </style>

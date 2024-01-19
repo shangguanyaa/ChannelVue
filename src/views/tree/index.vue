@@ -34,11 +34,13 @@
           prop="PEName"
           label="产品英文名"
           width="220"
+          :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="PZName"
           label="产品中文名"
           width="300"
+          :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="Dimensions"
@@ -79,11 +81,13 @@
           prop="presaleRemark"
           label="售前危机预防和培训"
           width="180"
+          :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="remark"
           label="特殊发货备注"
           width="180"
+          :show-overflow-tooltip="true"
         />
         <el-table-column
           fixed="right"
@@ -109,12 +113,13 @@
       </el-table>
     </div>
     <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
       :current-page="pageIndex"
+      :page-sizes="[10, 20, 50, 100, 200, 500]"
       :page-size="pageSize"
-      @current-change="currentChange"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
     />
     <BulkCreate :drawer="bulkCreateDrawer" @close="bulkCreateClose" />
     <AddEditProduct
@@ -156,11 +161,20 @@ export default {
     this.getProductsList()
   },
   methods: {
+    handleSizeChange(size) {
+      this.pageSize = size
+      this.getProductsList()
+    },
+    handleCurrentChange(index) {
+      this.pageIndex = index
+      this.getProductsList()
+    },
     async getProductsList() {
       this.loading = true
       const res = await this.$store.dispatch('products/getProductsList', { pageSize: this.pageSize, pageIndex: this.pageIndex, keywords: this.keywords })
       if (res.code === 200 && res.results.total !== 0) {
         this.productsList = res.results.res
+        this.total = res.results.total
       }
       this.loading = false
     },
@@ -235,6 +249,7 @@ export default {
 
 .table {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
 
