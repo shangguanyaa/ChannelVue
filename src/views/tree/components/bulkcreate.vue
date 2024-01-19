@@ -16,6 +16,8 @@
           :limit="1"
           :show-file-list="false"
           accept=".xls,.xlsx"
+          :before-upload="onChange"
+          :file-list="fileList"
         >
           <el-button type="primary">上传excel</el-button>
         </el-upload>
@@ -125,8 +127,12 @@ export default {
     }
   },
   data: () => ({
-    tableData: []
+    tableData: [],
+    fileList: []
   }),
+  destroyed() {
+    console.log('销毁了')
+  },
   methods: {
     tableRowClassName({ row, rowIndex }) {
       row.rowIndex = rowIndex
@@ -139,11 +145,18 @@ export default {
     },
     handleClose(done) {
       this.$emit('close', false)
+      this.tableData = []
+      // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
+      this.fileList = []
     },
     async handleBulkCreate() {
       const res = await this.$store.dispatch('products/bulkCreate', { PList: this.tableData })
       if (res.code === 200) {
         this.$emit('close', true)
+        this.tableData = []
+
+        // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
+        this.fileList = []
       }
     },
     async onChange(file) {
@@ -176,6 +189,9 @@ export default {
       const data = xlsx.utils.sheet_to_json(firstWorkSheet)
       console.log('读取所有excel数据', data)
       this.tableData = data
+
+      // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
+      this.fileList = []
     },
     getHeaderRow(sheet) {
       const headers = [] // 定义数组，用于存放解析好的数据

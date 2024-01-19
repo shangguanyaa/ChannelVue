@@ -33,8 +33,8 @@
             <el-divider direction="vertical" />
             <div class="every-div margin-t-10">
               <span class="top-label">发货地: </span>
-              <el-select v-model="selectCountry" filterable placeholder="深圳" disabled>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              <el-select v-model="faHuo" filterable placeholder="深圳">
+                <el-option v-for="item in faHuoOptions" :key="item.value" :label="item.value" :value="item.value" />
               </el-select>
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
@@ -152,7 +152,9 @@ export default {
     channelType: null,
     stockSKU: '',
     selectedProduct: {},
-    cardLoading: false
+    cardLoading: false,
+    faHuo: '深圳',
+    faHuoOptions: [{ value: '深圳' }]
   }),
   created() {
     this.getChannelTypes()

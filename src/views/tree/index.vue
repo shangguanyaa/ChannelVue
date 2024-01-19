@@ -7,9 +7,12 @@
           <el-button type="primary" icon="el-icon-plus" @click="addProduct">新增产品</el-button>
           <el-button type="primary" icon="el-icon-download" :loading="downloadTime" @click="downloadTem">下载模板文件</el-button>
         </div>
-        <el-input v-model="keywords" placeholder="请输入库存SKU关键词" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" @click="getProductsList" />
-        </el-input>
+        <div>
+          <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkDestroy">批量删除</el-button>
+          <el-input v-model="keywords" placeholder="请输入库存SKU关键词" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="getProductsList" />
+          </el-input>
+        </div>
       </el-card>
     </div>
     <div class="table">
@@ -18,7 +21,14 @@
         :data="productsList"
         border
         style="width: 100%"
+        @selection-change="handleSelectionChange"
       >
+        <el-table-column
+          fixed
+          type="selection"
+          width="55"
+          :align="'center'"
+        />
         <el-table-column
           fixed
           prop="stockSKU"
@@ -152,7 +162,8 @@ export default {
       downloadTime: false,
       total: 5,
       pageIndex: 1,
-      pageSize: 10
+      pageSize: 10,
+      selectedPIDArr: []
     }
   },
   watch: {
@@ -161,6 +172,40 @@ export default {
     this.getProductsList()
   },
   methods: {
+    async bulkDestroy() {
+      if (this.selectedPIDArr.length === 0 || !Array.isArray(this.selectedPIDArr)) {
+        this.$message({
+          type: 'warning',
+          message: '请选择需要删除的数据'
+        })
+        return
+      }
+      this.$confirm(`此操作将永久删除选中的 ${this.selectedPIDArr.length} 条数据, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const res = await this.$store.dispatch('products/deleteProducts', {
+          PidArr: this.selectedPIDArr
+        })
+        if (res.code === 200) {
+          this.getProductsList()
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    handleSelectionChange(selectedArr) {
+      console.log(selectedArr)
+      const selectedPIDArr = []
+      for (const item of selectedArr) {
+        selectedPIDArr.push(item.PID)
+      }
+      this.selectedPIDArr = selectedPIDArr
+    },
     handleSizeChange(size) {
       this.pageSize = size
       this.getProductsList()
@@ -234,7 +279,8 @@ export default {
   width: 100%;
 }
 .input-with-select {
-  width: 200px;
+  width: 230px;
+  margin-left: 16px;
 }
 .box-card {
   width: 100%;
