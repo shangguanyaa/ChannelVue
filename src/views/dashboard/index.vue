@@ -121,7 +121,7 @@ export default {
     options: country,
     selectCountry: '',
     weight: 0,
-    unit: 'KG',
+    unit: 'G',
     searchLoading: false,
     channels: [],
     long: null,
