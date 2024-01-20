@@ -1,131 +1,24 @@
 module.exports = {
-  // country: [
-  //   {
-  //     label: '荷兰',
-  //     value: '荷兰'
-  //   },
-  //   {
-  //     label: '德国',
-  //     value: '德国'
-  //   },
-  //   {
-  //     label: '比利时',
-  //     value: '比利时'
-  //   },
-  //   {
-  //     label: '卢森堡',
-  //     value: '卢森堡'
-  //   },
-  //   {
-  //     label: '法国',
-  //     value: '法国'
-  //   },
-  //   {
-  //     label: '奥地利',
-  //     value: '奥地利'
-  //   },
-  //   {
-  //     label: '意大利',
-  //     value: '意大利'
-  //   },
-  //   {
-  //     label: '西班牙',
-  //     value: '西班牙'
-  //   },
-  //   {
-  //     label: '爱尔兰',
-  //     value: '爱尔兰'
-  //   },
-  //   {
-  //     label: '捷克',
-  //     value: '捷克'
-  //   },
-  //   {
-  //     label: '波兰',
-  //     value: '波兰'
-  //   },
-  //   {
-  //     label: '爱沙尼亚',
-  //     value: '爱沙尼亚'
-  //   },
-  //   {
-  //     label: '立陶宛',
-  //     value: '立陶宛'
-  //   },
-  //   {
-  //     label: '拉脱维亚',
-  //     value: '拉脱维亚'
-  //   },
-  //   {
-  //     label: '斯洛文尼亚',
-  //     value: '斯洛文尼亚'
-  //   },
-  //   {
-  //     label: '斯洛伐克',
-  //     value: '斯洛伐克'
-  //   },
-  //   {
-  //     label: '葡萄牙',
-  //     value: '葡萄牙'
-  //   },
-  //   {
-  //     label: '匈牙利',
-  //     value: '匈牙利'
-  //   },
-  //   {
-  //     label: '瑞典',
-  //     value: '瑞典'
-  //   },
-  //   {
-  //     label: '克罗地亚',
-  //     value: '克罗地亚'
-  //   },
-  //   {
-  //     label: '芬兰',
-  //     value: '芬兰'
-  //   },
-  //   {
-  //     label: '保加利亚',
-  //     value: '保加利亚'
-  //   },
-  //   {
-  //     label: '希腊',
-  //     value: '希腊'
-  //   },
-  //   {
-  //     label: '罗马尼亚',
-  //     value: '罗马尼亚'
-  //   },
-  //   {
-  //     label: '英国',
-  //     value: '英国'
-  //   },
-  //   {
-  //     label: '丹麦',
-  //     value: '丹麦'
-  //   },
-  //   {
-  //     label: '加拿大',
-  //     value: '加拿大'
-  //   },
-  //   {
-  //     label: '美国',
-  //     value: '美国'
-  //   },
-  //   {
-  //     label: '韩国',
-  //     value: '韩国'
-  //   },
-  //   {
-  //     label: '巴西',
-  //     value: '巴西'
-  //   }
-  // ]
+
   country: [
+    { code: 'US', en: 'United States of America (USA)', label: '美国' },
+    { code: 'DE', en: 'Germany', label: '德国' },
+    { code: 'GB', en: 'Great Britain (United Kingdom; England)', label: '英国' },
+    { code: 'CH', en: 'Switzerland', label: '瑞士' },
+    { code: 'CA', en: 'Canada', label: '加拿大' },
+    { code: 'AU', en: 'Australia', label: '澳大利亚' },
+    { code: 'IT', en: 'Italy', label: '意大利' },
+    { code: 'FR', en: 'France', label: '法国' },
+    { code: 'RU', en: 'Russian Federation', label: '俄罗斯' },
+    { code: 'NL', en: 'Netherlands', label: '荷兰' },
+    { code: 'ES', en: 'Spain', label: '西班牙' },
+    { code: 'AT', en: 'Austria', label: '奥地利' },
+    { code: 'JP', en: 'Japan', label: '日本' },
+    { code: 'KR', en: 'South Korea', label: '韩国' },
+    { code: 'NO', en: 'Norway', label: '挪威' },
     { code: 'HK', en: 'Hong Kong', label: '香港' },
     { code: 'TW', en: 'Taiwan', label: '台湾' },
     { code: 'MO', en: 'Macao', label: '澳门' },
-    { code: 'US', en: 'United States of America (USA)', label: '美国' },
     { code: 'AR', en: 'Argentina', label: '阿根廷' },
     { code: 'AD', en: 'Andorra', label: '安道尔' },
     { code: 'AE', en: 'United Arab Emirates', label: '阿联酋' },
@@ -137,8 +30,6 @@ module.exports = {
     { code: 'AO', en: 'Angola', label: '安哥拉' },
     { code: 'AQ', en: 'Antarctica', label: '南极洲' },
     { code: 'AS', en: 'American Samoa', label: '美属萨摩亚' },
-    { code: 'AT', en: 'Austria', label: '奥地利' },
-    { code: 'AU', en: 'Australia', label: '澳大利亚' },
     { code: 'AW', en: 'Aruba', label: '阿鲁巴' },
     { code: 'AX', en: 'Aland Island', label: '奥兰群岛' },
     { code: 'AZ', en: 'Azerbaijan', label: '阿塞拜疆' },
@@ -163,12 +54,10 @@ module.exports = {
     { code: 'BW', en: 'Botswana', label: '博茨瓦纳' },
     { code: 'BY', en: 'Belarus', label: '白俄罗斯' },
     { code: 'BZ', en: 'Belize', label: '伯利兹' },
-    { code: 'CA', en: 'Canada', label: '加拿大' },
     { code: 'CC', en: 'Cocos (Keeling) Islands', label: '科科斯群岛' },
     { code: 'CD', en: 'Democratic Republic of the Congo', label: '刚果（金）' },
     { code: 'CF', en: 'Central African Republic', label: '中非' },
     { code: 'CG', en: 'Republic of the Congo', label: '刚果（布）' },
-    { code: 'CH', en: 'Switzerland', label: '瑞士' },
     { code: 'CI', en: "Cote d'Ivoire", label: '科特迪瓦' },
     { code: 'CK', en: 'Cook Islands', label: '库克群岛' },
     { code: 'CL', en: 'Chile', label: '智利' },
@@ -182,7 +71,6 @@ module.exports = {
     { code: 'CX', en: 'Christmas Island', label: '圣诞岛' },
     { code: 'CY', en: 'Cyprus', label: '塞浦路斯' },
     { code: 'CZ', en: 'Czech Republic', label: '捷克' },
-    { code: 'DE', en: 'Germany', label: '德国' },
     { code: 'DJ', en: 'Djibouti', label: '吉布提' },
     { code: 'DK', en: 'Denmark', label: '丹麦' },
     { code: 'DM', en: 'Dominica', label: '多米尼克' },
@@ -193,16 +81,13 @@ module.exports = {
     { code: 'EG', en: 'Egypt', label: '埃及' },
     { code: 'EH', en: 'Western Sahara', label: '西撒哈拉' },
     { code: 'ER', en: 'Eritrea', label: '厄立特里亚' },
-    { code: 'ES', en: 'Spain', label: '西班牙' },
     { code: 'ET', en: 'Ethiopia', label: '埃塞俄比亚' },
     { code: 'FI', en: 'Finland', label: '芬兰' },
     { code: 'FJ', en: 'Fiji', label: '斐济群岛' },
     { code: 'FK', en: 'Falkland Islands', label: '马尔维纳斯群岛（福克兰）' },
     { code: 'FM', en: 'Federated States of Micronesia', label: '密克罗尼西亚联邦' },
     { code: 'FO', en: 'Faroe Islands', label: '法罗群岛' },
-    { code: 'FR', en: 'France', label: '法国 法国' },
     { code: 'GA', en: 'Gabon', label: '加蓬' },
-    { code: 'GB', en: 'Great Britain (United Kingdom; England)', label: '英国' },
     { code: 'GD', en: 'Grenada', label: '格林纳达' },
     { code: 'GE', en: 'Georgia', label: '格鲁吉亚' },
     { code: 'GF', en: 'French Guiana', label: '法属圭亚那' },
@@ -234,11 +119,9 @@ module.exports = {
     { code: 'IQ', en: 'Iraq', label: '伊拉克' },
     { code: 'IR', en: 'Iran', label: '伊朗' },
     { code: 'IS', en: 'Iceland', label: '冰岛' },
-    { code: 'IT', en: 'Italy', label: '意大利' },
     { code: 'JE', en: 'Jersey', label: '泽西岛' },
     { code: 'JM', en: 'Jamaica', label: '牙买加' },
     { code: 'JO', en: 'Jordan', label: '约旦' },
-    { code: 'JP', en: 'Japan', label: '日本' },
     { code: 'KE', en: 'Kenya', label: '肯尼亚' },
     { code: 'KG', en: 'Kyrgyzstan', label: '吉尔吉斯斯坦' },
     { code: 'KH', en: 'Cambodia', label: '柬埔寨' },
@@ -246,7 +129,6 @@ module.exports = {
     { code: 'KM', en: 'The Comoros', label: '科摩罗' },
     { code: 'KN', en: 'St. Kitts & Nevis', label: '圣基茨和尼维斯' },
     { code: 'KP', en: 'North Korea', label: '朝鲜' },
-    { code: 'KR', en: 'South Korea', label: '韩国' },
     { code: 'KW', en: 'Kuwait', label: '科威特' },
     { code: 'KY', en: 'Cayman Islands', label: '开曼群岛' },
     { code: 'KZ', en: 'Kazakhstan', label: '哈萨克斯坦' },
@@ -289,8 +171,6 @@ module.exports = {
     { code: 'NF', en: 'Norfolk Island', label: '诺福克岛' },
     { code: 'NG', en: 'Nigeria', label: '尼日利亚' },
     { code: 'NI', en: 'Nicaragua', label: '尼加拉瓜' },
-    { code: 'NL', en: 'Netherlands', label: '荷兰' },
-    { code: 'NO', en: 'Norway', label: '挪威' },
     { code: 'NP', en: 'Nepal', label: '尼泊尔' },
     { code: 'NR', en: 'Nauru', label: '瑙鲁' },
     { code: 'NU', en: 'Niue', label: '纽埃' },
@@ -314,7 +194,6 @@ module.exports = {
     { code: 'RE', en: 'Réunion', label: '留尼汪' },
     { code: 'RO', en: 'Romania', label: '罗马尼亚' },
     { code: 'RS', en: 'Serbia', label: '塞尔维亚' },
-    { code: 'RU', en: 'Russian Federation', label: '俄罗斯' },
     { code: 'RW', en: 'Rwanda', label: '卢旺达' },
     { code: 'SA', en: 'Saudi Arabia', label: '沙特阿拉伯' },
     { code: 'SB', en: 'Solomon Islands', label: '所罗门群岛' },
