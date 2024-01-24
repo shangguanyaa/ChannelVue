@@ -5,7 +5,7 @@
       :title="'编辑: ' + rowData.channelName"
       :before-close="handleClose"
       :visible.sync="is_edit_open"
-      :size="500"
+      :size="600"
       direction="rtl"
       custom-class="demo-drawer"
     >
@@ -120,6 +120,10 @@
             <div class="range-title">
               <span style="font-size: 20px;">范围设置</span>
             </div>
+            <div class="range-title">
+              <el-button size="mini" round @click="addOperate">添加操作费</el-button>
+              <el-button size="mini" round @click="deleteOperate">去除操作费</el-button>
+            </div>
             <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
               <div class="range-item">
                 <el-input v-model="item.range[0]" type="Number" placeholder="起始重量" />
@@ -127,6 +131,10 @@
                 <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
                 <el-divider direction="vertical" />
                 <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
+                <template v-if="item.operate !== undefined">
+                  <el-divider direction="vertical" />
+                  <el-input v-model="item.operate" type="Number" placeholder="操作费" />
+                </template>
                 <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
               </div>
             </el-form-item>
@@ -219,6 +227,25 @@ export default {
     }
   },
   methods: {
+    deleteOperate() {
+      const range = this.rowData.range
+      for (const item of range) {
+        delete item.operate
+      }
+      this.$set(this.rowData, 'ragne', range)
+      console.log(this.rowData.range)
+      this.$forceUpdate()
+    },
+    addOperate() {
+      const range = this.rowData.range
+      for (const item of range) {
+        item.operate = 0
+      }
+      this.$set(this.rowData, 'ragne', range)
+      // this.rowData.range = range
+      console.log(this.rowData.range)
+      this.$forceUpdate()
+    },
     toDoAI() {
       const range = []
       const rangeArr = this.AIRange.split(',')
@@ -418,7 +445,7 @@ export default {
 .range-title {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin: 0 0 20px 0;
   font-family: '微软雅黑';

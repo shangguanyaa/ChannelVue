@@ -1,4 +1,4 @@
-import { ChannelList, AllChannelList, ChannelTypes, updateAnChannel, addChannel } from '@/api/channel'
+import { ChannelList, AllChannelList, ChannelTypes, updateAnChannel, addChannel, destroyChannels } from '@/api/channel'
 
 const state = {}
 
@@ -23,6 +23,10 @@ const actions = {
   },
   async insertChannel({ commit }, body) {
     const res = await addChannel(body)
+    return res
+  },
+  async deleteChannels({ commit }, body) {
+    const res = await destroyChannels(body)
     return res
   }
 }

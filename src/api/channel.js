@@ -39,3 +39,11 @@ export function addChannel(data) {
     data
   })
 }
+
+export function destroyChannels(data) {
+  return request({
+    url: '/channel/deleteChannels',
+    method: 'post',
+    data
+  })
+}

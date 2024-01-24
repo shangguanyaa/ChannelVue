@@ -1,3 +1,12 @@
+<!--
+ * @Author: shangguanyaa 1051158791@qq.com
+ * @Date: 2024-01-05 15:18:59
+ * @LastEditors: shangguanyaa 1051158791@qq.com
+ * @LastEditTime: 2024-1-8 15:48:27
+ * @FilePath: \vue-admin-template\src\views\dashboard\components\LiChuang.vue
+ * @Description: 渠道: 宇驰-HKUPS红单直发包税5000价
+-->
+
 <template>
   <div class="XiaoHuoOne">
     <el-checkbox v-model="privateAddress" @change="changeSettings">私人地址</el-checkbox>
@@ -52,31 +61,40 @@ export default {
   watch: {
     privateAddress: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
+      const msg = this.item.showInfo.msg
       if (newVal === true) {
         this.newTotalPrice += 30
+        msg.push(`私人地址: 30 元`)
       } else {
         this.newTotalPrice -= 30
+        msg.splice(msg.indexOf(`私人地址: 30 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
       // this.$emit('countPrice', this.newTotalPrice, this.index)
     },
     Ele: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
+      const msg = this.item.showInfo.msg
       if (newVal === true) {
         this.newTotalPrice += 25
+        msg.push(`带电/带电带磁包裹: 25 元`)
       } else {
         this.newTotalPrice -= 25
+        msg.splice(msg.indexOf(`带电/带电带磁包裹: 25 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
       // this.$emit('countPrice', this.newTotalPrice, this.index)
     },
     isToy: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.forUPSWeight(this.weight) / 1000
+      const msg = this.item.showInfo.msg
+      const CountWeight = Number(this.item.showInfo.CountWeight) / 1000
       if (newVal === true) {
-        this.newTotalPrice += (3 * weight)
+        this.newTotalPrice += (3 * CountWeight)
+        msg.push(`玩具类 3 元/KG: ${CountWeight * 3} 元`)
       } else {
-        this.newTotalPrice -= (3 * weight)
+        this.newTotalPrice -= (3 * CountWeight)
+        msg.splice(msg.indexOf(`玩具类 3 元/KG: ${CountWeight * 3} 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
       // this.$emit('countPrice', this.newTotalPrice, this.index)
@@ -103,7 +121,7 @@ export default {
       const CountWeight = value.showInfo.CountWeight
 
       let ChaoZhong = 0
-      const msg = []
+      const msg = value.showInfo.msg
       if ((CountWeight > 32000)) {
         ChaoZhong += 108
         msg.push('单件始终 >= 32 KG: 108元')
@@ -124,6 +142,9 @@ export default {
       const toy = 3 // 电子玩具类 + 1
       const pre = 30 // 私人地址 30 元
       const ele = 25 // 带电带磁 25 元一单
+      msg.push(`私人地址: 30 元`)
+      msg.push(`带电/带电带磁包裹: 25 元`)
+      msg.push(`玩具类 3 元/KG: ${CountWeight / 1000 * 3} 元`)
       const totalPrice = (price + (CountWeight / 1000 * toy) + pre + ele + ChaoZhong).toFixed()
 
       this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'HKUPS.vue')

@@ -283,6 +283,7 @@ export default {
       const res = await this.$store.dispatch('channel/getChannelList', data)
       console.log(res.results)
       this.channels = res.results || []
+      this.paiXu('price')
       this.searchLoading = false
     },
     paiXu(way) {

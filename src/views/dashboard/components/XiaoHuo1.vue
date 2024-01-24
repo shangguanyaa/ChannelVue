@@ -1,8 +1,16 @@
+<!--
+ * @Author: shangguanyaa 1051158791@qq.com
+ * @Date: 2024-01-05 15:18:59
+ * @LastEditors: shangguanyaa 1051158791@qq.com
+ * @LastEditTime: 2024-1-8 15:48:27
+ * @FilePath: \vue-admin-template\src\views\dashboard\components\LiChuang.vue
+ * @Description: 渠道: 宇驰-欧洲小货双清包税专线【后端UPS派送】
+-->
 <template>
   <div class="XiaoHuoOne">
-    <el-checkbox v-model="privateAddress" @change="changeSettings">私人地址</el-checkbox>
-    <el-checkbox v-model="isToy" @change="changeSettings">玩具类</el-checkbox>
-    <el-checkbox v-model="Magnetized" @change="changeSettings">带磁</el-checkbox>
+    <el-checkbox v-model="privateAddress" @change="changeSettings">私人地址 30 元</el-checkbox>
+    <el-checkbox v-model="isToy" @change="changeSettings">玩具类 2 元/KG</el-checkbox>
+    <el-checkbox v-model="Magnetized" @change="changeSettings">带磁 2 元/KG</el-checkbox>
     <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
@@ -55,33 +63,40 @@ export default {
     },
     privateAddress: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
+      const msg = this.item.showInfo.msg
       if (newVal === true) {
-        // this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) < 10000 ? this.newTotalPrice += 50 : this.newTotalPrice += 30
         this.newTotalPrice += 30
+        msg.push(`私人地址: 30 元`)
       } else {
-        // this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) < 10000 ? this.newTotalPrice -= 50 : this.newTotalPrice -= 30
         this.newTotalPrice -= 30
+        msg.splice(msg.indexOf(`私人地址: 30 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
     },
     isToy: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) / 1000
+      const msg = this.item.showInfo.msg
+      const CountWeight = Number(this.item.showInfo.CountWeight) / 1000
       if (newVal === true) {
-        this.newTotalPrice += (2 * weight)
+        this.newTotalPrice += (2 * CountWeight)
+        msg.push(`玩具类 2 元/KG: ${CountWeight * 2} 元`)
       } else {
-        this.newTotalPrice -= (2 * weight)
+        this.newTotalPrice -= (2 * CountWeight)
+        msg.splice(msg.indexOf(`玩具类 2 元/KG: ${CountWeight * 2} 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
       // this.$emit('countPrice', this.newTotalPrice, this.index)
     },
     Magnetized: function(newVal) {
       this.newTotalPrice = this.item.showInfo.totalPrice
-      const weight = this.YuChiCount(this.weight, this.item.AdvancedUnits, this.item.volumeWight, this.lwh_arr) / 1000
+      const msg = this.item.showInfo.msg
+      const CountWeight = Number(this.item.showInfo.CountWeight) / 1000
       if (newVal === true) {
-        this.newTotalPrice += (2 * weight)
+        this.newTotalPrice += (2 * CountWeight)
+        msg.push(`带磁 2 元/KG: ${CountWeight * 2} 元`)
       } else {
-        this.newTotalPrice -= (2 * weight)
+        this.newTotalPrice -= (2 * CountWeight)
+        msg.splice(msg.indexOf(`带磁 2 元/KG: ${CountWeight * 2} 元`), 1)
       }
       this.item.showInfo.totalPrice = this.newTotalPrice
       // this.$emit('countPrice', this.newTotalPrice, this.index)
@@ -136,9 +151,12 @@ export default {
     },
 
     PriceForXiaoDai1(value, weight, LWH_arr) {
-      const { channelCode, AdvancedUnits, volumeWight } = value
-      const price = parseFloat(value.showInfo.totalPrice)
-      const Weight = this.YuChiCount(weight, AdvancedUnits, volumeWight, LWH_arr) / 1000
+      const { channelCode, showInfo } = value
+
+      const price = parseFloat(showInfo.totalPrice)
+      const CountWeight = Number(showInfo.CountWeight)
+      const msg = showInfo.msg
+
       let totalPrice = 0
       if (channelCode === '小货包税2') {
         if (LWH_arr[0] >= 61 || LWH_arr[1] >= 45 || LWH_arr[2] >= 45) {
@@ -150,16 +168,16 @@ export default {
         }
       }
       const pre = 30 // 私人地址 + 30
-      // const toy = 2 * this.YuChiCount(weight) / 1000 // 玩具类 2元/KG
-      // const Magnetized = 2 * this.YuChiCount(weight) / 1000 // 带磁 2元/KG
-      const toy = 2 * Weight // 玩具类 2元/KG
-      const Magnetized = 2 * Weight // 带磁 2元/KG
+      const toy = 2 * CountWeight / 1000 // 玩具类 2元/KG
+      const Magnetized = 2 * CountWeight / 1000 // 带磁 2元/KG
+
+      msg.push(`私人地址: 30 元`)
+      msg.push(`玩具类 2 元/KG: ${CountWeight * 2} 元`)
+      msg.push(`带磁 2 元/KG: ${CountWeight * 2} 元`)
+
       totalPrice = price + pre + toy + Magnetized
-      // 私人地址不足10KG的, 需要加20
-      // if (this.YuChiCount(weight) < 10000) {
-      //   totalPrice += 20
-      // }
-      this.$emit('countPrice', { totalPrice, isShow: true, msg: [''] }, this.index, 'XiaoHuo1.vue')
+
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'XiaoHuo1.vue')
       return { totalPrice, isShow: true, msg: '' }
     }
   }

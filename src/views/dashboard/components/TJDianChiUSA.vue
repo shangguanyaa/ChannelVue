@@ -155,7 +155,7 @@ export default {
       let isShow = showInfo.isShow
 
       let ChaoZhong = 0
-      const msg = []
+      const msg = showInfo.msg
 
       // 低于 700 重量, 高重量的记录不显示
       console.log('当前重量: ' + this.weight + '当前代码:' + channelCode)

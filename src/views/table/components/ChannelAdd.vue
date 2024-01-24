@@ -125,6 +125,10 @@
             <div class="range-title">
               <span style="font-size: 20px;">范围设置</span>
             </div>
+            <div class="range-title">
+              <el-button size="mini" round @click="addOperate">添加操作费</el-button>
+              <el-button size="mini" round @click="deleteOperate">去除操作费</el-button>
+            </div>
             <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
               <div class="range-item">
                 <el-input v-model="item.range[0]" type="Number" placeholder="起始重量" />
@@ -132,6 +136,10 @@
                 <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
                 <el-divider direction="vertical" />
                 <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
+                <template v-if="item.operate !== undefined">
+                  <el-divider direction="vertical" />
+                  <el-input v-model="item.operate" type="Number" placeholder="操作费" />
+                </template>
                 <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
               </div>
             </el-form-item>
@@ -229,6 +237,32 @@ export default {
     }
   },
   methods: {
+    deleteOperate() {
+      const range = this.rowData.range
+      for (const item of range) {
+        delete item.operate
+      }
+      this.$set(this.rowData, 'ragne', range)
+      console.log(this.rowData.range)
+      this.$forceUpdate()
+    },
+    addOperate() {
+      const range = this.rowData.range
+      if (!range || range.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请添加至少一个范围'
+        })
+        return
+      }
+      for (const item of range) {
+        item.operate = null
+      }
+      this.$set(this.rowData, 'ragne', range)
+      // this.rowData.range = range
+      console.log(this.rowData.range)
+      this.$forceUpdate()
+    },
     chick1(val) {
       this.chickCheck(val, 1)
     },
@@ -445,7 +479,7 @@ export default {
 .range-title {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin: 0 0 20px 0;
   font-family: '微软雅黑';

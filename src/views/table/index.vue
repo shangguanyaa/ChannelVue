@@ -2,15 +2,26 @@
   <div class="app-container">
     <div class="header">
       <el-input v-model="keywords" placeholder="请输入关键词" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="getAllChannelList" />
+        <el-button slot="append" icon="el-icon-search" @click="getAllChannelList('keywords')" />
       </el-input>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
+      <div>
+        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkDestroy">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
+      </div>
+
     </div>
     <div class="table"><el-table
       :data="tableData"
       border
       style="width: 100%"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column
+        fixed
+        type="selection"
+        width="55"
+        :align="'center'"
+      />
       <el-table-column
         fixed
         prop="channelName"
@@ -121,8 +132,18 @@
         width="100"
       >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
           <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
+          <el-divider direction="vertical" />
+          <el-popconfirm
+            confirm-button-text="好的"
+            cancel-button-text="不用了"
+            icon="el-icon-info"
+            icon-color="red"
+            title="这是一段内容确定删除吗？"
+            @confirm="handleDelete(scope.row)"
+          >
+            <el-button slot="reference" type="text" size="small">删除</el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table></div>
@@ -159,13 +180,57 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       addOpen: false,
-      keywords: ''
+      keywords: '',
+      selectedCIDArr: []
     }
   },
   created() {
     this.getAllChannelList()
   },
   methods: {
+    handleSelectionChange(selectedArr) {
+      console.log(selectedArr)
+      const selectedCIDArr = []
+      for (const item of selectedArr) {
+        selectedCIDArr.push(item.channelID)
+      }
+      this.selectedCIDArr = selectedCIDArr
+    },
+    async bulkDestroy() {
+      if (this.selectedCIDArr.length === 0 || !Array.isArray(this.selectedCIDArr)) {
+        this.$message({
+          type: 'warning',
+          message: '请选择需要删除的数据'
+        })
+        return
+      }
+      this.$confirm(`此操作将永久删除选中的 ${this.selectedCIDArr.length} 条数据, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const res = await this.$store.dispatch('channel/deleteChannels', {
+          ChannelIDArr: this.selectedCIDArr
+        })
+        if (res.code === 200) {
+          this.getAllChannelList()
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    async handleDelete(row) {
+      console.log(row)
+      const res = await this.$store.dispatch('channel/deleteChannels', {
+        ChannelIDArr: [row.channelID]
+      })
+      if (res.code === 200) {
+        this.getAllChannelList()
+      }
+    },
     handleSizeChange(size) {
       this.pageSize = size
       this.getAllChannelList()
@@ -187,7 +252,10 @@ export default {
       console.log(this.editRowData)
       this.editOpen = true
     },
-    async getAllChannelList() {
+    async getAllChannelList(val) {
+      if (val === 'keywords') {
+        this.pageIndex = 1
+      }
       const data = {
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
