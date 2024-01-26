@@ -13,7 +13,7 @@
     <el-checkbox v-model="PianYuan" @change="changeSettings">偏远附加费</el-checkbox>
     <el-checkbox v-model="DiSanFang" @change="changeSettings">第三方指定清关代理人</el-checkbox>
     <el-checkbox v-model="Saturday" @change="changeSettings">周六配送</el-checkbox> -->
-    <el-descriptions title="渠道信息" :column="3" border>
+    <!-- <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
       </el-descriptions-item>
@@ -27,14 +27,17 @@
       <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left', 'max-width': '290px' }">
         {{ item.remark || '无备注' }}
       </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
+    <Descriptions :item="item" />
   </div>
 </template>
 
 <script>
+import Descriptions from './descriptions.vue'
 
 export default {
   name: 'TJDianChiFaGuo',
+  components: { Descriptions },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     item: { type: Object },
@@ -149,22 +152,22 @@ export default {
     },
 
     forUPSPrice(value, volume) {
-      const { showInfo, channelCode, maxWeight } = value
+      const { showInfo } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
       const msg = showInfo.msg
       const isShow = showInfo.isShow
 
-      const codeArr = [
-        '电池-法国专线(2)',
-        '电池-法国专线(3)',
-        '电池-法国专线(4)',
-        '电池-法国专线(5)',
-        '电池-法国专线(6)',
-        '电池-法国专线(7)',
-        '电池-法国专线(8)',
-        '电池-法国专线(9)'
-      ]
+      // const codeArr = [
+      //   '电池-法国专线(2)',
+      //   '电池-法国专线(3)',
+      //   '电池-法国专线(4)',
+      //   '电池-法国专线(5)',
+      //   '电池-法国专线(6)',
+      //   '电池-法国专线(7)',
+      //   '电池-法国专线(8)',
+      //   '电池-法国专线(9)'
+      // ]
 
       let ChaoZhong = 0
 

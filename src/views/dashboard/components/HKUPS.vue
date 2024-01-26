@@ -12,7 +12,7 @@
     <el-checkbox v-model="privateAddress" @change="changeSettings">私人地址</el-checkbox>
     <el-checkbox v-model="isToy" @change="changeSettings">玩具类</el-checkbox>
     <el-checkbox v-model="Ele" @change="changeSettings">带电带磁</el-checkbox>
-    <el-descriptions title="渠道信息" :column="3" border>
+    <!-- <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
       </el-descriptions-item>
@@ -26,15 +26,18 @@
       <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left' }">
         {{ item.remark || '无备注' }}
       </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
+    <Descriptions :item="item" />
     <!-- <el-checkbox v-model="Magnetized" @change="changeSettings">带磁</el-checkbox> -->
   </div>
 </template>
 
 <script>
+import Descriptions from './descriptions.vue'
 
 export default {
   name: 'HKUPS',
+  components: { Descriptions },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     item: { type: Object },

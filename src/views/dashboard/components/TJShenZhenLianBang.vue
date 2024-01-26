@@ -15,7 +15,7 @@
     <el-checkbox v-model="DSFGuanShui" @change="changeSettings">第三方关税附加费 2.5%收取,最低99元</el-checkbox>
     <el-checkbox v-model="DSZShoujianren" @change="changeSettings">第三者收件人 10.7/KG,最低96元</el-checkbox>
     <el-checkbox v-model="FeiDuiDie" @change="changeSettings">非堆叠 1233 元</el-checkbox>
-    <el-descriptions title="渠道信息" :column="3" border>
+    <!-- <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
       </el-descriptions-item>
@@ -29,14 +29,17 @@
       <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left', 'max-width': '290px' }">
         {{ item.remark || '无备注' }}
       </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
+    <Descriptions :item="item" />
   </div>
 </template>
 
 <script>
+import Descriptions from './descriptions.vue'
 
 export default {
   name: 'TJShenZhenLianBang',
+  components: { Descriptions },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     item: { type: Object },

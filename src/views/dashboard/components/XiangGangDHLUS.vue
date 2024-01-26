@@ -10,7 +10,7 @@
   <div class="more">
     <el-checkbox v-model="PianYuan" @change="changeSettings">偏远</el-checkbox>
     <el-checkbox v-model="TeBieChuLi" @change="changeSettings">特别处理货件</el-checkbox>
-    <el-descriptions title="渠道信息" :column="3" border>
+    <!-- <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
       </el-descriptions-item>
@@ -24,15 +24,17 @@
       <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left', 'max-width': '290px' }">
         {{ item.remark || '无备注' }}
       </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
+    <Descriptions :item="item" />
     <!-- <el-checkbox v-model="Magnetized" @change="changeSettings">带磁</el-checkbox> -->
   </div>
 </template>
 
-<script>
+<script>import Descriptions from './descriptions.vue'
 
 export default {
   name: 'XiangGangDHLUS',
+  components: { Descriptions },
   props: {
     // eslint-disable-next-line vue/require-default-prop
     item: { type: Object },
