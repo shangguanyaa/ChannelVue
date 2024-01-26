@@ -100,7 +100,7 @@ export default {
       const CountWeight = Number(showInfo.CountWeight)
 
       let ChaoZhong = 0
-      const msg = []
+      const msg = showInfo.msg
 
       if (LWH_arr.length === 3 && LWH_arr[0] >= 118) {
         ChaoZhong += 500

@@ -152,9 +152,9 @@ export default {
       const { showInfo } = value
       let price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
+      const msg = showInfo.msg
 
       let ChaoZhong = 0
-      const msg = []
 
       if (this.country && this.country.indexOf('加拿大') !== -1) {
         price += 32

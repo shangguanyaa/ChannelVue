@@ -82,9 +82,9 @@ export default {
       const { showInfo, channelCode } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = showInfo.CountWeight
+      const msg = showInfo.msg
 
       let ChaoZhong = 0
-      const msg = []
       if (channelCode === '力创欧洲空派超大') {
         if (CountWeight < 100000) {
           ChaoZhong += 500

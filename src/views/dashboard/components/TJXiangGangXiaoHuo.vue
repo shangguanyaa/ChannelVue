@@ -8,9 +8,9 @@
 -->
 <template>
   <div class="more">
-    <el-checkbox v-model="GuoNei" @change="changeSettings">国内品牌(比如小米产品)</el-checkbox>
-    <el-checkbox v-model="XiangGang" @change="changeSettings">香港交货</el-checkbox>
-    <el-checkbox v-model="PianYuan" @change="changeSettings">偏远附加费</el-checkbox>
+    <el-checkbox v-model="GuoNei" @change="changeSettings">国内品牌(比如小米产品) 5 元/KG</el-checkbox>
+    <el-checkbox v-model="XiangGang" @change="changeSettings">香港交货 300 元</el-checkbox>
+    <el-checkbox v-model="PianYuan" @change="changeSettings">偏远附加费 4.5 元/KG</el-checkbox>
     <!-- <el-checkbox v-model="DiSanFang" @change="changeSettings">第三方指定清关代理人</el-checkbox>
     <el-checkbox v-model="Saturday" @change="changeSettings">周六配送</el-checkbox> -->
     <el-descriptions title="渠道信息" :column="3" border>
@@ -151,9 +151,9 @@ export default {
       const { showInfo } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
+      const msg = showInfo.msg
 
       let ChaoZhong = 0
-      const msg = []
 
       // 超尺寸/超重/包装处理 不重复收取
       // 超尺寸附加费：最长单边超过118厘米；次长单边超过74厘米；或围长超255厘米

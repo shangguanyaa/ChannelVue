@@ -8,8 +8,8 @@
 -->
 <template>
   <div class="more">
-    <el-checkbox v-model="Magnetized" @change="changeSettings">弱磁</el-checkbox>
-    <el-checkbox v-model="GuanShui" @change="changeSettings">关税预付</el-checkbox>
+    <el-checkbox v-model="Magnetized" @change="changeSettings">弱磁 25 元/票</el-checkbox>
+    <el-checkbox v-model="GuanShui" @change="changeSettings">关税预付 150 元/票</el-checkbox>
     <el-descriptions title="渠道信息" :column="3" border>
       <el-descriptions-item label="渠道名称" label-class-name="my-label" content-class-name="my-content">
         {{ item.channelName || '-' }}
@@ -97,9 +97,9 @@ export default {
       const { showInfo } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
+      const msg = showInfo.msg
 
       let ChaoZhong = 0
-      const msg = []
 
       // 该渠道不叠加收费 含有一项就得加 108 * 燃油
       // 任何最长一边之长度超过118厘米（含118CM）或第二最长边的长度超过74厘米（含74CM）的包裹。

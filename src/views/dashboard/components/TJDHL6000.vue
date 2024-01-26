@@ -248,23 +248,10 @@ export default {
       const { showInfo } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
+      const msg = showInfo.msg
 
       let ChaoZhong = 0
-      const msg = []
 
-      // 该渠道不叠加收费
-      // 超尺寸/超重/包装处理附加费：费用不重复收取，收取附加费195元/票*燃油
-      // 超尺寸附加费：最长单边超过118厘米；次长单边超过74厘米；
-      // if (this.lwh_arr.length === 3 && this.lwh_arr[0] >= 118) {
-      //   ChaoZhong = 108
-      //   msg.push('最长边 >= 118 CM / 第二边长 >= 74 CM: 108元')
-      // }
-      // 或围长超264厘米
-      // if (volume > 264) {
-      //   ChaoZhong = 108
-      //   msg.push('围长 > 264 CM: 108元')
-      // }
-      // 单件计费重大于等于68kg，加收400元/件。
       if (CountWeight / 1000 >= 68) {
         ChaoZhong += 108
         msg.push('单件计费重大于等于68kg: 400元')

@@ -127,6 +127,13 @@
                 v-bind="$attrs"
                 @countPrice="countPrice"
               />
+              <TJXiangGangUPSHD
+                v-if="item.channelCode === '泰嘉-香港UPS红单'"
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -150,10 +157,26 @@ import TJFedExIP from './components/TJFedExIP.vue'
 import TJDianChiUSA from './components/TJDianChiUSA.vue'
 import TJDianChiFaGuo from './components/TJDianChiFaGuo.vue'
 import TJXiangGangXiaoHuo from './components/TJXiangGangXiaoHuo.vue'
+import TJXiangGangUPSHD from './components/TJXiangGangUPSHD.vue'
 
 export default {
   name: 'ChannelList',
-  components: { XiaoHuoOne, UPS, UPSJiaNaDa, HKUPS, LiChuang, XiangGangDHLUS, TJShenZhenUPS, TJShenZhenLianBang, TJDHL6000, TJFedExIP, TJDianChiUSA, TJDianChiFaGuo, TJXiangGangXiaoHuo },
+  components: {
+    XiaoHuoOne,
+    UPS,
+    UPSJiaNaDa,
+    HKUPS,
+    LiChuang,
+    XiangGangDHLUS,
+    TJShenZhenUPS,
+    TJShenZhenLianBang,
+    TJDHL6000,
+    TJFedExIP,
+    TJDianChiUSA,
+    TJDianChiFaGuo,
+    TJXiangGangXiaoHuo,
+    TJXiangGangUPSHD
+  },
   inheritAttrs: true,
   props: {
     // eslint-disable-next-line vue/require-default-prop
