@@ -91,13 +91,24 @@
         :label="'重量范围与金额('+unitText+'/元)'"
         :align="'left'"
         width="250"
+        :show-overflow-tooltip="true"
       >
         <template slot-scope="scope">
-          <div v-show="scope.row.countWay === '2'">
-            <p v-for="(item, i) in scope.row.range" :key="i">
-              {{ item.range[0] / unit }} ~ {{ item.range[1] / unit }} / {{ item.price }}
-            </p>
-          </div>
+          <el-popover
+            placement="top-start"
+            title="所有范围"
+            width="300"
+            trigger="hover"
+          >
+            <div v-if="scope.row.countWay === '2'">
+              <p v-for="(item, i) in scope.row.range" :key="i">
+                {{ item.range[0] / unit }} ~ {{ item.range[1] / unit }} / {{ item.price }}
+              </p>
+            </div>
+            <div slot="reference">
+              <p v-if="scope.row.countWay === '2'">{{ scope.row.range[0].range[0] / unit }} ~ {{ scope.row.range[0].range[1] / unit }}  / {{ scope.row.range[0].price }}</p>
+            </div>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
