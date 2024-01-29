@@ -10,7 +10,7 @@
             <el-row>
               <el-col :span="12">
                 <div class="title-left">
-                  <span class="channel-icon" :style="{ 'background-color': iconColor[item.channelCode] }" />
+                  <span class="channel-icon" :style="{ 'background-color': iconColor[item.channelType] }" />
                   <span>{{ item.channelName }}</span>
                 </div>
               </el-col>

@@ -8,17 +8,20 @@
         <el-card v-loading="cardLoading" class="box-card">
           <div class="text item">
             <div class="every-div">
-              <span style="color: red;">*</span><span class="top-label">目的地国家: </span>
+              <span class="top-label"><span style="color: red;"> * </span>目的地国家: </span>
               <el-select v-model="selectCountry" filterable placeholder="请选择">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label" />
               </el-select>
             </div>
             <el-divider direction="vertical" />
             <div class="every-div">
-              <span style="color: red;">*</span>
-              <span class="top-label">物品重量: </span>
+              <span class="top-label"><span style="color: red;"> * </span>物品重量: </span>
               <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
-                <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span>
+                <el-select slot="append" v-model="unit" class="append-span" :placeholder="unit">
+                  <el-option label="G" value="G" />
+                  <el-option label="KG" value="KG" />
+                </el-select>
+                <!-- <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span> -->
               </el-input>
             </div>
             <el-divider direction="vertical" />
@@ -53,11 +56,20 @@
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
             <div class="every-div margin-t-10">
-              <span class="top-label">选择产品: </span>
+              <span class="top-label"><span style="color: red;"> * </span>选择库存SKU: </span>
               <el-autocomplete
                 v-model="stockSKU"
                 :fetch-suggestions="querySearchAsync"
                 placeholder="请输入库存SKU"
+                @select="handleSelectProduct"
+              />
+            </div>
+            <div class="every-div margin-t-10">
+              <span class="top-label"><span style="color: red;"> * </span>选择英文SKU: </span>
+              <el-autocomplete
+                v-model="PEName"
+                :fetch-suggestions="querySearchAsyncPEName"
+                placeholder="请输入英文名搜索"
                 @select="handleSelectProduct"
               />
             </div>
@@ -85,7 +97,7 @@
                   <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
                   <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
                 </el-descriptions>
-                <span slot="reference">产品中文SKU: {{ selectedProduct.PZName }}</span>
+                <span slot="reference" class="PZName">产品中文SKU: {{ selectedProduct.PZName }}</span>
               </el-popover>
             </div>
           </div>
@@ -154,8 +166,20 @@ export default {
     selectedProduct: {},
     cardLoading: false,
     faHuo: '深圳',
-    faHuoOptions: [{ value: '深圳' }]
+    faHuoOptions: [{ value: '深圳' }],
+    PEName: ''
   }),
+  watch: {
+    unit: function(newVal) {
+      if (newVal === 'G') {
+        this.weight = this.weight * 1000
+        // this.unit = 'G'
+      } else {
+        this.weight = this.weight / 1000
+        // this.unit = 'KG'
+      }
+    }
+  },
   created() {
     this.getChannelTypes()
   },
@@ -179,11 +203,32 @@ export default {
       }
       cb(productList)
     },
+    async querySearchAsyncPEName(queryString, cb) {
+      const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, PEName: queryString })
+      const productList = []
+      if (res.code !== 201) {
+        productList.push({
+          value: '服务器错误'
+        })
+      } else if (res.code === 201 && res.results.total === 0) {
+        productList.push({
+          value: '无数据'
+        })
+      } else {
+        for (const item of res.results.res) {
+          item.value = item.PEName
+          productList.push(item)
+        }
+      }
+      cb(productList)
+    },
     handleSelectProduct(item) {
       console.log(item)
       this.selectedProduct = item
       const Dimensions = item.Dimensions.split('*')
       console.log(Dimensions)
+      this.PEName = item.PEName
+      this.stockSKU = item.stockSKU
       if (!Array.isArray(Dimensions) || Dimensions.length !== 3) {
         this.$message({
           type: 'warning',
@@ -336,6 +381,11 @@ export default {
 
 .append-span {
   cursor: pointer;
+  width: 70px;
+}
+
+.el-input-group__append {
+  width: 70px;
 }
 
 .el-card__body {
@@ -382,5 +432,13 @@ export default {
   flex-direction: row;
   align-items: center;
   width: 302px;
+}
+.PZName {
+  display: -webkit-box; /* Safari */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 2; /* 设置显示的最大行数为2行 */
+  -webkit-line-clamp: 2; /* Safari and Chrome */
+  -webkit-box-orient: vertical; /* Safari and Chrome */
 }
 </style>
