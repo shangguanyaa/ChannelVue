@@ -133,7 +133,7 @@ export default {
     options: country,
     selectCountry: '',
     weight: 0,
-    unit: 'G',
+    unit: 'KG',
     searchLoading: false,
     channels: [],
     long: null,

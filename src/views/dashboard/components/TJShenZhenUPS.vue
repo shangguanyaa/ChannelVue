@@ -31,6 +31,7 @@
 
 <script>
 import Descriptions from './descriptions.vue'
+import { getOil } from '@/utils/setOil'
 
 export default {
   name: 'TJShenZhenUPS',
@@ -107,13 +108,13 @@ export default {
       // 该渠道不叠加收费 含有一项就得加 108 * 燃油
       // 任何最长一边之长度超过118厘米（含118CM）或第二最长边的长度超过74厘米（含74CM）的包裹。
       if (this.lwh_arr.length === 3 && (this.lwh_arr[0] >= 118 || this.lwh_arr[1] >= 74)) {
-        ChaoZhong = 108
-        msg.push('最长边 >= 118 CM / 第二边长 >= 74 CM: 108元')
+        ChaoZhong = parseFloat((108 * getOil()).toFixed(2))
+        msg.push(`最长边 >= 118 CM / 第二边长 >= 74 CM: 108 * 燃油 ${getOil()} = ${ChaoZhong} 元`)
       }
       // 任何单件货物重量超过31公斤（计费重,含31kg）。
       if (CountWeight / 1000 >= 31) {
-        ChaoZhong = 108
-        msg.push('单件计费重 >= 31 KG: 108元')
+        ChaoZhong = parseFloat((108 * getOil()).toFixed(2))
+        msg.push(`单件计费重 >= 31 KG: 108 * 燃油 ${getOil()} = ${ChaoZhong} 元`)
       }
 
       const ele = 25 // 弱磁 + 25 元

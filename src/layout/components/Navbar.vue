@@ -22,6 +22,9 @@
           <a target="_blank" @click="dialogVisible = !dialogVisible">
             <el-dropdown-item>联系我们</el-dropdown-item>
           </a>
+          <a target="_blank" @click="openSetOilMessageBox">
+            <el-dropdown-item>设置当周燃油</el-dropdown-item>
+          </a>
           <!-- <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item> -->
@@ -49,6 +52,8 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
+import { getOil } from '@/utils/setOil'
+
 const WX_CODE = require('@/assets/WX_CODE.jpg')
 
 export default {
@@ -73,6 +78,23 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    openSetOilMessageBox() {
+      this.$prompt('请先设置当周燃油价格', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputType: 'Number',
+        inputValue: parseFloat(getOil())
+      }).then(({ value }) => {
+        window.localStorage.setItem('Oil', value)
+      }).catch(() => {
+        if (getOil() !== null) {
+          console.log('取消更改')
+        } else {
+          window.localStorage.setItem('Oil', 1)
+          console.log('默认设置为1')
+        }
+      })
     }
   }
 }
