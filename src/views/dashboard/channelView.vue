@@ -8,10 +8,15 @@
         <el-card v-if="item.showInfo.isShow" class="box-card">
           <div slot="header" class="clearfix">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="6">
                 <div class="title-left">
                   <span class="channel-icon" :style="{ 'background-color': iconColor[item.channelType] }" />
                   <span>{{ item.channelName }}</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="title-left">
+                  <span>计费重 {{ item.showInfo.CountWeight }} G</span>
                 </div>
               </el-col>
               <el-col :span="6">
@@ -29,7 +34,6 @@
                   </div>
                   <div slot="reference" class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
                 </el-popover>
-
               </el-col>
             </el-row>
           </div>
