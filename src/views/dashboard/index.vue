@@ -125,6 +125,7 @@
 const { country } = require('@/utils/country')
 // import axios from "axios";
 import channelList from './channelView'
+import { getOil } from '@/utils/setOil'
 
 export default {
   name: 'HomeView',
@@ -316,7 +317,6 @@ export default {
       this.getList(this.LWH_arr, this.volume)
     },
     async getList(LWH_arr, volume) {
-      this.searchLoading = false
       const data = {}
       data.country = this.selectCountry
       data.weight = this.unit === 'KG' ? this.weight * 1000 : this.weight
@@ -324,6 +324,7 @@ export default {
       data.volume = volume
       data.withElectricity = this.withElectricity
       data.channelType = this.channelType
+      data.oil = getOil()
       console.log(data)
       const res = await this.$store.dispatch('channel/getChannelList', data)
       console.log(res.results)

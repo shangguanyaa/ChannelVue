@@ -150,7 +150,7 @@ export default {
       msg.push(`玩具类 3 元/KG: ${CountWeight / 1000 * 3} 元`)
       const totalPrice = (price + (CountWeight / 1000 * toy) + pre + ele + ChaoZhong).toFixed()
 
-      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'HKUPS.vue')
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight, price: value.showInfo.price }, this.index, 'HKUPS.vue')
     }
   }
 }

@@ -65,7 +65,7 @@ export default {
       console.log(newVal)
     },
     privateAddress: function(newVal) {
-      this.newTotalPrice = this.item.showInfo.totalPrice
+      this.newTotalPrice = parseFloat(this.item.showInfo.totalPrice)
       const msg = this.item.showInfo.msg
       if (newVal === true) {
         this.newTotalPrice += 30
@@ -77,7 +77,7 @@ export default {
       this.item.showInfo.totalPrice = this.newTotalPrice
     },
     isToy: function(newVal) {
-      this.newTotalPrice = this.item.showInfo.totalPrice
+      this.newTotalPrice = parseFloat(this.item.showInfo.totalPrice)
       const msg = this.item.showInfo.msg
       const CountWeight = Number(this.item.showInfo.CountWeight) / 1000
       if (newVal === true) {
@@ -91,7 +91,7 @@ export default {
       // this.$emit('countPrice', this.newTotalPrice, this.index)
     },
     Magnetized: function(newVal) {
-      this.newTotalPrice = this.item.showInfo.totalPrice
+      this.newTotalPrice = parseFloat(this.item.showInfo.totalPrice)
       const msg = this.item.showInfo.msg
       const CountWeight = Number(this.item.showInfo.CountWeight) / 1000
       if (newVal === true) {
@@ -175,12 +175,12 @@ export default {
       const Magnetized = 2 * CountWeight / 1000 // 带磁 2元/KG
 
       msg.push(`私人地址: 30 元`)
-      msg.push(`玩具类 2 元/KG: ${CountWeight * 2} 元`)
-      msg.push(`带磁 2 元/KG: ${CountWeight * 2} 元`)
+      msg.push(`玩具类 2 元/KG: ${CountWeight / 1000 * 2} 元`)
+      msg.push(`带磁 2 元/KG: ${CountWeight / 1000 * 2} 元`)
 
       totalPrice = price + pre + toy + Magnetized
 
-      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'XiaoHuo1.vue')
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight, price: showInfo.price }, this.index, 'XiaoHuo1.vue')
       return { totalPrice, isShow: true, msg: '' }
     }
   }

@@ -11,9 +11,16 @@
           {{ msg }}
         </p>
       </el-descriptions-item>
+      <el-descriptions-item label="原价">
+        {{ item.showInfo.price }}
+      </el-descriptions-item>
       <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left', 'max-width': '290px' }">
         {{ item.remark || '无备注' }}
       </el-descriptions-item>
+      <el-descriptions-item label="备注" :content-style="{ 'text-align': 'left', 'max-width': '290px' }">
+        {{ item.remark || '无备注' }}
+      </el-descriptions-item>
+      <!-- <el-descriptions-item label="原价">{{ item.showInfo.price }} G</el-descriptions-item> -->
     </el-descriptions>
   </div>
 </template>

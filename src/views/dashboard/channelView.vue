@@ -36,7 +36,13 @@
           <el-collapse class="item-collapse">
             <el-collapse-item>
               <template slot="title">打开更多该渠道设置<i class="header-icon el-icon-info" /></template>
-              <XiaoHuoOne
+              <Info
+                :item="item"
+                :index="i"
+                v-bind="$attrs"
+                @countPrice="countPrice"
+              />
+              <!-- <XiaoHuoOne
                 v-if="(item.channelCode === '小货包税1' || item.channelCode === '小货包税2')"
                 :item="item"
                 :index="i"
@@ -133,7 +139,7 @@
                 :index="i"
                 v-bind="$attrs"
                 @countPrice="countPrice"
-              />
+              /> -->
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -144,38 +150,40 @@
 
 <script>
 import { iconColor } from '@/utils/channelIcon'
-import XiaoHuoOne from './components/XiaoHuo1'
-import UPS from './components/UPS'
-import UPSJiaNaDa from './components/UPS_JiaNaDa.vue'
-import HKUPS from './components/HKUPS.vue'
-import LiChuang from './components/LiChuang.vue'
-import XiangGangDHLUS from './components/XiangGangDHLUS.vue'
-import TJShenZhenUPS from './components/TJShenZhenUPS.vue'
-import TJShenZhenLianBang from './components/TJShenZhenLianBang.vue'
-import TJDHL6000 from './components/TJDHL6000.vue'
-import TJFedExIP from './components/TJFedExIP.vue'
-import TJDianChiUSA from './components/TJDianChiUSA.vue'
-import TJDianChiFaGuo from './components/TJDianChiFaGuo.vue'
-import TJXiangGangXiaoHuo from './components/TJXiangGangXiaoHuo.vue'
-import TJXiangGangUPSHD from './components/TJXiangGangUPSHD.vue'
+// import XiaoHuoOne from './components/XiaoHuo1'
+// import UPS from './components/UPS'
+// import UPSJiaNaDa from './components/UPS_JiaNaDa.vue'
+// import HKUPS from './components/HKUPS.vue'
+// import LiChuang from './components/LiChuang.vue'
+// import XiangGangDHLUS from './components/XiangGangDHLUS.vue'
+// import TJShenZhenUPS from './components/TJShenZhenUPS.vue'
+// import TJShenZhenLianBang from './components/TJShenZhenLianBang.vue'
+// import TJDHL6000 from './components/TJDHL6000.vue'
+// import TJFedExIP from './components/TJFedExIP.vue'
+// import TJDianChiUSA from './components/TJDianChiUSA.vue'
+// import TJDianChiFaGuo from './components/TJDianChiFaGuo.vue'
+// import TJXiangGangXiaoHuo from './components/TJXiangGangXiaoHuo.vue'
+// import TJXiangGangUPSHD from './components/TJXiangGangUPSHD.vue'
+import Info from './components/info.vue'
 
 export default {
   name: 'ChannelList',
   components: {
-    XiaoHuoOne,
-    UPS,
-    UPSJiaNaDa,
-    HKUPS,
-    LiChuang,
-    XiangGangDHLUS,
-    TJShenZhenUPS,
-    TJShenZhenLianBang,
-    TJDHL6000,
-    TJFedExIP,
-    TJDianChiUSA,
-    TJDianChiFaGuo,
-    TJXiangGangXiaoHuo,
-    TJXiangGangUPSHD
+    // XiaoHuoOne,
+    // UPS,
+    // UPSJiaNaDa,
+    // HKUPS,
+    // LiChuang,
+    // XiangGangDHLUS,
+    // TJShenZhenUPS,
+    // TJShenZhenLianBang,
+    // TJDHL6000,
+    // TJFedExIP,
+    // TJDianChiUSA,
+    // TJDianChiFaGuo,
+    // TJXiangGangXiaoHuo,
+    // TJXiangGangUPSHD,
+    Info
   },
   inheritAttrs: true,
   props: {

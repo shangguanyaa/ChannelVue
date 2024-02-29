@@ -104,7 +104,7 @@ export default {
 
       const totalPrice = (price + ChaoZhong).toFixed(2)
 
-      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight }, this.index, 'LiChauang.vue')
+      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight, price: showInfo.price }, this.index, 'LiChauang.vue')
     }
   }
 }
