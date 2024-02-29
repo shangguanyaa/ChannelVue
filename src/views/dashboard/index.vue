@@ -103,7 +103,7 @@
           </div>
           <div class="search">
             <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">试算</el-button>
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="paiXu('price')">排序</el-button>
+            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="reSet">重置</el-button>
           </div>
         </el-card>
       </div>
@@ -185,6 +185,17 @@ export default {
     this.getChannelTypes()
   },
   methods: {
+    reSet() {
+      this.selectCountry = ''
+      this.weight = 0
+      this.long = ''
+      this.wide = ''
+      this.high = ''
+      this.channelType = ''
+      this.withElectricity = ''
+      this.stockSKU = ''
+      this.PEName = ''
+    },
     async querySearchAsync(queryString, cb) {
       const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, keywords: queryString })
       const productList = []
@@ -419,6 +430,19 @@ export default {
   flex-direction: column;
   height: 100%;
   padding-bottom: 20px;
+}
+
+.box-card .search {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-card .search button {
+  margin: 0 0 16px 0;
 }
 
 .item {
