@@ -201,8 +201,8 @@ export default {
       onLoading: false,
       AIRange: '',
       AIPrice: '',
-      rulesEdit: true,
-      width: '90%',
+      rulesEdit: false,
+      width: 620,
       options: [
         { value: 'maxLength', label: '最长边长(大于或等于)' },
         { value: 'secendLength', label: '第二边长(大于或等于)' },

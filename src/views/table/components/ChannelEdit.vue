@@ -296,8 +296,8 @@ export default {
       onLoading: false,
       AIRange: '',
       AIPrice: '',
-      rulesEdit: true,
-      width: '90%',
+      rulesEdit: false,
+      width: 620,
       options: [
         { value: 'maxLength', label: '最长边长(大于或等于)' },
         { value: 'secendLength', label: '第二边长(大于或等于)' },
@@ -381,7 +381,8 @@ export default {
       if (!this.rowData.surcharge || !Array.isArray(this.rowData.surcharge)) {
         this.rowData.surcharge = []
       }
-      this.rowData.surcharge.push({})
+      // this.rowData.surcharge.push({})
+      this.rowData.surcharge = [...this.rowData.surcharge, {}]
       console.log(this.rowData)
     },
     rulesEditOpen() {
