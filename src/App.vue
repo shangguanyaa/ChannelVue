@@ -5,7 +5,7 @@
 </template>
 
 <script>
-console.log('第四遍')
+console.log('第五遍')
 export default {
   name: 'App'
 }

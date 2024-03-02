@@ -346,15 +346,24 @@ export default {
       if (!this.rowData.customSurcharge || !Array.isArray(this.rowData.customSurcharge)) {
         this.rowData.customSurcharge = []
       }
-      this.rowData.customSurcharge.push({
+      this.$set(this.rowData, 'customSurcharge', [...this.rowData.customSurcharge, {
         text: '', // 自定义附加费名称
         price: 30, // 价格
         type: 1, // 计费方式: 1: 固定收费 2: 每KG收费
         minPrice: 0, // 最低收费, 没有这个规则可以输入 0
         autoSelect: true, // 是否自动加上,
         oil: false // 是否需要乘以当周燃油
-      })
-      console.log(this.rowData.customSurcharge)
+      }])
+      this.$forceUpdate()
+      // this.rowData.customSurcharge.push({
+      //   text: '', // 自定义附加费名称
+      //   price: 30, // 价格
+      //   type: 1, // 计费方式: 1: 固定收费 2: 每KG收费
+      //   minPrice: 0, // 最低收费, 没有这个规则可以输入 0
+      //   autoSelect: true, // 是否自动加上,
+      //   oil: false // 是否需要乘以当周燃油
+      // })
+      console.log(this.rowData.customSurcharge, 'forceUpdate')
     },
     deleteGroup(index, item) {
       // console.log(index, item)
