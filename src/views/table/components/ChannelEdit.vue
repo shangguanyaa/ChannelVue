@@ -178,90 +178,94 @@
           </el-form>
         </div>
         <div v-if="rulesEdit" class="right">
-          <el-card v-for="(item, i) in rowData.surcharge" :key="i" class="right-card">
-            <el-tag closable :type="'success'" @close="deleteGroup(i, item)">规则组 {{ i + 1 }}</el-tag>
-            <el-select v-model="value" placeholder="请选择需要限制的参数" @change="selectRule(i)">
-              <el-option
-                v-for="items in options"
-                :key="items.value"
-                :label="items.label"
-                :value="items.value"
-                :disabled="selectedRules.includes(items.value)"
-              />
-            </el-select>
-            <div v-for="(rule, key) in item" :key="key" class="group">
-              <el-card>
-                <div class="title">
-                  <p>{{ ZH_Options[key] }}</p>
-                  <p><i class="el-icon-error" @click="deleteRule(i, key)" /></p>
-                </div>
-                <p>
-                  <span>限制值:</span>
-                  <el-input v-model="rule.value" placeholder="产品该属性>=限制值" :type="'Number'" />
-                </p>
-                <p>
-                  <span>超出价格:</span>
-                  <el-input v-model="rule.price" placeholder="触发后价格" :type="'Number'" />
-                </p>
-                <p>
-                  <span>是否乘以燃油:</span>
-                  <el-radio-group v-model="rule.oil">
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
-                </p>
-                <p>
-                  <span>附加费描述</span>
-                  <el-input v-model="rule.text" placeholder="会出现在试算附加费详情里" :type="'String'" />
-                </p>
-              </el-card>
-            </div>
-          </el-card>
+          <template v-if="rowData.surcharge">
+            <el-card v-for="(item, i) in rowData.surcharge" :key="i" class="right-card">
+              <el-tag closable :type="'success'" @close="deleteGroup(i, item)">规则组 {{ i + 1 }}</el-tag>
+              <el-select v-model="value" placeholder="请选择需要限制的参数" @change="selectRule(i)">
+                <el-option
+                  v-for="items in options"
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value"
+                  :disabled="selectedRules.includes(items.value)"
+                />
+              </el-select>
+              <div v-for="(rule, key) in item" :key="key" class="group">
+                <el-card>
+                  <div class="title">
+                    <p>{{ ZH_Options[key] }}</p>
+                    <p><i class="el-icon-error" @click="deleteRule(i, key)" /></p>
+                  </div>
+                  <p>
+                    <span>限制值:</span>
+                    <el-input v-model="rule.value" placeholder="产品该属性>=限制值" :type="'Number'" />
+                  </p>
+                  <p>
+                    <span>超出价格:</span>
+                    <el-input v-model="rule.price" placeholder="触发后价格" :type="'Number'" />
+                  </p>
+                  <p>
+                    <span>是否乘以燃油:</span>
+                    <el-radio-group v-model="rule.oil">
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+                  </p>
+                  <p>
+                    <span>附加费描述</span>
+                    <el-input v-model="rule.text" placeholder="会出现在试算附加费详情里" :type="'String'" />
+                  </p>
+                </el-card>
+              </div>
+            </el-card>
+          </template>
 
-          <el-card v-for="(item, i) in rowData.customSurcharge" :key="i + 'CustomSurcharge'" class="right-card">
-            <el-tag closable @close="deleteCustomSurcharge(i, item)">可选附加费配置 {{ i + 1 }}</el-tag>
-            <div class="group">
-              <el-card>
-                <div class="title">
-                  <p>{{ item.text || '待定' }}</p>
-                  <!-- <p><i class="el-icon-error" @click="deleteCustomSurcharge(i)" /></p> -->
-                </div>
-                <p>
-                  <span>附加费描述:</span>
-                  <el-input v-model="item.text" placeholder="附加费名称 显示在试算详情配置里" :type="'text'" />
-                </p>
-                <p>
-                  <span>附加费价格:</span>
-                  <el-input v-model="item.price" placeholder="附加费价格" :type="'Number'" />
-                </p>
-                <p>
-                  <span>最低收费:</span>
-                  <el-input v-model="item.minPrice" placeholder="最低收费" :type="'Number'" :disabled="item.type === 1" />
-                </p>
-                <p>
-                  <span>计算方式:</span>
-                  <el-radio-group v-model="item.type">
-                    <el-radio :label="1">固定收费</el-radio>
-                    <el-radio :label="2">每KG收费</el-radio>
-                  </el-radio-group>
-                </p>
-                <p>
-                  <span>是否乘以燃油:</span>
-                  <el-radio-group v-model="item.oil">
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
-                </p>
-                <p>
-                  <span>是否自动勾选:</span>
-                  <el-radio-group v-model="item.autoSelect">
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
-                </p>
-              </el-card>
-            </div>
-          </el-card>
+          <template v-if="rowData.customSurcharge">
+            <el-card v-for="(item, i) in rowData.customSurcharge" :key="i + 'CustomSurcharge'" class="right-card">
+              <el-tag closable @close="deleteCustomSurcharge(i, item)">可选附加费配置 {{ i + 1 }}</el-tag>
+              <div class="group">
+                <el-card>
+                  <div class="title">
+                    <p>{{ item.text || '待定' }}</p>
+                    <!-- <p><i class="el-icon-error" @click="deleteCustomSurcharge(i)" /></p> -->
+                  </div>
+                  <p>
+                    <span>附加费描述:</span>
+                    <el-input v-model="item.text" placeholder="附加费名称 显示在试算详情配置里" :type="'text'" />
+                  </p>
+                  <p>
+                    <span>附加费价格:</span>
+                    <el-input v-model="item.price" placeholder="附加费价格" :type="'Number'" />
+                  </p>
+                  <p>
+                    <span>最低收费:</span>
+                    <el-input v-model="item.minPrice" placeholder="最低收费" :type="'Number'" :disabled="item.type === 1" />
+                  </p>
+                  <p>
+                    <span>计算方式:</span>
+                    <el-radio-group v-model="item.type">
+                      <el-radio :label="1">固定收费</el-radio>
+                      <el-radio :label="2">每KG收费</el-radio>
+                    </el-radio-group>
+                  </p>
+                  <p>
+                    <span>是否乘以燃油:</span>
+                    <el-radio-group v-model="item.oil">
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+                  </p>
+                  <p>
+                    <span>是否自动勾选:</span>
+                    <el-radio-group v-model="item.autoSelect">
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+                  </p>
+                </el-card>
+              </div>
+            </el-card>
+          </template>
 
           <el-button type="primary" @click="addGroup">新建规则组</el-button>
           <el-button type="primary" @click="addCustomSurcharge">新建可选附加费配置</el-button>
