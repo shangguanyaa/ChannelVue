@@ -16,7 +16,7 @@
               </el-col>
               <el-col :span="6">
                 <div class="title-left">
-                  <span>计费重 {{ item.showInfo.CountWeight }} G</span>
+                  <span>计费重 {{ item.showInfo.CountWeight / 1000 }} KG</span>
                 </div>
               </el-col>
               <el-col :span="6">

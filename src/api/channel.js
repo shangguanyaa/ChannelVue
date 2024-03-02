@@ -47,3 +47,11 @@ export function destroyChannels(data) {
     data
   })
 }
+
+export function bulkUpdateInsert(data) {
+  return request({
+    url: '/channel/ChannelBulkInsert',
+    method: 'post',
+    data
+  })
+}

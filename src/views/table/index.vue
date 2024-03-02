@@ -5,6 +5,7 @@
         <el-button slot="append" icon="el-icon-search" @click="getAllChannelList('keywords')" />
       </el-input>
       <div>
+        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkEdit">批量编辑</el-button>
         <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkDestroy">批量删除</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
       </div>
@@ -169,6 +170,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <ChannelBulkEdit :is_edit_open="bulkEditOpen" :row="selectedArr" @closeEdit="closeBulkEdit" @updateSuccess="updateSuccess" />
     <ChannelEdit :is_edit_open="editOpen" :row="editRowData" @closeEdit="closeEdit" @updateSuccess="updateSuccess" />
     <ChannelAdd :is_add_open="addOpen" :row="editRowData" @closeAdd="closeAdd" @updateSuccess="updateSuccess" />
   </div>
@@ -178,10 +181,11 @@
 <script>
 
 import ChannelEdit from './components/ChannelEdit'
+import ChannelBulkEdit from './components/ChannelBulkEdit.vue'
 import ChannelAdd from './components/ChannelAdd.vue'
 
 export default {
-  components: { ChannelEdit, ChannelAdd },
+  components: { ChannelEdit, ChannelAdd, ChannelBulkEdit },
   data() {
     return {
       tableData: [],
@@ -195,15 +199,21 @@ export default {
       addOpen: false,
       keywords: '',
       selectedCIDArr: [],
-      loading: false
+      loading: false,
+      bulkEditOpen: false,
+      selectedArr: []
     }
   },
   created() {
     this.getAllChannelList()
   },
   methods: {
+    bulkEdit() {
+      this.bulkEditOpen = true
+    },
     handleSelectionChange(selectedArr) {
       console.log(selectedArr)
+      this.selectedArr = selectedArr
       const selectedCIDArr = []
       for (const item of selectedArr) {
         selectedCIDArr.push(item.channelID)
@@ -284,6 +294,10 @@ export default {
     },
     closeEdit() {
       this.editOpen = false
+      this.bulkEditOpen = false
+    },
+    closeBulkEdit() {
+      this.bulkEditOpen = false
     },
     closeAdd() {
       this.addOpen = false

@@ -15,12 +15,6 @@
             <el-form-item label="渠道名称">
               <el-input v-model="rowData.channelName" />
             </el-form-item>
-            <el-form-item label="渠道代码">
-              <el-input v-model="rowData.channelCode" placeholder="此代码为唯一的,不能和其他渠道相同" />
-            </el-form-item>
-            <el-form-item label="目的国家">
-              <el-input v-model="rowData.country" type="textarea" placeholder="支持的国家, 使用逗号分隔" />
-            </el-form-item>
             <el-form-item label="渠道类型">
               <el-input v-model="rowData.channelType" placeholder="渠道类型" />
             </el-form-item>
@@ -81,98 +75,9 @@
               <el-input v-model="rowData.remark" type="textarea" placeholder="备注" />
             </el-form-item>
 
-            <el-form-item label="计算方式">
-              <el-radio-group v-model="rowData.countWay">
-                <el-radio :label="'1'">首重续重</el-radio>
-                <el-radio :label="'2'">重量范围</el-radio>
-                <br>
-                <el-radio :label="'3'">重量对应价格</el-radio>
-                <el-radio :label="'4'">直接计算</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <template v-if="rowData.countWay === '1'">
-              <div class="range-title">
-                <span style="font-size: 20px;">首重续重参数设置</span>
-              </div>
-              <el-form-item label="首重重量">
-                <el-col :span="8">
-                  <el-input v-model="rowData.FWeight" placeholder="长" />
-                </el-col>
-                <el-col :span="6" class="price-col">
-                  首重价格：
-                </el-col>
-                <el-col :span="8" class="price-col">
-                  <el-input v-model="rowData.FWeightPrice" placeholder="长" />
-                </el-col>
-              </el-form-item>
-              <el-form-item label="续重重量">
-                <el-col :span="8">
-                  <el-input v-model="rowData.CWeight" placeholder="长" />
-                </el-col>
-                <el-col :span="6" class="price-col">
-                  续重价格：
-                </el-col>
-                <el-col :span="8" class="price-col">
-                  <el-input v-model="rowData.CWeightPrice" placeholder="长" />
-                </el-col>
-              </el-form-item>
-            </template>
-            <template v-if="rowData.countWay === '2'">
-              <div class="range-title">
-                <span style="font-size: 20px;">范围设置</span>
-              </div>
-              <div class="range-title">
-                <el-button size="mini" round @click="addOperate">添加操作费</el-button>
-                <el-button size="mini" round @click="deleteOperate">去除操作费</el-button>
-              </div>
-              <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
-                <div class="range-item">
-                  <el-input v-model="item.range[0]" type="Number" placeholder="起始重量" />
-                  <span> ~ </span>
-                  <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
-                  <el-divider direction="vertical" />
-                  <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
-                  <template v-if="item.operate !== undefined">
-                    <el-divider direction="vertical" />
-                    <el-input v-model="item.operate" type="Number" placeholder="操作费" />
-                  </template>
-                  <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
-                </div>
-              </el-form-item>
-              <div class="add-icon" @click="addRange"><i class="el-icon-circle-plus-outline" /></div>
-            </template>
-            <template v-if="rowData.countWay === '3'">
-              <div class="range-title">
-                <span style="font-size: 20px;">范围设置</span>
-              </div>
-              <el-form-item label="智能生成区间">
-                <el-input v-model="AIRange" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
-              </el-form-item>
-              <el-form-item label="智能生成价格">
-                <el-input v-model="AIPrice" type="textarea" placeholder="仅限开发用, 或咨询开发者如何使用" />
-              </el-form-item>
-              <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
-                <div class="range-item">
-                  <el-input v-model="item.range" type="Number" placeholder="重量" />
-                  <el-divider direction="vertical" />
-                  <el-input v-model="item.price" type="Number" placeholder="价格" />
-                  <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
-                </div>
-              </el-form-item>
-              <div class="add-icon" @click="addRangePrice"><i class="el-icon-circle-plus-outline" /></div>
-            </template>
-            <template v-if="rowData.countWay === '4'">
-              <div class="range-title">
-                <span style="font-size: 20px;">直接计算参数设置</span>
-              </div>
-              <el-form-item label="价格">
-                <el-input v-model="rowData.FWeightPrice" placeholder="每KG价格" />
-              </el-form-item>
-            </template>
             <el-form-item>
               <el-button type="primary" :loading="onLoading" @click="onSubmit">修改</el-button>
               <el-button>取消</el-button>
-              <el-button @click="toDoAI">智能生成</el-button>
               <el-button @click="rulesEditOpen">附加费配置</el-button>
             </el-form-item>
           </el-form>
@@ -274,7 +179,7 @@
 <script>
 
 export default {
-  name: 'ChannelEdit',
+  name: 'ChannelBulkEdit',
   props: {
     // eslint-disable-next-line vue/prop-name-casing
     is_edit_open: {
@@ -282,8 +187,8 @@ export default {
       default: () => { false }
     },
     row: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => { [] }
     }
   },
   data() {
@@ -317,20 +222,14 @@ export default {
   watch: {
     is_edit_open: function(newVal) {
       if (newVal) {
-        this.rowData = JSON.parse(JSON.stringify(this.row))
+        console.log('打开了')
+        console.log(this.row[0])
+        this.rowData = JSON.parse(JSON.stringify(this.row[0]))
         this.withEle = this.rowData.withElectricity.split(',')
         this.initCheckBoxs()
-        console.log(this.withEle)
       } else {
+        console.log('关闭了')
         this.rowData = {}
-      }
-    },
-    'rowData.countWay': function(newVal, oldVal) {
-      if (oldVal === '3' && newVal === '2') {
-        this.rowData.range = []
-      }
-      if (oldVal === '2' && newVal === '3') {
-        this.rowData.range = []
       }
     }
   },
@@ -427,12 +326,15 @@ export default {
     },
     chick1(val) {
       this.chickCheck(val, 1)
+      // this.ele1 = val
     },
     chick2(val) {
       this.chickCheck(val, 2)
+      // this.ele2 = val
     },
     chick3(val) {
       this.chickCheck(val, 3)
+      // this.ele3 = val
     },
     chickCheck(val, index) {
       if (val) {
@@ -444,21 +346,29 @@ export default {
       this.initCheckBoxs()
     },
     initCheckBoxs() {
+      console.log('initBox')
       for (const item of this.withEle) {
         switch (item) {
           case '1':
             this.ele1 = true
+            this.$set(this, 'ele1', true)
             break
           case '2':
             this.ele2 = true
+            this.$set(this, 'ele2', true)
             break
           case '3':
             this.ele3 = true
+            this.$set(this, 'ele3', true)
             break
           default:
             break
         }
       }
+      console.log(this.ele1)
+      console.log(this.ele2)
+      console.log(this.ele3)
+      this.$forceUpdate()
     },
     handleClose() {
       console.log(this.rowData, 'rowData')
@@ -467,68 +377,27 @@ export default {
     async handleUndateChannel() {
       this.onLoading = true
       this.rowData.withElectricity = this.withEle.toString()
-      if (this.rowData.countWay === '1' || this.rowData.countWay === '4') {
-        this.rowData.range = null
-      } else if (this.rowData.countWay === '2' || this.rowData.countWay === '3') {
-        this.rowData.FWeight = null
-        this.rowData.FWeightPrice = null
-        this.rowData.CWeight = null
-        this.rowData.CWeight = null
+      const data = []
+      data.push(this.rowData)
+      for (const i in this.row) {
+        if (i > 0) {
+          data.push({ ...this.rowData })
+          data[i].channelID = this.row[i].channelID
+        }
       }
-      // const data = this.rowData
-      const res = await this.$store.dispatch('channel/updateChannel', this.rowData)
+      console.log(data)
+      const res = await this.$store.dispatch('channel/bulkInsertUpdate', { CList: data })
       if (res.results) {
         this.$emit('updateSuccess')
       }
       this.onLoading = false
     },
     onSubmit() {
-      if (!this.rowData.channelName) {
-        this.$message({
-          type: 'warning',
-          message: '请完善重量范围数据'
-        })
-      }
-      if (!this.rowData.channelCode) {
-        this.$message({
-          type: 'warning',
-          message: '请输入渠道代码: 谨慎修改此项'
-        })
-      }
       if (!this.rowData.channelType) {
         this.$message({
           type: 'warning',
           message: '请输入渠道类型'
         })
-      }
-      if (this.rowData.countWay === '1') {
-        if (!this.rowData.FWeight || !this.rowData.FWeightPrice || !this.rowData.CWeight || !this.rowData.CWeightPrice) {
-          this.$message({
-            type: 'warning',
-            message: '请完善首重续重数据'
-          })
-          return
-        }
-      }
-      if (this.rowData.countWay === '2') {
-        for (const item of this.rowData.range) {
-          if (!item.price || !item.range[0] || !item.range[1]) {
-            this.$message({
-              type: 'warning',
-              message: '请完善重量范围数据'
-            })
-            return
-          }
-        }
-      }
-      if (this.rowData.countWay === '4') {
-        if (!this.rowData.FWeightPrice) {
-          this.$message({
-            type: 'warning',
-            message: '请完善价格数据'
-          })
-          return
-        }
       }
       this.handleUndateChannel()
     },
