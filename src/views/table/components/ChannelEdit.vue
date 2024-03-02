@@ -382,8 +382,10 @@ export default {
         this.rowData.surcharge = []
       }
       // this.rowData.surcharge.push({})
-      this.rowData.surcharge = [...this.rowData.surcharge, {}]
-      console.log(this.rowData)
+      // this.rowData.surcharge = [...this.rowData.surcharge, {}]
+      this.$set(this.rowData, 'surcharge', [...this.rowData.surcharge, {}])
+      this.$forceUpdate()
+      console.log(this.rowData, 'forceUpdate')
     },
     rulesEditOpen() {
       if (this.rulesEdit) {
