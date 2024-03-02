@@ -280,7 +280,8 @@ export default {
       if (!this.rowData.surcharge || !Array.isArray(this.rowData.surcharge)) {
         this.rowData.surcharge = []
       }
-      this.rowData.surcharge.push({})
+      // this.rowData.surcharge.push({})
+      this.rowData.surcharge = [...this.rowData.surcharge, {}]
       console.log(this.rowData)
     },
     rulesEditOpen() {
