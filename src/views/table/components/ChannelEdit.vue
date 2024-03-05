@@ -306,13 +306,17 @@ export default {
         { value: 'maxLength', label: '最长边长(大于或等于)' },
         { value: 'secendLength', label: '第二边长(大于或等于)' },
         { value: 'minLength', label: '最短边长(大于或等于)' },
-        { value: 'volume', label: '围长(长 + 2 * 高 + 2 * 宽)' }
+        { value: 'volume', label: '围长(长 + 2 * 高 + 2 * 宽)' },
+        { value: 'weight', label: '单件结算重(大于或等于)' },
+        { value: 'LWH', label: '长+ 宽+ 高(大于或等于)' }
       ],
       ZH_Options: {
         maxLength: '最长边长',
         secendLength: '第二边长',
         minLength: '最短边长',
-        volume: '围长(长+2*高+2*宽)'
+        volume: '围长(长+2*高+2*宽)',
+        weight: '单件结算重',
+        LWH: '长+ 宽+ 高'
       },
       value: '',
       selectedRules: []
