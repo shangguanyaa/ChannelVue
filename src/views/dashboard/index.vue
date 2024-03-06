@@ -1,6 +1,6 @@
 <template>
   <div class="big-box">
-    <div class="content">
+    <div v-if="!isMobile" class="content">
       <div class="top">
         <h1>物流渠道比价系统(定制)</h1>
       </div>
@@ -117,19 +117,134 @@
         />
       </div>
     </div>
+    <div v-else class="mobile">
+      <div class="top">
+        <h1>物流渠道比价系统(定制)</h1>
+      </div>
+      <div class="select">
+        <div v-loading="cardLoading" class="box-card">
+          <div class="item">
+            <div class="every-div">
+              <p class="top-label"><span style="color: red;"> * </span>目的地国家: </p>
+              <el-select v-model="selectCountry" filterable placeholder="请选择">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label" />
+              </el-select>
+            </div>
+            <div class="every-div">
+              <p class="top-label"><span style="color: red;"> * </span>物品重量: </p>
+              <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
+                <el-select slot="append" v-model="unit" class="append-span" :placeholder="unit">
+                  <el-option label="G" value="G" />
+                  <el-option label="KG" value="KG" />
+                </el-select>
+              </el-input>
+            </div>
+            <template v-if="showMoreOptions">
+              <div class="every-div">
+                <p class="top-label">长宽高(CM): </p>
+                <el-input v-model="long" class="long-input" placeholder="长" />
+                <el-input v-model="wide" class="long-input" placeholder="宽" />
+                <el-input v-model="high" class="long-input" placeholder="高" />
+              </div>
+
+              <div class="every-div">
+                <p class="top-label">发货地: </p>
+                <el-select v-model="faHuo" filterable placeholder="深圳">
+                  <el-option v-for="item in faHuoOptions" :key="item.value" :label="item.value" :value="item.value" />
+                </el-select>
+              </div>
+              <div class="every-div">
+                <p class="top-label">渠道类型: </p>
+                <el-select v-model="channelType" filterable placeholder="请选择货物类型">
+                  <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
+                </el-select>
+              </div>
+              <div class="every-div">
+                <p class="top-label">带电带磁: </p>
+                <el-select v-model="withElectricity" filterable placeholder="请选择货物类型">
+                  <el-option v-for="item in ElectricityOptions" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+              </div>
+              <div class="every-div">
+                <p class="top-label"><span style="color: red;"> * </span>库存SKU: </p>
+                <el-autocomplete
+                  v-model="stockSKU"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入库存SKU"
+                  @select="handleSelectProduct"
+                />
+              </div>
+              <div class="every-div">
+                <p class="top-label"><span style="color: red;"> * </span>英文SKU: </p>
+                <el-autocomplete
+                  v-model="PEName"
+                  :fetch-suggestions="querySearchAsyncPEName"
+                  placeholder="请输入英文名搜索"
+                  @select="handleSelectProduct"
+                />
+              </div>
+              <div v-show="stockSKU" class="every-div">
+                <el-popover
+                  placement="right"
+                  width="400"
+                  trigger="hover"
+                >
+                  <el-descriptions class="margin-top" title="带边框列表" :column="1" border>
+                    <template slot="extra">
+                      <el-button type="primary" size="small">操作</el-button>
+                    </template>
+                    <el-descriptions-item label="品牌名称">{{ selectedProduct.brandName }}</el-descriptions-item>
+                    <el-descriptions-item label="库存SKU">{{ selectedProduct.stockSKU }}</el-descriptions-item>
+                    <el-descriptions-item label="SKU英文名">{{ selectedProduct.PEName }}</el-descriptions-item>
+                    <el-descriptions-item label="SKU中文名">{{ selectedProduct.PZName }}</el-descriptions-item>
+                    <el-descriptions-item :label-style="{'width': '150px'}" label="售前危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
+                    <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
+                    <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
+                    <el-descriptions-item label="预估尺寸 CM">{{ selectedProduct.Dimensions }}</el-descriptions-item>
+                    <el-descriptions-item label="电池">{{ selectedProduct.productType }}</el-descriptions-item>
+                    <el-descriptions-item label="开发估重 G">{{ selectedProduct.PWeight }}</el-descriptions-item>
+                    <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
+                    <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
+                  </el-descriptions>
+                  <span slot="reference" class="PZName">中文SKU: {{ selectedProduct.PZName }}</span>
+                </el-popover>
+              </div>
+            </template>
+
+          </div>
+          <div class="search ">
+            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">试算</el-button>
+            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="reSet">重置</el-button>
+          </div>
+          <div class="bottom" @click="showMoreOptions = !showMoreOptions">
+            <i :class="showMoreOptions? 'el-icon-arrow-up':'el-icon-arrow-down'" /> {{ showMoreOptions ? '收起选项' : '打开更多选项' }}
+          </div>
+        </div>
+      </div>
+      <div class="list-box">
+        <ChannelListMobile
+          :list="channels"
+          :weight="unit === 'KG' ? Number((weight * 1000)) : Number(weight)"
+          :lwh_arr="LWH_arr"
+          :volume="volume"
+          :country="selectCountry"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 
 const { country } = require('@/utils/country')
-// import axios from "axios";
 import channelList from './channelView'
+import ChannelListMobile from './channelViewMobile'
 import { getOil } from '@/utils/setOil'
+import { isMobile } from '@/utils/isMobile'
 
 export default {
   name: 'HomeView',
-  components: { channelList },
+  components: { channelList, ChannelListMobile },
   data: () => ({
     options: country,
     selectCountry: '',
@@ -168,7 +283,9 @@ export default {
     cardLoading: false,
     faHuo: '深圳',
     faHuoOptions: [{ value: '深圳' }],
-    PEName: ''
+    PEName: '',
+    isMobile,
+    showMoreOptions: false
   }),
   watch: {
     unit: function(newVal) {
@@ -357,6 +474,51 @@ export default {
 </script>
 
 <style>
+.mobile .top h1{
+  font-size: 0.2rem;
+}
+.mobile .select .box-card {
+  width: 4rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.06rem;
+  box-shadow:  7px 7px 14px #cecece,
+             -7px -7px 14px #f2f2f2;
+  padding: 0.1rem;
+  font-size: 0.16rem;
+}
+.mobile .select .box-card .search {
+  width: 100%;
+  height: 0.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.mobile .select .box-card .search button{
+  margin: 0 0;
+}
+.mobile .select .box-card .item {
+  display: block;
+}
+.mobile .select .box-card .bottom {
+  text-align: center;
+}
+.mobile .select .box-card .item .every-div {
+  width: 100%;
+  height: 0.5rem;
+  font-size: 0.16rem;
+}
+.mobile .select .box-card .item .every-div .el-autocomplete {
+  height: 0.4rem;
+  font-size: 16px;
+}
+.mobile .select .box-card .item .every-div p {
+  font-size: 0.16rem;
+}
+</style>
+
+<style>
 .top {
   display: flex;
   justify-content: center;
@@ -467,3 +629,4 @@ export default {
   -webkit-box-orient: vertical; /* Safari and Chrome */
 }
 </style>
+
