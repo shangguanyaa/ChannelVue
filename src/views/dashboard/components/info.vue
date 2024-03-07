@@ -112,7 +112,7 @@ export default {
       const msg = []
       if (item.type === 1) {
         if (item.oil) { // 需要乘以当周燃油
-          tempPrice = parseFloat((item.price * oil).toFixed(2))
+          tempPrice = parseFloat((item.price * oil))
           price += tempPrice
           msg.push(`${item.text} ${item.price} * ${oil}燃油: ${tempPrice} 元`)
         } else { // 不需要当周燃油
@@ -123,7 +123,7 @@ export default {
       } else {
         if (item.oil) { // 需要乘以当周燃油
           tempPrice = item.price * weight * oil > item.minPrice ? item.price * weight * oil : item.minPrice
-          price += parseFloat((tempPrice).toFixed(2))
+          price += parseFloat((tempPrice))
           msg.push(`${item.text} 每KG ${item.price} * ${oil}燃油: ${tempPrice} 元. (最低${item.minPrice})`)
         } else { // 不需要当周燃油
           tempPrice = item.price * weight > item.minPrice ? item.price * weight : item.minPrice
@@ -141,6 +141,7 @@ export default {
    *    对比一下渠道里的数据是否对的上, 对不上修改之后再返回第 2 步重新进行试算
    *    如果渠道里的数据对上了, 但是试算原价不对, 这个时候就记录下来, 这一次试算的所有参数, 不对在哪, 应该得到多少钱
    * 4. 添加了 附加费规则 模块, 回到试算页面, 根据附加费的临界值去 重新试算, 看看添加了附加费的结果是否有出入
+   *
   */
 }
 

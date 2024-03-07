@@ -1,28 +1,30 @@
+import Cookies from 'js-cookie'
+
 const TokenKey = 'authorization-zl'
 const InfoKey = 'user-info'
 
 export function setToken(token) {
-  return sessionStorage.setItem(TokenKey, token)
+  return Cookies.set(TokenKey, token)
 }
 
 export function setRefreshToken(refreshToken) {
-  return sessionStorage.setItem('refreshToken', refreshToken)
+  return Cookies.set('refreshToken', refreshToken)
 }
 
 export function getToken() {
-  return sessionStorage.getItem(TokenKey)
+  return Cookies.get(TokenKey)
 }
 
 export function getRefreshToken() {
-  return sessionStorage.getItem('refreshToken')
+  return Cookies.get('refreshToken')
 }
 
 export function removeToken() {
-  return sessionStorage.removeItem(TokenKey)
+  return Cookies.remove(TokenKey)
 }
 
 export function removeRefreshToken() {
-  return sessionStorage.removeItem('refreshToken')
+  return Cookies.remove('refreshToken')
 }
 
 // 用户信息相关
