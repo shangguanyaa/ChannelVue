@@ -1,6 +1,16 @@
 import axios from 'axios'
 import { MessageBox, Message, Notification } from 'element-ui'
-import store from '@/store'
+// import store from '@/store'
+import {
+  getToken,
+  removeInfo,
+  removeToken,
+  setToken,
+  setRefreshToken,
+  removeRefreshToken,
+  getRefreshToken
+} from '../utils/auth'
+import router from '@/router/index'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -16,6 +26,8 @@ service.interceptors.request.use(
     // if (store.getters.token) {
     //   config.headers['X-Token'] = getToken()
     // }
+    config.headers.Authorization = getToken()
+    config.headers.refreshToken = getRefreshToken() || null
     return config
   },
   error => {
@@ -30,26 +42,37 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    if (res.code !== 200 && res.code !== 201) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
+    if (res.code !== 200) {
+      const code = res.code
+      if (code === 10101) {
+        MessageBox.confirm('登录时间过期，或账号在别处登录，请重新登录哦', '登录时间过期', {
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
+          removeInfo()
+          removeToken()
+          removeRefreshToken()
+          router.push({ path: '/Login' })
         })
+        return
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      if (code === 10102) {
+        Message({ message: '请先登录再使用该功能，如果已经登录，可能为账号已过期，或在别处登录，请重新登录使用哦~', type: 'Error' })
+        removeInfo()
+        removeToken()
+        setTimeout(() => {
+          router.push({ path: '/Login' })
+        }, 1500)
+        return
+      }
+      if (code === 201) {
+        if (res && res.results) {
+          const { token, refreshToken } = res.results
+          setToken(token)
+          setRefreshToken(refreshToken)
+        }
+        return res
+      }
+      Message({ message: res.message + ` 错误码: ${code}` || 'Error', type: 'error', duration: 5 * 1000 })
+      return res
     } else {
       if (res.code === 200) {
         Notification({

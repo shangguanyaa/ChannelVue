@@ -1,24 +1,23 @@
 import request from '@/utils/request'
 
-export function login(data) {
-  return request({
-    url: '/vue-admin-template/user/login',
-    method: 'post',
-    data
-  })
-}
+export class UserApi {
+  doLogin(data) {
+    return request.post('/users/login', data)
+  }
 
-export function getInfo(token) {
-  return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
+  doRegister(data) {
+    return request.post('/users/register', data)
+  }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
+  dotest(params) {
+    return request.get('/users/test', params)
+  }
+
+  activation(params) {
+    return request.get('/users/activation', { params })
+  }
+
+  sender(params) {
+    return request.get('/users/sendEmail', { params })
+  }
 }
