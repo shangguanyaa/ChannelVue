@@ -1,7 +1,7 @@
 module.exports = {
 
   country: [
-    // { code: 'CS', en: 'test', label: '测试国家' },
+    { code: 'CS', en: 'test', label: '测试国家' },
     { code: 'US', en: 'United States of America (USA)', label: '美国' },
     { code: 'DE', en: 'Germany', label: '德国' },
     { code: 'GB', en: 'Great Britain (United Kingdom; England)', label: '英国' },
