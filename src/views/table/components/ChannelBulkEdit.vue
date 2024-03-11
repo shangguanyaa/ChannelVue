@@ -195,7 +195,7 @@
                       <p>{{ ZH_Options[key] }}</p>
                       <p><i class="el-icon-error" @click="deleteRule(i, key)" /></p>
                     </div>
-                    <p v-if="key === 'weightRange'" class="item">
+                    <p v-if="['weightRange', 'volumeRange'].includes(key)" class="item">
                       <span class="title">限制值范围(KG):</span>
                       <span class="input weightRange">
                         <el-input v-model="rule.range[0]" placeholder="起始值" :type="'Number'" />

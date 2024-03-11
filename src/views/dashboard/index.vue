@@ -43,8 +43,8 @@
             <el-divider direction="vertical" class="margin-t-10" />
             <div class="every-div margin-t-10">
               <span class="top-label">渠道类型: </span>
-              <el-select v-model="channelType" filterable placeholder="请选择货物类型">
-                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
+              <el-select v-model="channelType" filterable placeholder="请选择渠道类型">
+                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.label" :value="item.channelType" />
               </el-select>
             </div>
             <el-divider direction="vertical" class="margin-t-10" />
@@ -400,7 +400,14 @@ export default {
         return
       }
       this.cardLoading = false
-      this.channelTypes = res.results || ['获取类型失败']
+      for (const item of res.results) {
+        item.label = item.channelType
+      }
+      console.log(res.results)
+      this.channelTypes = [{
+        channelType: null,
+        label: '全部类型'
+      }, ...res.results] || ['获取类型失败']
     },
     changeUnit() {
       if (this.unit === 'KG') {

@@ -195,8 +195,8 @@
                       <p>{{ ZH_Options[key] }}</p>
                       <p><i class="el-icon-error" @click="deleteRule(i, key)" /></p>
                     </div>
-                    <p v-if="key === 'weightRange'" class="item">
-                      <span class="title">限制值范围(KG):</span>
+                    <p v-if="['weightRange', 'volumeRange'].includes(key)" class="item">
+                      <span class="title">限制值范围(CM):</span>
                       <span class="input weightRange">
                         <el-input v-model="rule.range[0]" placeholder="起始值" :type="'Number'" />
                         <span style="margin: 0 10px;"> ~ </span>
@@ -332,7 +332,8 @@ export default {
         { value: 'weight', label: '单件结算重(大于或等于)' },
         { value: 'LWH', label: '长+ 宽+ 高(大于或等于)' },
         { value: 'weightSmaller', label: '单件结算重(小于或等于)' },
-        { value: 'weightRange', label: '重量范围' }
+        { value: 'weightRange', label: '重量范围' },
+        { value: 'volumeRange', label: '围长范围' }
       ],
       ZH_Options: {
         maxLength: '最长边长',
@@ -342,7 +343,8 @@ export default {
         weight: '单件结算重(大于或等于)',
         LWH: '长+ 宽+ 高',
         weightSmaller: '单件结算重(小于或等于)',
-        weightRange: '重量范围'
+        weightRange: '重量范围',
+        volumeRange: '围长范围'
       },
       value: '',
       selectedRules: []
@@ -676,6 +678,7 @@ export default {
 }
 .demo-drawer__content .contents .left {
   min-width: 600px;
+  padding: 0 16px 0 0;
 }
 .demo-drawer__content .contents .right {
   width: 50%;
@@ -683,6 +686,7 @@ export default {
   height: 100%;
   margin-left: 20px;
   padding-left: 20px;
+  padding-right: 16px;
   border-left: 1px solid #5f5f5f;
 }
 </style>

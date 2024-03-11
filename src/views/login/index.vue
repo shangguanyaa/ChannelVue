@@ -1,5 +1,5 @@
 <template>
-  <div class="big-box">
+  <div class="big-box-login">
     <div class="container">
       <div class="form-box">
         <div class="register-box hidden">
