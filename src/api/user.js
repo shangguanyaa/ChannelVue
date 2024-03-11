@@ -5,6 +5,10 @@ export class UserApi {
     return request.post('/users/login', data)
   }
 
+  doAdminLogin(data) {
+    return request.post('/admin/adminlogin', data)
+  }
+
   doRegister(data) {
     return request.post('/users/register', data)
   }

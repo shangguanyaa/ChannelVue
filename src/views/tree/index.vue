@@ -3,12 +3,12 @@
     <div class="top">
       <el-card class="box-card">
         <div>
-          <el-button type="primary" icon="el-icon-plus" @click="bulkCreate">批量添加</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="addProduct">新增产品</el-button>
-          <el-button type="primary" icon="el-icon-download" :loading="downloadTime" @click="downloadTem">下载模板文件</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkCreate">批量添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="addProduct">新增产品</el-button>
+          <el-button type="primary" icon="el-icon-download" :loading="downloadTime" :disabled="!admin" @click="downloadTem">下载模板文件</el-button>
         </div>
         <div>
-          <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkDestroy">批量删除</el-button>
+          <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
           <el-input v-model="keywords" placeholder="请输入库存SKU关键词" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="getProductsList" />
           </el-input>
@@ -105,7 +105,7 @@
           width="120"
         >
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="editProduct(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" :disabled="!admin" @click="editProduct(scope.row)">编辑</el-button>
             <el-divider direction="vertical" />
             <el-popconfirm
               confirm-button-text="好的"
@@ -115,7 +115,7 @@
               title="这是一段内容确定删除吗？"
               @confirm="handleDelete(scope.row)"
             >
-              <el-button slot="reference" type="text" size="small">删除</el-button>
+              <el-button slot="reference" type="text" size="small" :disabled="!admin">删除</el-button>
             </el-popconfirm>
 
           </template>
@@ -144,6 +144,7 @@
 <script>
 import BulkCreate from './components/bulkcreate'
 import AddEditProduct from './components/addEditProduct'
+import { isAdmin } from '@/utils/auth'
 
 export default {
   components: {
@@ -163,13 +164,15 @@ export default {
       total: 5,
       pageIndex: 1,
       pageSize: 10,
-      selectedPIDArr: []
+      selectedPIDArr: [],
+      admin: isAdmin()
     }
   },
   watch: {
   },
   mounted() {
     this.getProductsList()
+    this.admin = isAdmin()
   },
   methods: {
     async bulkDestroy() {

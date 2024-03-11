@@ -25,9 +25,9 @@
           <a target="_blank" @click="openSetOilMessageBox">
             <el-dropdown-item>设置当周燃油</el-dropdown-item>
           </a>
-          <!-- <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item> -->
+          <el-dropdown-item divided @click.native="logout">
+            <span style="display:block;">退出登录</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>

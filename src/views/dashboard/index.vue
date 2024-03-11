@@ -626,6 +626,7 @@ export default {
   flex-direction: row;
   align-items: center;
   width: 302px;
+  height: 40px;
 }
 .PZName {
   display: -webkit-box; /* Safari */

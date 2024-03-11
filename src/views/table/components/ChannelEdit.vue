@@ -136,7 +136,7 @@
                     <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
                     <el-divider direction="vertical" />
                     <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
-                    <template v-if="item.operate !== undefined">
+                    <template v-if="showOperate">
                       <el-divider direction="vertical" />
                       <el-input v-model="item.operate" type="Number" placeholder="操作费" />
                     </template>
@@ -347,7 +347,8 @@ export default {
         volumeRange: '围长范围'
       },
       value: '',
-      selectedRules: []
+      selectedRules: [],
+      showOperate: true
     }
   },
   watch: {
@@ -453,23 +454,36 @@ export default {
       }
     },
     deleteOperate() {
-      const range = this.rowData.range
-      for (const item of range) {
-        delete item.operate
+      // const range = this.rowData.range
+      // for (const item of range) {
+      //   delete item.operate
+      // }
+      // this.$set(this.rowData, 'ragne', range)
+      // console.log(this.rowData.range)
+      // this.$forceUpdate()
+      for (const item of this.rowData.range) {
+        item.operate = 0
       }
-      this.$set(this.rowData, 'ragne', range)
-      console.log(this.rowData.range)
-      this.$forceUpdate()
+      this.showOperate = false
     },
     addOperate() {
       const range = this.rowData.range
-      for (const item of range) {
-        item.operate = 0
+      if (!range || range.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请添加至少一个范围'
+        })
+        return
       }
-      this.$set(this.rowData, 'ragne', range)
-      // this.rowData.range = range
-      console.log(this.rowData.range)
-      this.$forceUpdate()
+      // const range = this.rowData.range
+      // for (const item of range) {
+      //   item.operate = 0
+      // }
+      // this.$set(this.rowData, 'ragne', range)
+      // // this.rowData.range = range
+      // console.log(this.rowData.range)
+      // this.$forceUpdate()
+      this.showOperate = true
     },
     toDoAI() {
       const range = []

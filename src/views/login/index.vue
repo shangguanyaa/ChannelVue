@@ -31,6 +31,12 @@
             placeholder="Password"
           >
           <button @click="doLogin">Login</button>
+          <div style="margin-top: 16px;">
+            <el-radio-group v-model="loginType">
+              <el-radio :label="'user'">用户登录</el-radio>
+              <el-radio :label="'admin'">管理员</el-radio>
+            </el-radio-group>
+          </div>
         </div>
       </div>
       <div class="con-box left">
@@ -70,7 +76,8 @@ export default {
       email: '',
       passWord: '',
       rePassword: ''
-    }
+    },
+    loginType: 'user'
   }),
   mounted() {},
   methods: {
@@ -91,7 +98,13 @@ export default {
         })
         return
       }
-      const res = await this.$store.dispatch('user/doLogin', this.loginInfo)
+      let res
+      if (this.loginType === 'user') {
+        res = await this.$store.dispatch('user/doLogin', this.loginInfo)
+      } else {
+        console.log('admin 登录')
+        res = await this.$store.dispatch('user/adminLogin', this.loginInfo)
+      }
       if (res && res.code === 201) {
         // const TOKEN = res.results.token;
         // setToken(TOKEN);

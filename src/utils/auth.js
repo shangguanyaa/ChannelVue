@@ -39,3 +39,16 @@ export function getInfo() {
 export function removeInfo() {
   return localStorage.removeItem(InfoKey)
 }
+
+export function isAdmin() {
+  const userinfo = getInfo()
+  console.log(userinfo)
+  const key = 'power'
+  if (Object.prototype.hasOwnProperty.call(userinfo, key)) {
+    console.log('当前身份: 管理员')
+    return true
+  } else {
+    console.log('当前身份: 普通用户')
+    return false
+  }
+}

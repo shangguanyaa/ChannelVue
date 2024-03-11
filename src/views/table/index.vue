@@ -5,9 +5,9 @@
         <el-button slot="append" icon="el-icon-search" @click="getAllChannelList('keywords')" />
       </el-input>
       <div>
-        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkEdit">批量编辑</el-button>
-        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" @click="bulkDestroy">批量删除</el-button>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addOpen = true">新增渠道</el-button>
+        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkEdit">批量编辑</el-button>
+        <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" :disabled="!admin" @click="addOpen = true">新增渠道</el-button>
       </div>
 
     </div>
@@ -146,7 +146,7 @@
           width="100"
         >
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" :disabled="!admin" @click="handleClick(scope.row)">编辑</el-button>
             <el-divider direction="vertical" />
             <el-popconfirm
               confirm-button-text="好的"
@@ -156,7 +156,7 @@
               title="这是一段内容确定删除吗？"
               @confirm="handleDelete(scope.row)"
             >
-              <el-button slot="reference" type="text" size="small">删除</el-button>
+              <el-button slot="reference" type="text" size="small" :disabled="!admin">删除</el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -183,6 +183,7 @@
 import ChannelEdit from './components/ChannelEdit'
 import ChannelBulkEdit from './components/ChannelBulkEdit.vue'
 import ChannelAdd from './components/ChannelAdd.vue'
+import { isAdmin } from '@/utils/auth'
 
 export default {
   components: { ChannelEdit, ChannelAdd, ChannelBulkEdit },
@@ -201,11 +202,13 @@ export default {
       selectedCIDArr: [],
       loading: false,
       bulkEditOpen: false,
-      selectedArr: []
+      selectedArr: [],
+      admin: isAdmin()
     }
   },
   created() {
     this.getAllChannelList()
+    this.admin = isAdmin()
   },
   methods: {
     bulkEdit() {

@@ -1,5 +1,5 @@
 import { UserApi } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, removeToken, removeRefreshToken, removeInfo } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 
 const userApi = new UserApi()
@@ -38,6 +38,16 @@ const actions = {
   async doRegister({ commit }, body) {
     const res = await userApi.doRegister(body)
     return res
+  },
+  async adminLogin({ commit }, body) {
+    const res = await userApi.doAdminLogin(body)
+    return res
+  },
+  async logout({ commit }, body) {
+    removeToken()
+    removeRefreshToken()
+    removeInfo()
+    return
   }
 
 }
