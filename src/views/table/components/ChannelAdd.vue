@@ -356,7 +356,8 @@ export default {
         { value: 'weight', label: '单件结算重(大于或等于)' },
         { value: 'LWH', label: '长+ 宽+ 高(大于或等于)' },
         { value: 'weightSmaller', label: '单件结算重(小于或等于)' },
-        { value: 'weightRange', label: '重量范围' }
+        { value: 'weightRange', label: '重量范围' },
+        { value: 'volumeRange', label: '围长范围' }
       ],
       ZH_Options: {
         maxLength: '最长边长',
@@ -366,7 +367,8 @@ export default {
         weight: '单件结算重(大于或等于)',
         LWH: '长+ 宽+ 高',
         weightSmaller: '单件结算重(小于或等于)',
-        weightRange: '重量范围'
+        weightRange: '重量范围',
+        volumeRange: '围长范围'
       },
       value: '',
       selectedRules: [],
