@@ -316,11 +316,11 @@ export default {
     async querySearchAsync(queryString, cb) {
       const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, keywords: queryString })
       const productList = []
-      if (res.code !== 201) {
+      if (res.code !== 200) {
         productList.push({
           value: '服务器错误'
         })
-      } else if (res.code === 201 && res.results.total === 0) {
+      } else if (res.code === 200 && res.results.total === 0) {
         productList.push({
           value: '无数据'
         })
@@ -335,11 +335,11 @@ export default {
     async querySearchAsyncPEName(queryString, cb) {
       const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, PEName: queryString })
       const productList = []
-      if (res.code !== 201) {
+      if (res.code !== 200) {
         productList.push({
           value: '服务器错误'
         })
-      } else if (res.code === 201 && res.results.total === 0) {
+      } else if (res.code === 200 && res.results.total === 0) {
         productList.push({
           value: '无数据'
         })
