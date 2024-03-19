@@ -4,7 +4,7 @@
       <h2>暂无数据</h2>
     </div>
     <template v-else>
-      <div v-for="(item, i) in channelLists" :key="item.channelID + i" class="item-channel">
+      <div v-for="(item, i) in channelLists" :key="i" class="item-channel">
         <el-card v-if="item.showInfo.isShow" class="box-card">
           <div slot="header" class="clearfix">
             <el-row>
@@ -29,7 +29,7 @@
                   width="200"
                   trigger="hover"
                 >
-                  <div v-for="(msg, index) in item.showInfo.msg" :key="index">
+                  <div v-for="(msg, index) in item.showInfo.msg" :key="index + 'b'">
                     {{ msg }}
                   </div>
                   <div slot="reference" class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
@@ -225,6 +225,7 @@ export default {
       console.log('触发了父组件重置数据')
       console.log(TotalPrice, index, from)
       this.channelLists[index].showInfo = TotalPrice
+      this.$emit('countPrice')
     }
   }
 }

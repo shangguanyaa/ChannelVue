@@ -1,8 +1,8 @@
 <!--
  * @Author: shangguanyaa 1051158791@qq.com
  * @Date: 2024-01-05 15:18:59
- * @LastEditors: shangguanyaa 1051158791@qq.com
- * @LastEditTime: 2024-1-8 15:48:27
+ * @LastEditors: SGuanyaa 1051158791@qq.com
+ * @LastEditTime: 2024-03-19 17:16:05
  * @FilePath: \vue-admin-template\src\views\dashboard\components\LiChuang.vue
  * @Description: 渠道: 泰嘉-深圳UPS红单小货 5800
 -->
@@ -70,6 +70,7 @@ export default {
       const { showInfo, customSurcharge } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
+      let isShow = showInfo.isShow
       const msg = showInfo.msg
 
       let totalPrice = price
@@ -89,7 +90,11 @@ export default {
 
       msg.push(...Message)
 
-      this.$emit('countPrice', { totalPrice, isShow: true, msg, CountWeight, price: showInfo.price }, this.index, `Info.vue ${this.item.channelName}`)
+      if (showInfo.price === 0) {
+        isShow = false
+      }
+
+      this.$emit('countPrice', { totalPrice, isShow, msg, CountWeight, price: showInfo.price }, this.index, `Info.vue ${this.item.channelName}`)
     },
     itemZdyPrice(weight, customSurcharge) {
       let price = 0

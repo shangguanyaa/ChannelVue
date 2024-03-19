@@ -7,65 +7,118 @@
       <div class="select">
         <el-card v-loading="cardLoading" class="box-card">
           <div class="text item">
-            <div class="every-div">
-              <span class="top-label"><span style="color: red;"> * </span>目的地国家: </span>
-              <el-select v-model="selectCountry" filterable placeholder="请选择">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label" />
+            <div class="row">
+              <span class="label">
+                <span style="color: red"> * </span>
+                目的地国家:
+              </span>
+              <el-select
+                v-model="selectCountry"
+                filterable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.label + 'c'"
+                  :label="item.label"
+                  :value="item.label"
+                />
               </el-select>
-            </div>
-            <el-divider direction="vertical" />
-            <div class="every-div">
-              <span class="top-label"><span style="color: red;"> * </span>物品重量: </span>
-              <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
-                <el-select slot="append" v-model="unit" class="append-span" :placeholder="unit">
+
+              <el-divider direction="vertical" />
+
+              <span class="label">
+                <span style="color: red"> * </span>物品重量:
+              </span>
+              <el-input
+                v-model="weight"
+                type="Number"
+                placeholder="请输入内容"
+                class="input-with-select"
+              >
+                <el-select
+                  slot="append"
+                  v-model="unit"
+                  class="append-span"
+                  :placeholder="unit"
+                >
                   <el-option label="G" value="G" />
                   <el-option label="KG" value="KG" />
                 </el-select>
                 <!-- <span slot="append" class="append-span" @click="changeUnit">{{ unit }}</span> -->
               </el-input>
+
+              <el-divider direction="vertical" />
+              <span class="label">长宽高(CM): </span>
+              <el-input
+                v-model="long"
+                class="long-input"
+                placeholder="长"
+              /><el-divider direction="vertical" />
+              <el-input
+                v-model="wide"
+                class="long-input"
+                placeholder="宽"
+              /><el-divider direction="vertical" />
+              <el-input v-model="high" class="long-input" placeholder="高" />
             </div>
-            <el-divider direction="vertical" />
-            <span class="top-label">长宽高(CM): </span>
-            <el-input v-model="long" class="long-input" placeholder="长" /><el-divider
-              direction="vertical"
-            />
-            <el-input v-model="wide" class="long-input" placeholder="宽" /><el-divider
-              direction="vertical"
-            />
-            <el-input v-model="high" class="long-input" placeholder="高" />
-            <el-divider direction="vertical" />
-            <div class="every-div margin-t-10">
+
+            <div class="row margin-t-10">
               <span class="top-label">发货地: </span>
               <el-select v-model="faHuo" filterable placeholder="深圳">
-                <el-option v-for="item in faHuoOptions" :key="item.value" :label="item.value" :value="item.value" />
+                <el-option
+                  v-for="item in faHuoOptions"
+                  :key="item.value + 'd'"
+                  :label="item.value"
+                  :value="item.value"
+                />
               </el-select>
-            </div>
-            <el-divider direction="vertical" class="margin-t-10" />
-            <div class="every-div margin-t-10">
+              <el-divider direction="vertical" />
               <span class="top-label">渠道类型: </span>
-              <el-select v-model="channelType" filterable placeholder="请选择渠道类型">
-                <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.label" :value="item.channelType" />
+              <el-select
+                v-model="channelType"
+                filterable
+                placeholder="请选择渠道类型"
+              >
+                <el-option
+                  v-for="item in channelTypes"
+                  :key="item.label + 'e'"
+                  :label="item.label"
+                  :value="item.channelType"
+                />
               </el-select>
-            </div>
-            <el-divider direction="vertical" class="margin-t-10" />
-            <div class="every-div margin-t-10">
+              <el-divider direction="vertical" />
               <span class="top-label">带电带磁: </span>
-              <el-select v-model="withElectricity" filterable placeholder="请选择货物类型">
-                <el-option v-for="item in ElectricityOptions" :key="item.value" :label="item.label" :value="item.value" />
+              <el-select
+                v-model="withElectricity"
+                filterable
+                placeholder="请选择货物类型"
+              >
+                <el-option
+                  v-for="item in ElectricityOptions"
+                  :key="item.value + 'f'"
+                  :label="item.label"
+                  :value="item.value"
+                />
               </el-select>
             </div>
-            <el-divider direction="vertical" class="margin-t-10" />
-            <div class="every-div margin-t-10">
-              <span class="top-label"><span style="color: red;"> * </span>选择库存SKU: </span>
+
+            <div class="row margin-t-10">
+              <span
+                class="top-label"
+              ><span style="color: red"> * </span>选择库存SKU:
+              </span>
               <el-autocomplete
                 v-model="stockSKU"
                 :fetch-suggestions="querySearchAsync"
                 placeholder="请输入库存SKU"
                 @select="handleSelectProduct"
               />
-            </div>
-            <div class="every-div margin-t-10">
-              <span class="top-label"><span style="color: red;"> * </span>选择英文SKU: </span>
+              <el-divider direction="vertical" />
+              <span
+                class="top-label"
+              ><span style="color: red"> * </span>选择英文SKU:
+              </span>
               <el-autocomplete
                 v-model="PEName"
                 :fetch-suggestions="querySearchAsyncPEName"
@@ -73,47 +126,86 @@
                 @select="handleSelectProduct"
               />
             </div>
-            <el-divider v-show="stockSKU" direction="vertical" class="margin-t-10" />
-            <div v-show="stockSKU" class="every-div margin-t-10">
-              <el-popover
-                placement="right"
-                width="400"
-                trigger="hover"
-              >
-                <el-descriptions class="margin-top" title="带边框列表" :column="1" border>
+            <div v-show="stockSKU" class="">
+              <el-popover placement="right" width="400" trigger="hover">
+                <el-descriptions
+                  class="margin-top"
+                  title="带边框列表"
+                  :column="1"
+                  border
+                >
                   <template slot="extra">
                     <el-button type="primary" size="small">操作</el-button>
                   </template>
-                  <el-descriptions-item label="品牌名称">{{ selectedProduct.brandName }}</el-descriptions-item>
-                  <el-descriptions-item label="库存SKU">{{ selectedProduct.stockSKU }}</el-descriptions-item>
-                  <el-descriptions-item label="SKU英文名">{{ selectedProduct.PEName }}</el-descriptions-item>
-                  <el-descriptions-item label="SKU中文名">{{ selectedProduct.PZName }}</el-descriptions-item>
-                  <el-descriptions-item :label-style="{'width': '150px'}" label="售前危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
-                  <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
-                  <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
-                  <el-descriptions-item label="预估尺寸 CM">{{ selectedProduct.Dimensions }}</el-descriptions-item>
-                  <el-descriptions-item label="电池">{{ selectedProduct.productType }}</el-descriptions-item>
-                  <el-descriptions-item label="开发估重 G">{{ selectedProduct.PWeight }}</el-descriptions-item>
-                  <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
-                  <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
+                  <el-descriptions-item label="品牌名称">{{
+                    selectedProduct.brandName
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="库存SKU">{{
+                    selectedProduct.stockSKU
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="SKU英文名">{{
+                    selectedProduct.PEName
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="SKU中文名">{{
+                    selectedProduct.PZName
+                  }}</el-descriptions-item>
+                  <el-descriptions-item
+                    :label-style="{ width: '150px' }"
+                    label="售前危机预防和培训"
+                  >{{ selectedProduct.presaleRemark }}</el-descriptions-item>
+                  <el-descriptions-item label="是否侵权">{{
+                    selectedProduct.isTort
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="责任人">{{
+                    selectedProduct.liability
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="预估尺寸 CM">{{
+                    selectedProduct.Dimensions
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="电池">{{
+                    selectedProduct.productType
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="开发估重 G">{{
+                    selectedProduct.PWeight
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="商品成本">{{
+                    selectedProduct.cost
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="特殊发货备注">{{
+                    selectedProduct.remark
+                  }}</el-descriptions-item>
                 </el-descriptions>
-                <span slot="reference" class="PZName">产品中文SKU: {{ selectedProduct.PZName }}</span>
+                <span
+                  slot="reference"
+                  class="PZName"
+                >产品中文SKU: {{ selectedProduct.PZName }}</span>
               </el-popover>
             </div>
           </div>
           <div class="search">
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">试算</el-button>
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="reSet">重置</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              :loading="searchLoading"
+              @click="search"
+            >试算</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              :loading="searchLoading"
+              @click="reSet"
+            >重置</el-button>
           </div>
         </el-card>
       </div>
-      <div class="list-box">
+      <div v-loading="searchLoading" class="list-box">
         <channelList
           :list="channels"
-          :weight="unit === 'KG' ? Number((weight * 1000)) : Number(weight)"
+          :weight="unit === 'KG' ? Number(weight * 1000) : Number(weight)"
           :lwh_arr="LWH_arr"
           :volume="volume"
           :country="selectCountry"
+          @countPrice="countPrice"
         />
       </div>
     </div>
@@ -125,15 +217,38 @@
         <div v-loading="cardLoading" class="box-card">
           <div class="item">
             <div class="every-div">
-              <p class="top-label"><span style="color: red;"> * </span>目的地国家: </p>
-              <el-select v-model="selectCountry" filterable placeholder="请选择">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label" />
+              <p class="top-label">
+                <span style="color: red"> * </span>目的地国家:
+              </p>
+              <el-select
+                v-model="selectCountry"
+                filterable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value + 'g'"
+                  :label="item.label"
+                  :value="item.label"
+                />
               </el-select>
             </div>
             <div class="every-div">
-              <p class="top-label"><span style="color: red;"> * </span>物品重量: </p>
-              <el-input v-model="weight" type="Number" placeholder="请输入内容" class="input-with-select">
-                <el-select slot="append" v-model="unit" class="append-span" :placeholder="unit">
+              <p class="top-label">
+                <span style="color: red"> * </span>物品重量:
+              </p>
+              <el-input
+                v-model="weight"
+                type="Number"
+                placeholder="请输入内容"
+                class="input-with-select"
+              >
+                <el-select
+                  slot="append"
+                  v-model="unit"
+                  class="append-span"
+                  :placeholder="unit"
+                >
                   <el-option label="G" value="G" />
                   <el-option label="KG" value="KG" />
                 </el-select>
@@ -141,32 +256,57 @@
             </div>
             <template v-if="showMoreOptions">
               <div class="every-div">
-                <p class="top-label">长宽高(CM): </p>
+                <p class="top-label">长宽高(CM):</p>
                 <el-input v-model="long" class="long-input" placeholder="长" />
                 <el-input v-model="wide" class="long-input" placeholder="宽" />
                 <el-input v-model="high" class="long-input" placeholder="高" />
               </div>
 
               <div class="every-div">
-                <p class="top-label">发货地: </p>
+                <p class="top-label">发货地:</p>
                 <el-select v-model="faHuo" filterable placeholder="深圳">
-                  <el-option v-for="item in faHuoOptions" :key="item.value" :label="item.value" :value="item.value" />
+                  <el-option
+                    v-for="item in faHuoOptions"
+                    :key="item.value + 'h'"
+                    :label="item.value"
+                    :value="item.value"
+                  />
                 </el-select>
               </div>
               <div class="every-div">
-                <p class="top-label">渠道类型: </p>
-                <el-select v-model="channelType" filterable placeholder="请选择货物类型">
-                  <el-option v-for="item in channelTypes" :key="item.channelType" :label="item.channelType" :value="item.channelType" />
+                <p class="top-label">渠道类型:</p>
+                <el-select
+                  v-model="channelType"
+                  filterable
+                  placeholder="请选择货物类型"
+                >
+                  <el-option
+                    v-for="item in channelTypes"
+                    :key="item.channelType + 'i'"
+                    :label="item.channelType"
+                    :value="item.channelType"
+                  />
                 </el-select>
               </div>
               <div class="every-div">
-                <p class="top-label">带电带磁: </p>
-                <el-select v-model="withElectricity" filterable placeholder="请选择货物类型">
-                  <el-option v-for="item in ElectricityOptions" :key="item.value" :label="item.label" :value="item.value" />
+                <p class="top-label">带电带磁:</p>
+                <el-select
+                  v-model="withElectricity"
+                  filterable
+                  placeholder="请选择货物类型"
+                >
+                  <el-option
+                    v-for="item in ElectricityOptions"
+                    :key="item.value + 'j'"
+                    :label="item.label"
+                    :value="item.value"
+                  />
                 </el-select>
               </div>
               <div class="every-div">
-                <p class="top-label"><span style="color: red;"> * </span>库存SKU: </p>
+                <p class="top-label">
+                  <span style="color: red"> * </span>库存SKU:
+                </p>
                 <el-autocomplete
                   v-model="stockSKU"
                   :fetch-suggestions="querySearchAsync"
@@ -175,7 +315,9 @@
                 />
               </div>
               <div class="every-div">
-                <p class="top-label"><span style="color: red;"> * </span>英文SKU: </p>
+                <p class="top-label">
+                  <span style="color: red"> * </span>英文SKU:
+                </p>
                 <el-autocomplete
                   v-model="PEName"
                   :fetch-suggestions="querySearchAsyncPEName"
@@ -184,47 +326,90 @@
                 />
               </div>
               <div v-show="stockSKU" class="every-div">
-                <el-popover
-                  placement="right"
-                  width="400"
-                  trigger="hover"
-                >
-                  <el-descriptions class="margin-top" title="带边框列表" :column="1" border>
+                <el-popover placement="right" width="400" trigger="hover">
+                  <el-descriptions
+                    class="margin-top"
+                    title="带边框列表"
+                    :column="1"
+                    border
+                  >
                     <template slot="extra">
                       <el-button type="primary" size="small">操作</el-button>
                     </template>
-                    <el-descriptions-item label="品牌名称">{{ selectedProduct.brandName }}</el-descriptions-item>
-                    <el-descriptions-item label="库存SKU">{{ selectedProduct.stockSKU }}</el-descriptions-item>
-                    <el-descriptions-item label="SKU英文名">{{ selectedProduct.PEName }}</el-descriptions-item>
-                    <el-descriptions-item label="SKU中文名">{{ selectedProduct.PZName }}</el-descriptions-item>
-                    <el-descriptions-item :label-style="{'width': '150px'}" label="售前危机预防和培训">{{ selectedProduct.presaleRemark }}</el-descriptions-item>
-                    <el-descriptions-item label="是否侵权">{{ selectedProduct.isTort }}</el-descriptions-item>
-                    <el-descriptions-item label="责任人">{{ selectedProduct.liability }}</el-descriptions-item>
-                    <el-descriptions-item label="预估尺寸 CM">{{ selectedProduct.Dimensions }}</el-descriptions-item>
-                    <el-descriptions-item label="电池">{{ selectedProduct.productType }}</el-descriptions-item>
-                    <el-descriptions-item label="开发估重 G">{{ selectedProduct.PWeight }}</el-descriptions-item>
-                    <el-descriptions-item label="商品成本">{{ selectedProduct.cost }}</el-descriptions-item>
-                    <el-descriptions-item label="特殊发货备注">{{ selectedProduct.remark }}</el-descriptions-item>
+                    <el-descriptions-item label="品牌名称">{{
+                      selectedProduct.brandName
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="库存SKU">{{
+                      selectedProduct.stockSKU
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="SKU英文名">{{
+                      selectedProduct.PEName
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="SKU中文名">{{
+                      selectedProduct.PZName
+                    }}</el-descriptions-item>
+                    <el-descriptions-item
+                      :label-style="{ width: '150px' }"
+                      label="售前危机预防和培训"
+                    >{{ selectedProduct.presaleRemark }}</el-descriptions-item>
+                    <el-descriptions-item label="是否侵权">{{
+                      selectedProduct.isTort
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="责任人">{{
+                      selectedProduct.liability
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="预估尺寸 CM">{{
+                      selectedProduct.Dimensions
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="电池">{{
+                      selectedProduct.productType
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="开发估重 G">{{
+                      selectedProduct.PWeight
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="商品成本">{{
+                      selectedProduct.cost
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="特殊发货备注">{{
+                      selectedProduct.remark
+                    }}</el-descriptions-item>
                   </el-descriptions>
-                  <span slot="reference" class="PZName">中文SKU: {{ selectedProduct.PZName }}</span>
+                  <span
+                    slot="reference"
+                    class="PZName"
+                  >中文SKU: {{ selectedProduct.PZName }}</span>
                 </el-popover>
               </div>
             </template>
-
           </div>
-          <div class="search ">
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="search">试算</el-button>
-            <el-button type="primary" icon="el-icon-search" :loading="searchLoading" @click="reSet">重置</el-button>
+          <div class="search">
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              :loading="searchLoading"
+              @click="search"
+            >试算</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              :loading="searchLoading"
+              @click="reSet"
+            >重置</el-button>
           </div>
           <div class="bottom" @click="showMoreOptions = !showMoreOptions">
-            <i :class="showMoreOptions? 'el-icon-arrow-up':'el-icon-arrow-down'" /> {{ showMoreOptions ? '收起选项' : '打开更多选项' }}
+            <i
+              :class="
+                showMoreOptions ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
+              "
+            />
+            {{ showMoreOptions ? "收起选项" : "打开更多选项" }}
           </div>
         </div>
       </div>
       <div class="list-box">
         <ChannelListMobile
           :list="channels"
-          :weight="unit === 'KG' ? Number((weight * 1000)) : Number(weight)"
+          :weight="unit === 'KG' ? Number(weight * 1000) : Number(weight)"
           :lwh_arr="LWH_arr"
           :volume="volume"
           :country="selectCountry"
@@ -235,7 +420,6 @@
 </template>
 
 <script>
-
 const { country } = require('@/utils/country')
 import channelList from './channelView'
 import ChannelListMobile from './channelViewMobile'
@@ -276,7 +460,10 @@ export default {
         value: '3'
       }
     ],
-    channelTypes: ['类型1', '类型2'],
+    channelTypes: [{
+      label: '全部类型',
+      channelType: null
+    }],
     channelType: null,
     stockSKU: '',
     selectedProduct: {},
@@ -302,6 +489,9 @@ export default {
     this.getChannelTypes()
   },
   methods: {
+    countPrice() {
+      console.log('触发了排序')
+    },
     reSet() {
       this.selectCountry = ''
       this.weight = 0
@@ -314,7 +504,10 @@ export default {
       this.PEName = ''
     },
     async querySearchAsync(queryString, cb) {
-      const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, keywords: queryString })
+      const res = await this.$store.dispatch(
+        'products/getProductsListForIndex',
+        { pageSize: 1000, pageIndex: 1, keywords: queryString }
+      )
       const productList = []
       if (res.code !== 200) {
         productList.push({
@@ -333,7 +526,10 @@ export default {
       cb(productList)
     },
     async querySearchAsyncPEName(queryString, cb) {
-      const res = await this.$store.dispatch('products/getProductsListForIndex', { pageSize: 1000, pageIndex: 1, PEName: queryString })
+      const res = await this.$store.dispatch(
+        'products/getProductsListForIndex',
+        { pageSize: 1000, pageIndex: 1, PEName: queryString }
+      )
       const productList = []
       if (res.code !== 200) {
         productList.push({
@@ -369,12 +565,15 @@ export default {
         this.high = Dimensions[2]
       }
       const obj = {
-        '普货': '1',
-        '纯电': '2',
-        '带电': '3',
-        '带电带磁': '3'
+        普货: '1',
+        纯电: '2',
+        带电: '3',
+        带电带磁: '3'
       }
-      if (!item.productType || !['普货', '纯电', '带电', '带电带磁'].includes(item.productType)) {
+      if (
+        !item.productType ||
+        !['普货', '纯电', '带电', '带电带磁'].includes(item.productType)
+      ) {
         this.$message({
           type: 'warning',
           message: '当前选择的SKU, 带电带磁货物类型非法, 请检查'
@@ -404,10 +603,13 @@ export default {
         item.label = item.channelType
       }
       console.log(res.results)
-      this.channelTypes = [{
-        channelType: null,
-        label: '全部类型'
-      }, ...res.results] || ['获取类型失败']
+      this.channelTypes = [
+        {
+          channelType: null,
+          label: '全部类型'
+        },
+        ...res.results
+      ] || ['获取类型失败']
     },
     changeUnit() {
       if (this.unit === 'KG') {
@@ -430,7 +632,7 @@ export default {
         })
         return
       }
-      this.volume = arr.length === 3 ? arr[0] + ((arr[1] + arr[2]) * 2) : 0
+      this.volume = arr.length === 3 ? arr[0] + (arr[1] + arr[2]) * 2 : 0
       console.log('材积 ', this.volume)
       if (!this.selectCountry) {
         this.$message({
@@ -447,7 +649,9 @@ export default {
         return
       }
       this.searchLoading = true
-      this.LWH_arr = arr.sort((a, b) => { return b - a })
+      this.LWH_arr = arr.sort((a, b) => {
+        return b - a
+      })
       this.channels = []
       this.getList(this.LWH_arr, this.volume)
     },
@@ -464,24 +668,85 @@ export default {
       const res = await this.$store.dispatch('channel/getChannelList', data)
       console.log(res.results)
       this.channels = res.results || []
+      this.$message('1秒后自动排序')
       this.paiXu('price')
-      this.searchLoading = false
+      // this.searchLoading = false
     },
     paiXu(way) {
       if (way === 'price') {
+        this.searchLoading = true
         const data = this.channels
-        data.sort(function(a, b) {
-          return parseFloat(a.showInfo.totalPrice) > parseFloat(b.showInfo.totalPrice) ? 1 : -1
-        })
-        console.log(data)
+        setTimeout(() => {
+          data.sort(function(a, b) {
+            return parseFloat(a.showInfo.totalPrice) >
+            parseFloat(b.showInfo.totalPrice)
+              ? 1
+              : -1
+          })
+          console.log(data)
+          this.$message('自动排序完成')
+          this.searchLoading = false
+        }, 1000)
       }
     }
   }
 }
 </script>
 
+<style lang="scss">
+.select {
+  width: 100%;
+  .box-card {
+    display: flex;
+    width: 100%;
+    .el-card__body {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      .item {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        .row {
+          display: flex;
+          align-items: center;
+          .input-with-select {
+            width: 200px;
+            .el-input-group__append {
+              .el-select {
+                width: 68px;
+
+              }
+            }
+          }
+          .top-label {
+            width: 130px;
+          }
+          .el-autocomplete {
+            width: 300px;
+          }
+          .long-input {
+            width: 100px;
+          }
+          .el-input__inner {
+            padding: 0 5px;
+          }
+        }
+      }
+      .search {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        width: 100px;
+      }
+    }
+  }
+}
+</style>
+
 <style>
-.mobile .top h1{
+.mobile .top h1 {
   font-size: 0.2rem;
 }
 .mobile .select .box-card {
@@ -489,8 +754,7 @@ export default {
   display: flex;
   flex-direction: column;
   border-radius: 0.06rem;
-  box-shadow:  7px 7px 14px #cecece,
-             -7px -7px 14px #f2f2f2;
+  box-shadow: 7px 7px 14px #cecece, -7px -7px 14px #f2f2f2;
   padding: 0.1rem;
   font-size: 0.16rem;
 }
@@ -502,7 +766,7 @@ export default {
   justify-content: space-around;
   align-items: center;
 }
-.mobile .select .box-card .search button{
+.mobile .select .box-card .search button {
   margin: 0 0;
 }
 .mobile .select .box-card .item {
@@ -541,7 +805,7 @@ export default {
   width: 100px;
 }
 
-.input-with-select {
+/* .input-with-select {
   width: 200px !important;
 }
 
@@ -556,7 +820,7 @@ export default {
   width: 60px !important;
 }
 
-.long-input>>>.el-input__inner {
+.long-input >>> .el-input__inner {
   border-right: none;
 }
 
@@ -573,7 +837,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
+} */
 
 .list-box {
   flex: 1;
@@ -582,19 +846,19 @@ export default {
   flex-direction: column;
   width: 100%;
   height: auto;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  border: 1px solid #EBEEF5;
-  background-color: #FFF;
+  border: 1px solid #ebeef5;
+  background-color: #fff;
   overflow: hidden;
   color: #303133;
-  transition: .3s;
+  transition: 0.3s;
   padding: 20px;
 }
 </style>
 
 <style scoped>
-.content {
+/* .content {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -619,7 +883,6 @@ export default {
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  /* padding-right: 200px; */
 }
 .every-div {
   display: flex;
@@ -627,8 +890,9 @@ export default {
   align-items: center;
   width: 302px;
   height: 40px;
-}
+} */
 .PZName {
+  width: 500px;
   display: -webkit-box; /* Safari */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -637,4 +901,3 @@ export default {
   -webkit-box-orient: vertical; /* Safari and Chrome */
 }
 </style>
-

@@ -4,7 +4,7 @@
       <h2>暂无数据</h2>
     </div>
     <template v-else>
-      <div v-for="(item, i) in channelLists" :key="item.channelID + i" class="item-channel">
+      <div v-for="(item, i) in channelLists" :key="i" class="item-channel">
         <el-card v-if="item.showInfo.isShow" class="box-card">
           <div slot="header" class="clearfix">
             <el-row>
