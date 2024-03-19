@@ -460,10 +460,12 @@ export default {
         value: '3'
       }
     ],
-    channelTypes: [{
-      label: '全部类型',
-      channelType: null
-    }],
+    channelTypes: [
+      {
+        label: '全部类型',
+        channelType: null
+      }
+    ],
     channelType: null,
     stockSKU: '',
     selectedProduct: {},
@@ -587,7 +589,7 @@ export default {
           message: '当前选择的SKU, 重量数据非法, 请检查'
         })
       } else {
-        this.weight = item.PWeight
+        this.weight = this.unit === 'G' ? item.PWeight : item.PWeight / 1000
       }
     },
     async getChannelTypes() {
@@ -679,7 +681,7 @@ export default {
         setTimeout(() => {
           data.sort(function(a, b) {
             return parseFloat(a.showInfo.totalPrice) >
-            parseFloat(b.showInfo.totalPrice)
+              parseFloat(b.showInfo.totalPrice)
               ? 1
               : -1
           })
@@ -693,55 +695,54 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .select {
   width: 100%;
-  .box-card {
-    display: flex;
-    width: 100%;
-    .el-card__body {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      .item {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        .row {
-          display: flex;
-          align-items: center;
-          .input-with-select {
-            width: 200px;
-            .el-input-group__append {
-              .el-select {
-                width: 68px;
-
-              }
-            }
-          }
-          .top-label {
-            width: 130px;
-          }
-          .el-autocomplete {
-            width: 300px;
-          }
-          .long-input {
-            width: 100px;
-          }
-          .el-input__inner {
-            padding: 0 5px;
-          }
-        }
-      }
-      .search {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        width: 100px;
-      }
+}
+.select .box-card {
+  display: flex;
+  width: 100%;
+}
+.select .box-card .el-card__body {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.select .box-card .el-card__body .item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.select .box-card .el-card__body .item .row {
+  display: flex;
+  align-items: center;
+}
+.select .box-card .el-card__body .item .row .input-with-select {
+  width: 200px;
+  .el-input-group__append {
+    .el-select {
+      width: 68px;
     }
   }
+}
+.select .box-card .el-card__body .item .row .top-label {
+  width: 130px;
+}
+.select .box-card .el-card__body .item .row .el-autocomplete {
+  width: 300px;
+}
+.select .box-card .el-card__body .item .row .long-input {
+  width: 100px;
+}
+.select .box-card .el-card__body .item .row .el-input__inner {
+  padding: 0 5px;
+}
+.select .box-card .el-card__body .search {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100px;
 }
 </style>
 
