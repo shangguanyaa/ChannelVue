@@ -199,14 +199,18 @@
         </el-card>
       </div>
       <div v-loading="searchLoading" class="list-box">
-        <channelList
-          :list="channels"
-          :weight="unit === 'KG' ? Number(weight * 1000) : Number(weight)"
-          :lwh_arr="LWH_arr"
-          :volume="volume"
-          :country="selectCountry"
-          @countPrice="countPrice"
-        />
+        <KeepAlive>
+          <channelList
+            :list="channels"
+            :weight="unit === 'KG' ? Number(weight * 1000) : Number(weight)"
+            :lwh_arr="LWH_arr"
+            :volume="volume"
+            :country="selectCountry"
+            :is_first_show="isFirstShow"
+            @countPrice="countPrice"
+          />
+        </KeepAlive>
+
       </div>
     </div>
     <div v-else class="mobile">
@@ -474,7 +478,8 @@ export default {
     faHuoOptions: [{ value: '深圳' }],
     PEName: '',
     isMobile,
-    showMoreOptions: false
+    showMoreOptions: false,
+    isFirstShow: true // 是否第一次请求显示数据, 请求时为true, 排序时为false, 尝试阻止第二次计算价格
   }),
   watch: {
     unit: function(newVal) {
@@ -492,7 +497,7 @@ export default {
   },
   methods: {
     countPrice() {
-      console.log('触发了排序')
+      // console.log('触发了排序')
     },
     reSet() {
       this.selectCountry = ''
@@ -658,6 +663,7 @@ export default {
       this.getList(this.LWH_arr, this.volume)
     },
     async getList(LWH_arr, volume) {
+      this.isFirstShow = true
       const data = {}
       data.country = this.selectCountry
       data.weight = this.unit === 'KG' ? this.weight * 1000 : this.weight
@@ -670,15 +676,16 @@ export default {
       const res = await this.$store.dispatch('channel/getChannelList', data)
       console.log(res.results)
       this.channels = res.results || []
-      this.$message('1秒后自动排序')
+      // this.$message('1秒后自动排序')
       this.paiXu('price')
-      // this.searchLoading = false
+      this.searchLoading = false
     },
     paiXu(way) {
       if (way === 'price') {
         this.searchLoading = true
         const data = this.channels
         setTimeout(() => {
+          this.isFirstShow = false
           data.sort(function(a, b) {
             return parseFloat(a.showInfo.totalPrice) >
               parseFloat(b.showInfo.totalPrice)

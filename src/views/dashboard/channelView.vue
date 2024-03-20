@@ -29,7 +29,7 @@
                   width="200"
                   trigger="hover"
                 >
-                  <div v-for="(msg, index) in item.showInfo.msg" :key="index + 'b'">
+                  <div v-for="(msg, index) in item.showInfo.msg" :key="index">
                     {{ msg }}
                   </div>
                   <div slot="reference" class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
@@ -40,12 +40,15 @@
           <el-collapse class="item-collapse">
             <el-collapse-item>
               <template slot="title">打开更多该渠道设置<i class="header-icon el-icon-info" /></template>
-              <Info
-                :item="item"
-                :index="i"
-                v-bind="$attrs"
-                @countPrice="countPrice"
-              />
+              <KeepAlive>
+                <Info
+                  :item="item"
+                  :index="i"
+                  v-bind="$attrs"
+                  @countPrice="countPrice"
+                />
+              </KeepAlive>
+
               <!-- <XiaoHuoOne
                 v-if="(item.channelCode === '小货包税1' || item.channelCode === '小货包税2')"
                 :item="item"
@@ -222,8 +225,8 @@ export default {
       return arr.includes(val)
     },
     countPrice(TotalPrice, index, from) {
-      console.log('触发了父组件重置数据')
-      console.log(TotalPrice, index, from)
+      // console.log('触发了父组件重置数据')
+      // console.log(TotalPrice, index, from)
       this.channelLists[index].showInfo = TotalPrice
       this.$emit('countPrice')
     }

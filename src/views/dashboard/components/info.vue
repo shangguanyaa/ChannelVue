@@ -2,7 +2,7 @@
  * @Author: shangguanyaa 1051158791@qq.com
  * @Date: 2024-01-05 15:18:59
  * @LastEditors: SGuanyaa 1051158791@qq.com
- * @LastEditTime: 2024-03-19 17:16:05
+ * @LastEditTime: 2024-03-20 15:50:48
  * @FilePath: \vue-admin-template\src\views\dashboard\components\LiChuang.vue
  * @Description: 渠道: 泰嘉-深圳UPS红单小货 5800
 -->
@@ -37,12 +37,17 @@ export default {
     volume: {
       type: Number,
       default: () => { 0 }
+    },
+    // eslint-disable-next-line vue/prop-name-casing
+    is_first_show: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
     newTotalPrice: 0
   }),
-  mounted() {
+  created() {
     this.forUPSPrice(this.item, this.volume)
   },
   methods: {
@@ -67,7 +72,7 @@ export default {
     },
 
     forUPSPrice(value, volume) {
-      const { showInfo, customSurcharge } = value
+      const { showInfo, customSurcharge, channelName, countWay } = value
       const price = parseFloat(showInfo.totalPrice)
       const CountWeight = Number(showInfo.CountWeight)
       let isShow = showInfo.isShow
@@ -84,11 +89,20 @@ export default {
       //   console.log(value);
       // })
 
-      const { Price, Message } = this.itemZdyPrice((CountWeight / 1000), customSurcharge)
+      let log = false
 
-      totalPrice += Price
+      if (channelName === '宇驰-DHL促销' && countWay === '3') {
+        console.log(channelName + '  ' + countWay)
+        log = true
+        console.log(this.is_first_show)
+      }
 
-      msg.push(...Message)
+      if (this.is_first_show) {
+        const { Price, Message } = this.itemZdyPrice((CountWeight / 1000), customSurcharge, log)
+        totalPrice += Price
+
+        msg.push(...Message)
+      }
 
       if (showInfo.price === 0) {
         isShow = false
@@ -96,7 +110,11 @@ export default {
 
       this.$emit('countPrice', { totalPrice, isShow, msg, CountWeight, price: showInfo.price }, this.index, `Info.vue ${this.item.channelName}`)
     },
-    itemZdyPrice(weight, customSurcharge) {
+    itemZdyPrice(weight, customSurcharge, log) {
+      if (log) {
+        console.log('触发了计算价格')
+      }
+
       let price = 0
       const msg = []
       for (const item of customSurcharge) {
