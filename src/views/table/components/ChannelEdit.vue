@@ -62,6 +62,9 @@
               <el-form-item label="最大重量">
                 <el-input v-model="rowData.maxWeight" type="Number" />
               </el-form-item>
+              <el-form-item label="最小重量">
+                <el-input v-model="rowData.minWeight" type="Number" />
+              </el-form-item>
               <el-form-item label="进阶单位">
                 <el-radio-group v-model="rowData.AdvancedUnits">
                   <el-radio :label="500">0.5 KG  </el-radio>
