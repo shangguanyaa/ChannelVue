@@ -15,14 +15,6 @@
                 </div>
               </el-col>
               <el-col :span="6">
-                <div class="title-left">
-                  <span>计费重 {{ (item.showInfo.CountWeight / 1000).toFixed(2) }} KG</span>
-                </div>
-              </el-col>
-              <el-col :span="6">
-                {{ item.ageing }}
-              </el-col>
-              <el-col :span="6">
                 <el-popover
                   placement="top-end"
                   title="附加费用"
@@ -35,6 +27,15 @@
                   <div slot="reference" class="total-price">￥ {{ item.showInfo.totalPrice }}</div>
                 </el-popover>
               </el-col>
+              <el-col :span="6">
+                <div class="title-left">
+                  <span>计费重 {{ (item.showInfo.CountWeight / 1000).toFixed(2) }} KG</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <p class="ageing">{{ item.ageing }}</p>
+              </el-col>
+
             </el-row>
           </div>
           <el-collapse class="item-collapse">
@@ -253,6 +254,11 @@ export default {
   font-weight: 700;
   color: red;
   font-family: '微软雅黑';
+  text-align: center;
+}
+
+.ageing {
+  width: 100%;
   text-align: right;
 }
 

@@ -63,6 +63,20 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="disabled"
+          label="计算类型"
+          width="120"
+          :align="'center'"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              effect="dark"
+              :type="scope.row.disabled ? 'danger' : ''"
+              disable-transitions
+            >{{ scope.row.disabled ? '禁用' : '正常' }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="channelType"
           label="渠道类型"
           width="150"
@@ -143,10 +157,16 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100"
+          width="150"
+          :align="'center'"
         >
           <template slot-scope="scope">
-            <el-button type="text" size="small" :disabled="!admin" @click="handleClick(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" :disabled="!admin" @click="handleClick(scope.row)">
+              编辑
+            </el-button>
+            <el-button type="text" size="small" :disabled="!admin" @click="disabled(scope.row)">
+              {{ scope.row.disabled ? '解禁' : '禁用' }}
+            </el-button>
             <el-divider direction="vertical" />
             <el-popconfirm
               confirm-button-text="好的"
@@ -211,6 +231,21 @@ export default {
     this.admin = isAdmin()
   },
   methods: {
+    async disabled(item) {
+      console.log(item)
+      const res = await this.$store.dispatch('channel/changeStatus', {
+        channelID: item.channelID
+      })
+      console.log(res)
+      if (res.code === 200) {
+        this.getAllChannelList()
+      } else {
+        this.$message({
+          type: 'error',
+          message: '操作失败'
+        })
+      }
+    },
     bulkEdit() {
       this.bulkEditOpen = true
     },
