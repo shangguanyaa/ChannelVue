@@ -4,6 +4,22 @@
       <h2>暂无数据</h2>
     </div>
     <template v-else>
+      <div class="table_header">
+        <el-row>
+          <el-col :span="6">
+            <p>渠道名</p>
+          </el-col>
+          <el-col :span="6">
+            <p class="total-price">价格</p>
+          </el-col>
+          <el-col :span="6">
+            <p>计费重量</p>
+          </el-col>
+          <el-col :span="6">
+            <p class="ageing">配送时效</p>
+          </el-col>
+          </el-col></el-row>
+      </div>
       <div v-for="(item, i) in channelLists" :key="i" class="item-channel">
         <el-card v-if="item.showInfo.isShow" class="box-card">
           <div slot="header" class="clearfix">
@@ -35,7 +51,6 @@
               <el-col :span="6">
                 <p class="ageing">{{ item.ageing }}</p>
               </el-col>
-
             </el-row>
           </div>
           <el-collapse class="item-collapse">
@@ -237,6 +252,12 @@ export default {
 </script>
 
 <style scoped>
+
+.table_header {
+  padding: 0 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
 .item-channel {
   margin-top: 16px;
 }
@@ -259,7 +280,7 @@ export default {
 
 .ageing {
   width: 100%;
-  text-align: right;
+  text-align: left;
 }
 
 .no-data {

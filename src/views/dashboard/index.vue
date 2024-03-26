@@ -2,7 +2,7 @@
   <div class="big-box">
     <div v-if="!isMobile" class="content">
       <div class="top">
-        <h1>物流渠道比价系统(定制)</h1>
+        <h1>物流比价系统(TOUCANHOBBY)</h1>
       </div>
       <div class="select">
         <el-card v-loading="cardLoading" class="box-card">
