@@ -678,9 +678,6 @@ export default {
 </script>
 
 <style>
-.el-drawer__body {
-  /* overflow-y: auto !important; */
-}
 .scrollbar-box::-webkit-scrollbar {
   /*滚动条整体样式*/
   width: 4px;
@@ -706,9 +703,6 @@ export default {
 </style>
 
 <style scoped>
-:deep(.el-drawer__body)  {
-  /* overflow-y: auto !important; */
-}
 .demo-drawer__content {
   padding: 0 20px;
 }

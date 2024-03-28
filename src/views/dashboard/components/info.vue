@@ -2,7 +2,7 @@
  * @Author: shangguanyaa 1051158791@qq.com
  * @Date: 2024-01-05 15:18:59
  * @LastEditors: SGuanyaa 1051158791@qq.com
- * @LastEditTime: 2024-03-20 15:50:48
+ * @LastEditTime: 2024-03-28 10:51:05
  * @FilePath: \vue-admin-template\src\views\dashboard\components\LiChuang.vue
  * @Description: 渠道: 泰嘉-深圳UPS红单小货 5800
 -->
@@ -91,7 +91,7 @@ export default {
 
       let log = false
 
-      if (channelName === '宇驰-DHL促销' && countWay === '3') {
+      if (channelName === '宇驰-深圳联邦-IP【只发普货，带磁】' && countWay === '3') {
         console.log(channelName + '  ' + countWay)
         log = true
         console.log(this.is_first_show)
@@ -99,6 +99,7 @@ export default {
 
       if (this.is_first_show) {
         const { Price, Message } = this.itemZdyPrice((CountWeight / 1000), customSurcharge, log)
+
         totalPrice += Price
 
         msg.push(...Message)
@@ -108,13 +109,9 @@ export default {
         isShow = false
       }
 
-      this.$emit('countPrice', { totalPrice, isShow, msg, CountWeight, price: showInfo.price }, this.index, `Info.vue ${this.item.channelName}`)
+      this.$emit('countPrice', { totalPrice: parseFloat(totalPrice.toFixed(2)), isShow, msg, CountWeight, price: showInfo.price }, this.index, `Info.vue ${this.item.channelName}`)
     },
     itemZdyPrice(weight, customSurcharge, log) {
-      if (log) {
-        console.log('触发了计算价格')
-      }
-
       let price = 0
       const msg = []
       for (const item of customSurcharge) {
@@ -126,6 +123,10 @@ export default {
           msg.push(...Message)
         }
       }
+      // if (log) {
+      //   console.log('触发了计算价格')
+      //   console.log({ Price: price, Message: msg })
+      // }
       return { Price: price, Message: msg }
     },
     countPrice(item, weight) {

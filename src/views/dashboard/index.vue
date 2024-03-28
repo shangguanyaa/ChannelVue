@@ -505,8 +505,8 @@ export default {
       this.long = ''
       this.wide = ''
       this.high = ''
-      this.channelType = ''
-      this.withElectricity = ''
+      this.channelType = null
+      this.withElectricity = null
       this.stockSKU = ''
       this.PEName = ''
     },
