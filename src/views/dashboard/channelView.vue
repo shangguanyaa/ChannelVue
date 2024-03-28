@@ -18,7 +18,7 @@
           <el-col :span="6">
             <p class="ageing">配送时效</p>
           </el-col>
-          </el-col></el-row>
+        </el-row>
       </div>
       <div v-for="(item, i) in channelLists" :key="i" class="item-channel">
         <el-card v-if="item.showInfo.isShow" class="box-card">

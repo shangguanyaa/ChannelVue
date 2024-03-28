@@ -375,6 +375,9 @@ export default {
         console.log('关闭了')
         this.rowData = {}
         this.selectedRules = []
+        this.ele1 = false
+        this.ele2 = false
+        this.ele3 = false
       }
     }
   },

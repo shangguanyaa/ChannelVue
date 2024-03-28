@@ -359,8 +359,8 @@ export default {
       if (newVal) {
         this.rowData = JSON.parse(JSON.stringify(this.row))
         this.withEle = this.rowData.withElectricity.split(',')
+        console.log(this.withEle, 'this.withEle')
         this.initCheckBoxs()
-        console.log(this.withEle)
 
         console.log(this.rowData.surcharge)
         if (Array.isArray(this.rowData.surcharge) && this.rowData.surcharge.length !== 0) {
@@ -373,6 +373,9 @@ export default {
       } else {
         this.rowData = {}
         this.selectedRules = []
+        this.ele1 = false
+        this.ele2 = false
+        this.ele3 = false
       }
     },
     'rowData.countWay': function(newVal, oldVal) {
@@ -535,6 +538,11 @@ export default {
             break
         }
       }
+      console.log({
+        ele1: this.ele1,
+        ele2: this.ele2,
+        ele3: this.ele3
+      }, 'initCheckBoxs')
     },
     handleClose() {
       console.log(this.rowData, 'rowData')

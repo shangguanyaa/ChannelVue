@@ -329,6 +329,7 @@ export default {
         maxSidelength: 99999,
         maxWeight: 99999999,
         maxSumLWH: 99999999,
+        minWeight: 0,
         countWay: '1',
         FWeight: null,
         FWeightPrice: null,
@@ -568,6 +569,9 @@ export default {
         surcharge: [],
         customSurcharge: []
       }
+      this.ele1 = false
+      this.ele2 = false
+      this.ele3 = false
     },
     handleClose() {
       this.$emit('closeAdd')
