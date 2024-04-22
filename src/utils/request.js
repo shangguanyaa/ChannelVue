@@ -1,3 +1,11 @@
+/*
+ * @Author: SGuanyaa 1051158791@qq.com
+ * @Date: 2024-03-19 14:43:02
+ * @LastEditors: SGuanyaa 1051158791@qq.com
+ * @LastEditTime: 2024-04-22 10:05:22
+ * @FilePath: \ChannelVue\src\utils\request.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import axios from 'axios'
 import { MessageBox, Message, Notification } from 'element-ui'
 // import store from '@/store'
@@ -74,13 +82,13 @@ service.interceptors.response.use(
       Message({ message: res.message + ` 错误码: ${code}` || 'Error', type: 'error', duration: 5 * 1000 })
       return res
     } else {
-      if (res.code === 200) {
-        Notification({
-          title: '操作成功',
-          type: 'success',
-          message: res.message
-        })
-      }
+      // if (res.code === 200) {
+      //   Notification({
+      //     title: '操作成功',
+      //     type: 'success',
+      //     message: res.message
+      //   })
+      // }
       return res
     }
   },

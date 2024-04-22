@@ -250,6 +250,7 @@ module.exports = {
     { code: 'YT', en: 'Mayotte', label: '马约特' },
     { code: 'ZA', en: 'South Africa', label: '南非' },
     { code: 'ZM', en: 'Zambia', label: '赞比亚' },
-    { code: 'ZW', en: 'Zimbabwe', label: '津巴布韦' }
+    { code: 'ZW', en: 'Zimbabwe', label: '津巴布韦' },
+    { code: 'IDN', en: 'The Republic of Indonesia', label: '印度尼西亚' }
   ]
 }
