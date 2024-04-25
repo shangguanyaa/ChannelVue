@@ -192,7 +192,7 @@ module.exports = {
     { code: 'PW', en: 'Palau', label: '帕劳' },
     { code: 'PY', en: 'Paraguay', label: '巴拉圭' },
     { code: 'QA', en: 'Qatar', label: '卡塔尔' },
-    { code: 'RE', en: 'Réunion', label: '留尼汪' },
+    { code: 'RE', en: 'Réunion', label: '留尼汪岛' },
     { code: 'RO', en: 'Romania', label: '罗马尼亚' },
     { code: 'RS', en: 'Serbia', label: '塞尔维亚' },
     { code: 'RW', en: 'Rwanda', label: '卢旺达' },
