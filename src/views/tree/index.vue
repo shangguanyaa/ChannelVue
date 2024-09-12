@@ -73,6 +73,11 @@
           width="100"
         />
         <el-table-column
+          prop="referenceProfit"
+          label="参考利润"
+          width="100"
+        />
+        <el-table-column
           prop="productType"
           label="电池"
           width="100"
