@@ -127,10 +127,10 @@
               />
             </div>
             <div v-show="stockSKU" class="">
-              <el-popover placement="right" width="400" trigger="hover">
+              <el-popover placement="right" width="600" trigger="hover">
                 <el-descriptions
                   class="margin-top"
-                  title="带边框列表"
+                  title="SKU详情"
                   :column="1"
                   border
                 >
@@ -170,6 +170,9 @@
                   }}</el-descriptions-item>
                   <el-descriptions-item label="商品成本">{{
                     selectedProduct.cost
+                  }}</el-descriptions-item>
+                  <el-descriptions-item label="参考利润">{{
+                    selectedProduct.referenceProfit
                   }}</el-descriptions-item>
                   <el-descriptions-item label="特殊发货备注">{{
                     selectedProduct.remark
@@ -330,10 +333,10 @@
                 />
               </div>
               <div v-show="stockSKU" class="every-div">
-                <el-popover placement="right" width="400" trigger="hover">
+                <el-popover placement="right" width="600" trigger="hover">
                   <el-descriptions
                     class="margin-top"
-                    title="带边框列表"
+                    title="商品信息"
                     :column="1"
                     border
                   >
@@ -373,6 +376,9 @@
                     }}</el-descriptions-item>
                     <el-descriptions-item label="商品成本">{{
                       selectedProduct.cost
+                    }}</el-descriptions-item>
+                    <el-descriptions-item label="参考利润">{{
+                      selectedProduct.referenceProfit
                     }}</el-descriptions-item>
                     <el-descriptions-item label="特殊发货备注">{{
                       selectedProduct.remark
@@ -429,6 +435,8 @@ import channelList from './channelView'
 import ChannelListMobile from './channelViewMobile'
 import { getOil } from '@/utils/setOil'
 import { isMobile } from '@/utils/isMobile'
+
+console.log('111222333')
 
 export default {
   name: 'HomeView',

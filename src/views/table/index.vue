@@ -1,9 +1,40 @@
 <template>
   <div class="app-container">
     <div class="header">
-      <el-input v-model="keywords" placeholder="请输入关键词" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="getAllChannelList('keywords')" />
-      </el-input>
+      <div class="options">
+        <el-select
+          v-model="selectCountry"
+          filterable
+          clearable
+          placeholder="请选择国家"
+          style="margin-right: 16px;"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+          />
+        </el-select>
+        <el-select
+          v-model="selectCountType"
+          filterable
+          clearable
+          placeholder="计算方式"
+          style="margin-right: 16px;"
+        >
+          <el-option
+            v-for="item in countType"
+            :key="item.value"
+            :label="item.name"
+            :value="item.value"
+          />
+        </el-select>
+        <el-input v-model="keywords" placeholder="请输入渠道名" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getAllChannelList('keywords')" />
+        </el-input>
+      </div>
+
       <div>
         <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkEdit">批量编辑</el-button>
         <el-button v-show="selectedCIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
@@ -205,10 +236,21 @@ import ChannelBulkEdit from './components/ChannelBulkEdit.vue'
 import ChannelAdd from './components/ChannelAdd.vue'
 import { isAdmin } from '@/utils/auth'
 
+const { country } = require('@/utils/country')
+
 export default {
   components: { ChannelEdit, ChannelAdd, ChannelBulkEdit },
   data() {
     return {
+      options: country, // 选择国家下拉框
+      selectCountry: '', // 选择国家的字符串
+      countType: [ // 计算类型筛选
+        { name: '首重续重', value: 1 },
+        { name: '重量范围', value: 2 },
+        { name: '重量对应价格', value: 3 },
+        { name: '直接计算', value: 4 }
+      ],
+      selectCountType: null,
       tableData: [],
       unitText: 'G',
       unit: 1,
@@ -323,6 +365,9 @@ export default {
         pageSize: this.pageSize,
         keywords: this.keywords
       }
+      this.selectCountry && Object.assign(data, { country: this.selectCountry })
+      this.selectCountType && Object.assign(data, { type: this.selectCountType })
+
       this.loading = true
       const res = await this.$store.dispatch('channel/getAllChannelList', data)
       console.log(res)
