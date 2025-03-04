@@ -3,9 +3,10 @@
     <div class="top">
       <el-card class="box-card">
         <div>
-          <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkCreate">批量添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkCreate('insert')">批量添加</el-button>
           <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="addProduct">新增产品</el-button>
           <el-button type="primary" icon="el-icon-download" :loading="downloadTime" :disabled="!admin" @click="downloadTem">下载模板文件</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkCreate('edit')">批量更新</el-button>
         </div>
         <div>
           <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
@@ -136,7 +137,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <BulkCreate :drawer="bulkCreateDrawer" @close="bulkCreateClose" />
+    <BulkCreate :drawer="bulkCreateDrawer" :type="bulkInsertOrBulkEdit" @close="bulkCreateClose" />
     <AddEditProduct
       :drawer="addEditDrawer"
       :row="editRow"
@@ -158,6 +159,7 @@ export default {
   },
   data() {
     return {
+      bulkInsertOrBulkEdit: 'insert',
       keywords: '',
       productsList: [],
       bulkCreateDrawer: false,
@@ -245,8 +247,10 @@ export default {
     handleClick(val) {
       console.log(val)
     },
-    bulkCreate() {
+    bulkCreate(type) {
+      this.bulkInsertOrBulkEdit = type
       this.bulkCreateDrawer = true
+      console.log(this.bulkInsertOrBulkEdit)
     },
     async handleDelete(row) {
       // console.log(row)

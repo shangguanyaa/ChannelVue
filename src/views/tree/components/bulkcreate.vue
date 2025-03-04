@@ -21,7 +21,9 @@
         >
           <el-button type="primary">上传excel</el-button>
         </el-upload>
-        <el-button type="primary" :disabled="tableData.length === 0" @click="handleBulkCreate">批量添加</el-button>
+        <el-button type="primary" :disabled="tableData.length === 0" @click="handleBulkCreate">
+          {{ type === 'insert' ? '批量添加' : '批量更新' }}
+        </el-button>
       </div>
       <div class="data">
         <div class="table">
@@ -124,12 +126,21 @@ export default {
   props: {
     drawer: {
       type: Boolean
+    },
+    type: {
+      type: String,
+      default: 'insert'
     }
   },
   data: () => ({
     tableData: [],
     fileList: []
   }),
+  watch: {
+    type: (newVal, oldVal) => {
+      console.log('type', newVal)
+    }
+  },
   destroyed() {
     console.log('销毁了')
   },
@@ -150,13 +161,22 @@ export default {
       this.fileList = []
     },
     async handleBulkCreate() {
-      const res = await this.$store.dispatch('products/bulkCreate', { PList: this.tableData })
-      if (res.code === 200) {
-        this.$emit('close', true)
-        this.tableData = []
+      if (this.type === 'insert') {
+        const res = await this.$store.dispatch('products/bulkCreate', { PList: this.tableData })
+        if (res.code === 200) {
+          this.$emit('close', true)
+          this.tableData = []
 
-        // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
-        this.fileList = []
+          // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
+          this.fileList = []
+        }
+      } else {
+        const res = await this.$store.dispatch('products/bulkUpdate', { PList: this.tableData })
+        if (res.code === 200) {
+          this.$emit('close', true)
+          this.tableData = []
+          this.fileList = []
+        }
       }
     },
     async onChange(file) {
