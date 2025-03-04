@@ -21,7 +21,7 @@
         >
           <el-button type="primary">上传excel</el-button>
         </el-upload>
-        <el-button type="primary" :disabled="tableData.length === 0" @click="handleBulkCreate">
+        <el-button v-loading="loading" type="primary" :disabled="tableData.length === 0" @click="handleBulkCreate">
           {{ type === 'insert' ? '批量添加' : '批量更新' }}
         </el-button>
       </div>
@@ -72,6 +72,11 @@
             <el-table-column
               prop="cost"
               label="商品成本"
+              width="100"
+            />
+            <el-table-column
+              prop="referenceProfit"
+              label="参考利润"
               width="100"
             />
             <el-table-column
@@ -134,7 +139,8 @@ export default {
   },
   data: () => ({
     tableData: [],
-    fileList: []
+    fileList: [],
+    loading: false
   }),
   watch: {
     type: (newVal, oldVal) => {
@@ -150,6 +156,7 @@ export default {
     },
     handleDelete(row) {
       console.log(row.rowIndex)
+      this.tableData.splice(row.rowIndex, 1)
     },
     handleClick(row) {
       console.log(row)
@@ -161,6 +168,7 @@ export default {
       this.fileList = []
     },
     async handleBulkCreate() {
+      this.loading = true
       if (this.type === 'insert') {
         const res = await this.$store.dispatch('products/bulkCreate', { PList: this.tableData })
         if (res.code === 200) {
@@ -169,14 +177,24 @@ export default {
 
           // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
           this.fileList = []
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         }
+        this.loading = false
       } else {
         const res = await this.$store.dispatch('products/bulkUpdate', { PList: this.tableData })
         if (res.code === 200) {
           this.$emit('close', true)
           this.tableData = []
           this.fileList = []
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
         }
+        this.loading = false
       }
     },
     async onChange(file) {
