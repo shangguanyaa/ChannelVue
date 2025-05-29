@@ -183,6 +183,7 @@ export default {
   },
   methods: {
     async bulkDestroy() {
+      let loading = ''
       if (this.selectedPIDArr.length === 0 || !Array.isArray(this.selectedPIDArr)) {
         this.$message({
           type: 'warning',
@@ -198,7 +199,14 @@ export default {
         const res = await this.$store.dispatch('products/deleteProducts', {
           PidArr: this.selectedPIDArr
         })
+        loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
         if (res.code === 200) {
+          loading.close()
           this.getProductsList()
         }
       }).catch(() => {
@@ -206,6 +214,7 @@ export default {
           type: 'info',
           message: '已取消删除'
         })
+        loading.close()
       })
     },
     handleSelectionChange(selectedArr) {

@@ -226,7 +226,14 @@ export default {
       console.log('读取的excel表头数据（第一行）', header)
       const data = xlsx.utils.sheet_to_json(firstWorkSheet)
       console.log('读取所有excel数据', data)
-      this.tableData = data
+      this.tableData = data.filter(row => row.stockSKU) || []
+      const noStockNum = (data.filter(row => !row.stockSKU) || []).length
+      if (noStockNum > 0) {
+        this.$message({
+          message: `共有 ${noStockNum} 条数据没有 stockSKU, 已自动过滤`,
+          type: 'warning'
+        })
+      }
 
       // 清空已选择文件列表数据, 否则再次选择同一个文件不会再触发 onChange
       this.fileList = []
