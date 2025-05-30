@@ -128,15 +128,20 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100, 200, 500]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+    <div class="bottom">
+      <el-pagination
+        :current-page="pageIndex"
+        :page-sizes="[10, 20, 50, 100, 200, 500]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+      <el-button size="mini" :disabled="productsList.length === 0" @click="exportExcel">
+        {{ selectedPIDArr.length !== 0 ? '导出选中数据' : '导出当前数据' }}
+      </el-button>
+    </div>
     <BulkCreate :drawer="bulkCreateDrawer" :type="bulkInsertOrBulkEdit" @close="bulkCreateClose" />
     <AddEditProduct
       :drawer="addEditDrawer"
@@ -151,6 +156,9 @@
 import BulkCreate from './components/bulkcreate'
 import AddEditProduct from './components/addEditProduct'
 import { isAdmin } from '@/utils/auth'
+// import XLSX from 'xlsx'
+const XLSX = require('xlsx')
+import { saveAs } from 'file-saver'
 
 export default {
   components: {
@@ -172,6 +180,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       selectedPIDArr: [],
+      selectedArr: [],
       admin: isAdmin()
     }
   },
@@ -182,6 +191,37 @@ export default {
     this.admin = isAdmin()
   },
   methods: {
+    async exportExcel() {
+      try {
+        // 1. 获取后端数据（示例为axios请求）
+
+        // 2. 转换数据为Excel工作表
+        const worksheet = XLSX.utils.json_to_sheet(this.selectedArr.length !== 0 ? this.selectedArr : this.productsList)
+        const workbook = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
+
+        const fileName = `${this.getCurrentDateTime()}.xlsx`
+
+        // 3. 生成文件并下载
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+        saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), fileName)
+      } catch (error) {
+        console.error('导出失败:', error)
+      }
+    },
+    getCurrentDateTime() {
+      const now = new Date()
+
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const seconds = String(now.getSeconds()).padStart(2, '0')
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+    },
     async bulkDestroy() {
       let loading = ''
       if (this.selectedPIDArr.length === 0 || !Array.isArray(this.selectedPIDArr)) {
@@ -219,6 +259,7 @@ export default {
     },
     handleSelectionChange(selectedArr) {
       console.log(selectedArr)
+      this.selectedArr = selectedArr
       const selectedPIDArr = []
       for (const item of selectedArr) {
         selectedPIDArr.push(item.PID)
@@ -296,6 +337,11 @@ export default {
 </script>
 
 <style scoped>
+.app-container .bottom{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
 .top {
   width: 100%;
 }
