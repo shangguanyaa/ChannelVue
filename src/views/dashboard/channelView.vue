@@ -15,8 +15,11 @@
           <el-col :span="6">
             <p>计费重量</p>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="3">
             <p class="ageing">配送时效</p>
+          </el-col>
+          <el-col :span="3">
+            <p class="channelType">渠道类型</p>
           </el-col>
         </el-row>
       </div>
@@ -48,8 +51,11 @@
                   <span>计费重 {{ (item.showInfo.CountWeight / 1000).toFixed(2) }} KG</span>
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="3">
                 <p class="ageing">{{ item.ageing }}</p>
+              </el-col>
+              <el-col :span="3">
+                <p class="channelType">{{ item.channelType }}</p>
               </el-col>
             </el-row>
           </div>
@@ -281,6 +287,11 @@ export default {
 .ageing {
   width: 100%;
   text-align: left;
+}
+
+.channelType {
+  width: 100%;
+  text-align: center;
 }
 
 .no-data {

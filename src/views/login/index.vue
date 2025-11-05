@@ -90,7 +90,7 @@ export default {
     async doLogin() {
       const Username = this.loginInfo.email
       const Password = this.loginInfo.passWord
-      console.log(Username, Password)
+      // console.log(Username, Password)
       if (!Username || !Password) {
         this.$message({
           message: '请先输入完整用户名和密码哦~',
@@ -102,7 +102,7 @@ export default {
       if (this.loginType === 'user') {
         res = await this.$store.dispatch('user/doLogin', this.loginInfo)
       } else {
-        console.log('admin 登录')
+        // console.log('admin 登录')
         res = await this.$store.dispatch('user/adminLogin', this.loginInfo)
       }
       if (res && res.code === 201) {
