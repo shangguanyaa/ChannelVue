@@ -1,3 +1,11 @@
+<!--
+ * @Author: SGuanyaa 1051158791@qq.com
+ * @Date: 2025-05-29 09:32:37
+ * @LastEditors: SGuanyaa 1051158791@qq.com
+ * @LastEditTime: 2025-11-11 14:55:01
+ * @FilePath: \ChannelVue\src\views\tree\index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <div class="app-container">
     <div class="top">
@@ -7,9 +15,10 @@
           <el-button type="primary" icon="el-icon-plus" :disabled="!admin" @click="addProduct">新增产品</el-button>
           <el-button type="primary" icon="el-icon-download" :loading="downloadTime" :disabled="!admin" @click="downloadTem">下载模板文件</el-button>
           <el-button type="primary" icon="el-icon-edit-outline" :disabled="!admin" @click="bulkCreate('edit')">批量更新</el-button>
+          <el-button type="primary" icon="el-icon-delete" :disabled="!admin" @click="dialogVisible = true">stockSKU批量删除</el-button>
         </div>
         <div>
-          <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-plus" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
+          <el-button v-show="selectedPIDArr.length !== 0" type="primary" icon="el-icon-delete" :disabled="!admin" @click="bulkDestroy">批量删除</el-button>
           <el-input v-model="keywords" placeholder="请输入库存SKU关键词" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="getProductsList" />
           </el-input>
@@ -149,6 +158,23 @@
       :type="addOrEdit"
       @close="addEditClose"
     />
+
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <el-input
+        v-model="bulkStockSKUString"
+        type="textarea"
+        :rows="5"
+        placeholder="请输入要删除的产品SKU，多个SKU可以用逗号、分号、空格或换行分隔"
+      />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="CancelBulkDeleteSKU">取 消</el-button>
+        <el-button type="primary" @click="ConfirmBulkDeleteBySKU">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -181,7 +207,9 @@ export default {
       pageSize: 10,
       selectedPIDArr: [],
       selectedArr: [],
-      admin: isAdmin()
+      admin: isAdmin(),
+      bulkStockSKUString: '', // 根据 stockSKU 批量删除的字符串
+      dialogVisible: false // 输入stockSKU 批量删除弹窗
     }
   },
   watch: {
@@ -191,6 +219,89 @@ export default {
     this.admin = isAdmin()
   },
   methods: {
+    /**
+     * @description: 通过 stockSKU 字符串转换为数组
+     * @param {string} pasteText
+     * @return {array}
+     */
+    handlePasteStockSKU(pasteText) {
+      if (!pasteText || typeof pasteText !== 'string') {
+        return []
+      }
+
+      // 使用正则表达式匹配各种分隔符：逗号、分号、空格、换行、制表符等
+      const separators = /[,，;；\s\n\t|]+/
+
+      // 分割字符串并处理每个元素
+      const skuArray = pasteText
+        .split(separators)
+        .map(sku => sku.trim()) // 去除前后空格
+        .filter(sku => {
+        // 过滤空字符串和无效的SKU
+          return sku && sku.length > 0
+        })
+        .filter((sku, index, self) => {
+        // 去重
+          return self.indexOf(sku) === index
+        })
+
+      console.log('处理后的SKU数组:', skuArray)
+      return skuArray
+    },
+    // 通过 stockSKU 弹窗点击确认按钮
+    async ConfirmBulkDeleteBySKU() {
+      try {
+        let loading = ''
+        const pasteText = this.bulkStockSKUString
+        console.log(pasteText)
+        if (!pasteText) {
+          this.$message.warning('请输入要删除的产品SKU')
+          return
+        }
+        // 处理粘贴的文本
+        const stockSKUArray = this.handlePasteStockSKU(pasteText)
+
+        if (stockSKUArray.length === 0) {
+          this.$message.warning('未识别到有效的产品SKU')
+          return
+        }
+        loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        const res = await this.$store.dispatch('products/batchDeleteByStockSKU', {
+          stockSKUArray
+        })
+        console.log(res)
+        if (res.code === 200) {
+          loading.close()
+          this.CancelBulkDeleteSKU()
+          this.getProductsList()
+          this.$notify({
+            title: '删除成功',
+            type: 'success',
+            message: `成功删除 ${res.data.deletedCount} 个产品`
+          })
+          if (res.data.nonExistingSKUs.length > 0) {
+            const text = `未成功删除 ${res.data.nonExistingSKUs.join(',')} 这${res.data.nonExistingSKUs.length}个产品`
+            this.$alert(text, '删除失败列表', {
+              confirmButtonText: '确定'
+            })
+          }
+        }
+      } catch (error) {
+        console.error('批量删除失败:', error)
+        this.$message.error('批量删除失败')
+      }
+      console.log(this.handlePasteStockSKU(this.bulkStockSKUString))
+    },
+    // 根据 stockSKU 批量删除弹窗取消按钮
+    CancelBulkDeleteSKU() {
+      this.dialogVisible = false
+      this.bulkStockSKUString = ''
+    },
     async exportExcel() {
       try {
         // 1. 获取后端数据（示例为axios请求）

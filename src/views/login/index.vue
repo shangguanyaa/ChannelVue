@@ -98,6 +98,12 @@ export default {
         })
         return
       }
+      const loading = this.$loading({
+        lock: true,
+        text: '登录中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0,0,0,0.7)'
+      })
       let res
       if (this.loginType === 'user') {
         res = await this.$store.dispatch('user/doLogin', this.loginInfo)
@@ -105,6 +111,7 @@ export default {
         // console.log('admin 登录')
         res = await this.$store.dispatch('user/adminLogin', this.loginInfo)
       }
+      loading.close()
       if (res && res.code === 201) {
         // const TOKEN = res.results.token;
         // setToken(TOKEN);
