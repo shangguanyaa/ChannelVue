@@ -103,24 +103,24 @@
                 </div>
                 <el-form-item label="首重重量">
                   <el-col :span="8">
-                    <el-input v-model="rowData.FWeight" placeholder="长" />
+                    <el-input v-model="rowData.FWeight" placeholder="克" />
                   </el-col>
                   <el-col :span="6" class="price-col">
                     首重价格：
                   </el-col>
                   <el-col :span="8" class="price-col">
-                    <el-input v-model="rowData.FWeightPrice" placeholder="长" />
+                    <el-input v-model="rowData.FWeightPrice" placeholder="元" />
                   </el-col>
                 </el-form-item>
                 <el-form-item label="续重重量">
                   <el-col :span="8">
-                    <el-input v-model="rowData.CWeight" placeholder="长" />
+                    <el-input v-model="rowData.CWeight" placeholder="克" />
                   </el-col>
                   <el-col :span="6" class="price-col">
                     续重价格：
                   </el-col>
                   <el-col :span="8" class="price-col">
-                    <el-input v-model="rowData.CWeightPrice" placeholder="长" />
+                    <el-input v-model="rowData.CWeightPrice" placeholder="元" />
                   </el-col>
                 </el-form-item>
               </template>
@@ -134,14 +134,14 @@
                 </div>
                 <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
                   <div class="range-item">
-                    <el-input v-model="item.range[0]" type="Number" placeholder="起始重量" />
+                    <el-input v-model="item.range[0]" type="Number" placeholder="起始重量(克)" />
                     <span> ~ </span>
-                    <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
+                    <el-input v-model="item.range[1]" type="Number" placeholder="结束重量(克)" />
                     <el-divider direction="vertical" />
-                    <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
+                    <el-input v-model="item.price" type="Number" placeholder="该范围价格(元)" />
                     <template v-if="showOperate">
                       <el-divider direction="vertical" />
-                      <el-input v-model="item.operate" type="Number" placeholder="操作费" />
+                      <el-input v-model="item.operate" type="Number" placeholder="操作费(元)" />
                     </template>
                     <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
                   </div>
@@ -160,9 +160,9 @@
                 </el-form-item>
                 <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
                   <div class="range-item">
-                    <el-input v-model="item.range" type="Number" placeholder="重量" />
+                    <el-input v-model="item.range" type="Number" placeholder="重量(克)" />
                     <el-divider direction="vertical" />
-                    <el-input v-model="item.price" type="Number" placeholder="价格" />
+                    <el-input v-model="item.price" type="Number" placeholder="价格(元)" />
                     <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
                   </div>
                 </el-form-item>
@@ -201,21 +201,21 @@
                     <p v-if="['weightRange', 'volumeRange'].includes(key)" class="item">
                       <span class="title">限制值范围(CM):</span>
                       <span class="input weightRange">
-                        <el-input v-model="rule.range[0]" placeholder="起始值" :type="'Number'" />
+                        <el-input v-model="rule.range[0]" :placeholder="getRangePlaceholder(key, 0)" :type="'Number'" />
                         <span style="margin: 0 10px;"> ~ </span>
-                        <el-input v-model="rule.range[1]" placeholder="结束值" :type="'Number'" />
+                        <el-input v-model="rule.range[1]" :placeholder="getRangePlaceholder(key, 1)" :type="'Number'" />
                       </span>
                     </p>
                     <p v-else class="item">
                       <span class="title">限制值:</span>
                       <span class="input">
-                        <el-input v-model="rule.value" placeholder="产品该属性>=限制值" :type="'Number'" />
+                        <el-input v-model="rule.value" :placeholder="getRulePlaceholder(key)" :type="'Number'" />
                       </span>
                     </p>
                     <p class="item">
                       <span class="title">超出价格:</span>
                       <span class="input">
-                        <el-input v-model="rule.price" placeholder="触发后价格" :type="'Number'" />
+                        <el-input v-model="rule.price" placeholder="触发后价格(元)" :type="'Number'" />
                       </span>
                     </p>
                     <p class="item">
@@ -328,15 +328,16 @@ export default {
       rulesEdit: false,
       width: 650,
       options: [
-        { value: 'maxLength', label: '最长边长(大于或等于)' },
-        { value: 'secendLength', label: '第二边长(大于或等于)' },
-        { value: 'minLength', label: '最短边长(大于或等于)' },
-        { value: 'volume', label: '围长(长 + 2 * 高 + 2 * 宽)' },
-        { value: 'weight', label: '单件结算重(大于或等于)' },
-        { value: 'LWH', label: '长+ 宽+ 高(大于或等于)' },
-        { value: 'weightSmaller', label: '单件结算重(小于或等于)' },
-        { value: 'weightRange', label: '重量范围' },
-        { value: 'volumeRange', label: '围长范围' }
+        { value: 'maxLength', label: '最长边长(大于或等于)', unit: 'CM' },
+        { value: 'secendLength', label: '第二边长(大于或等于)', unit: 'CM' },
+        { value: 'minLength', label: '最短边长(大于或等于)', unit: 'CM' },
+        { value: 'volume', label: '围长(长 + 2 * 高 + 2 * 宽)', unit: 'CM' },
+        { value: 'weight', label: '单件结算重(大于或等于)', unit: 'KG' },
+        { value: 'LWH', label: '长+ 宽+ 高(大于或等于)', unit: 'CM' },
+        { value: 'weightSmaller', label: '单件结算重(小于或等于)', unit: 'KG' },
+        { value: 'weightRange', label: '重量范围', unit: 'KG' },
+        { value: 'volumeRange', label: '围长范围', unit: 'CM' },
+        { value: 'overweight', label: '实重超重(大于)', unit: 'KG' }
       ],
       ZH_Options: {
         maxLength: '最长边长',
@@ -347,7 +348,8 @@ export default {
         LWH: '长+ 宽+ 高',
         weightSmaller: '单件结算重(小于或等于)',
         weightRange: '重量范围',
-        volumeRange: '围长范围'
+        volumeRange: '围长范围',
+        overweight: '实重超重(大于)'
       },
       value: '',
       selectedRules: [],
@@ -449,6 +451,31 @@ export default {
       this.$set(this.rowData, 'surcharge', [...this.rowData.surcharge, {}])
       this.$forceUpdate()
       console.log(this.rowData, 'forceUpdate')
+    },
+    // 获取规则的提示信息
+    getRulePlaceholder(ruleKey, type = 'value') {
+      const ruleOption = this.options.find(option => option.value === ruleKey)
+      if (!ruleOption || !ruleOption.unit) return ''
+
+      const unit = ruleOption.unit
+
+      if (type === 'start') {
+        return `起始值 (${unit})`
+      } else if (type === 'end') {
+        return `结束值 (${unit})`
+      } else {
+        return `产品该属性>=限制值 (${unit})`
+      }
+    },
+
+    // 获取范围的提示信息（针对范围类型的规则）
+    getRangePlaceholder(ruleKey, index) {
+      const ruleOption = this.options.find(option => option.value === ruleKey)
+      if (!ruleOption || !ruleOption.unit) return ''
+
+      const unit = ruleOption.unit
+      const labels = ['起始值', '结束值']
+      return `${labels[index]} (${unit})`
     },
     rulesEditOpen() {
       if (this.rulesEdit) {

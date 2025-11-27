@@ -103,24 +103,24 @@
                 </div>
                 <el-form-item label="首重重量">
                   <el-col :span="8">
-                    <el-input v-model="rowData.FWeight" placeholder="长" />
+                    <el-input v-model="rowData.FWeight" placeholder="克" />
                   </el-col>
                   <el-col :span="6" class="price-col">
                     首重价格：
                   </el-col>
                   <el-col :span="8" class="price-col">
-                    <el-input v-model="rowData.FWeightPrice" placeholder="长" />
+                    <el-input v-model="rowData.FWeightPrice" placeholder="元" />
                   </el-col>
                 </el-form-item>
                 <el-form-item label="续重重量">
                   <el-col :span="8">
-                    <el-input v-model="rowData.CWeight" placeholder="长" />
+                    <el-input v-model="rowData.CWeight" placeholder="克" />
                   </el-col>
                   <el-col :span="6" class="price-col">
                     续重价格：
                   </el-col>
                   <el-col :span="8" class="price-col">
-                    <el-input v-model="rowData.CWeightPrice" placeholder="长" />
+                    <el-input v-model="rowData.CWeightPrice" placeholder="元" />
                   </el-col>
                 </el-form-item>
               </template>
@@ -134,14 +134,14 @@
                 </div>
                 <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
                   <div class="range-item">
-                    <el-input v-model="item.range[0]" type="Number" placeholder="起始重量" />
+                    <el-input v-model="item.range[0]" type="Number" placeholder="起始重量(克)" />
                     <span> ~ </span>
-                    <el-input v-model="item.range[1]" type="Number" placeholder="结束重量" />
+                    <el-input v-model="item.range[1]" type="Number" placeholder="结束重量(克)" />
                     <el-divider direction="vertical" />
-                    <el-input v-model="item.price" type="Number" placeholder="该范围价格" />
+                    <el-input v-model="item.price" type="Number" placeholder="该范围价格(元)" />
                     <template v-if="showOperate">
                       <el-divider direction="vertical" />
-                      <el-input v-model="item.operate" type="Number" placeholder="操作费" />
+                      <el-input v-model="item.operate" type="Number" placeholder="操作费(元)" />
                     </template>
                     <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
                   </div>
@@ -160,9 +160,9 @@
                 </el-form-item>
                 <el-form-item v-for="(item, i) in rowData.range" :key="i" :label="'范围 ' + (i + 1)">
                   <div class="range-item">
-                    <el-input v-model="item.range" type="Number" placeholder="重量" />
+                    <el-input v-model="item.range" type="Number" placeholder="重量(克)" />
                     <el-divider direction="vertical" />
-                    <el-input v-model="item.price" type="Number" placeholder="价格" />
+                    <el-input v-model="item.price" type="Number" placeholder="价格(元)" />
                     <i v-show="i > 0" class="el-icon-remove-outline" @click="removeRange(i)" />
                   </div>
                 </el-form-item>
@@ -201,6 +201,69 @@
                     <p v-if="['weightRange', 'volumeRange'].includes(key)" class="item">
                       <span class="title">限制值范围(KG):</span>
                       <span class="input weightRange">
+                        <el-input
+                          :value="rule.range[0]"
+                          :placeholder="getRangePlaceholder(key, 0)"
+                          type="Number"
+                          @input="val => updateRuleRange(i, key, 0, val)"
+                        />
+                        <span style="margin: 0 10px;"> ~ </span>
+                        <el-input
+                          :value="rule.range[1]"
+                          :placeholder="getRangePlaceholder(key, 0)"
+                          type="Number"
+                          @input="val => updateRuleRange(i, key, 1, val)"
+                        />
+                      </span>
+                    </p>
+                    <p v-else class="item">
+                      <span class="title">限制值:</span>
+                      <span class="input">
+                        <el-input
+                          :value="rule.value"
+                          :placeholder="getRulePlaceholder(key)"
+                          type="Number"
+                          @input="val => updateRuleValue(i, key, 'value', val)"
+                        />
+                      </span>
+                    </p>
+                    <p class="item">
+                      <span class="title">超出价格:</span>
+                      <span class="input">
+                        <el-input
+                          :value="rule.price"
+                          placeholder="触发后价格"
+                          type="Number"
+                          @input="val => updateRuleValue(i, key, 'price', val)"
+                        />
+                      </span>
+                    </p>
+                    <p class="item">
+                      <span class="title">是否乘以燃油:</span>
+                      <span class="input">
+                        <el-radio-group
+                          :value="rule.oil"
+                          @input="val => updateRuleValue(i, key, 'oil', val)"
+                        >
+                          <el-radio :label="true">是</el-radio>
+                          <el-radio :label="false">否</el-radio>
+                        </el-radio-group>
+                      </span>
+                    </p>
+                    <p class="item">
+                      <span class="title">附加费描述</span>
+                      <span class="input">
+                        <el-input
+                          :value="rule.text"
+                          placeholder="会出现在试算附加费详情里"
+                          type="String"
+                          @input="val => updateRuleValue(i, key, 'text', val)"
+                        />
+                      </span>
+                    </p>
+                    <!-- <p v-if="['weightRange', 'volumeRange'].includes(key)" class="item">
+                      <span class="title">限制值范围(KG):</span>
+                      <span class="input weightRange">
                         <el-input v-model="rule.range[0]" placeholder="起始值" :type="'Number'" />
                         <span style="margin: 0 10px;"> ~ </span>
                         <el-input v-model="rule.range[1]" placeholder="结束值" :type="'Number'" />
@@ -232,7 +295,7 @@
                       <span class="input">
                         <el-input v-model="rule.text" placeholder="会出现在试算附加费详情里" :type="'String'" />
                       </span>
-                    </p>
+                    </p> -->
                   </el-card>
                 </div>
               </el-card>
@@ -341,6 +404,407 @@ export default {
         operatePrice: 0,
         remark: null,
         volume: 99999,
+        registerPrice: 0,
+        surcharge: [],
+        customSurcharge: []
+      },
+      withEle: [],
+      ele1: false,
+      ele2: false,
+      ele3: false,
+      onLoading: false,
+      AIRange: '',
+      AIPrice: '',
+      rulesEdit: false,
+      width: 650,
+      options: [
+        { value: 'maxLength', label: '最长边长(大于或等于)', unit: 'CM' },
+        { value: 'secendLength', label: '第二边长(大于或等于)', unit: 'CM' },
+        { value: 'minLength', label: '最短边长(大于或等于)', unit: 'CM' },
+        { value: 'volume', label: '围长(长 + 2 * 高 + 2 * 宽)', unit: 'CM' },
+        { value: 'weight', label: '单件结算重(大于或等于)', unit: 'KG' },
+        { value: 'LWH', label: '长+ 宽+ 高(大于或等于)', unit: 'CM' },
+        { value: 'weightSmaller', label: '单件结算重(小于或等于)', unit: 'KG' },
+        { value: 'weightRange', label: '重量范围', unit: 'KG' },
+        { value: 'volumeRange', label: '围长范围', unit: 'CM' },
+        { value: 'overweight', label: '实重超重(大于)', unit: 'KG' }
+      ],
+      ZH_Options: {
+        maxLength: '最长边长',
+        secendLength: '第二边长',
+        minLength: '最短边长',
+        volume: '围长(长+2*高+2*宽)',
+        weight: '单件结算重(大于或等于)',
+        LWH: '长+ 宽+ 高',
+        weightSmaller: '单件结算重(小于或等于)',
+        weightRange: '重量范围',
+        volumeRange: '围长范围',
+        overweight: '实重超重'
+      },
+      value: '',
+      selectedRules: [],
+      showOperate: true
+    }
+  },
+  watch: {
+    'rowData.countWay': function(newVal, oldVal) {
+      if (oldVal === '3' && newVal === '2') {
+        this.rowData.range = []
+      }
+      if (oldVal === '2' && newVal === '3') {
+        this.rowData.range = []
+      }
+    }
+  },
+  methods: {
+    deleteCustomSurcharge(index) {
+      this.$delete(this.rowData.customSurcharge, index)
+    },
+    addCustomSurcharge() {
+      if (!this.rowData.customSurcharge || !Array.isArray(this.rowData.customSurcharge)) {
+        this.$set(this.rowData, 'customSurcharge', [])
+      }
+      const newCustomSurcharge = {
+        text: '',
+        price: 30,
+        type: 1,
+        minPrice: 0,
+        autoSelect: true,
+        oil: false
+      }
+      this.rowData.customSurcharge.push(newCustomSurcharge)
+    },
+    deleteGroup(index, item) {
+      for (const key in item) {
+        this.deleteRule(index, key)
+      }
+      this.$delete(this.rowData.surcharge, index)
+    },
+    deleteRule(index, key) {
+      if (this.rowData.surcharge[index] && this.rowData.surcharge[index][key]) {
+        this.$delete(this.rowData.surcharge[index], key)
+        this.selectedRules.splice(this.selectedRules.indexOf(key), 1)
+      }
+    },
+    /**
+     * @description: 在规则组里选择了一个规则回调
+     * @param {number} index 所选择的规则组下标
+     */
+    selectRule(index) {
+      if (!this.rowData.surcharge[index]) {
+        this.$set(this.rowData.surcharge, index, {})
+      }
+
+      const newRule = {
+        value: 0,
+        price: 0,
+        range: [0, 0],
+        oil: false,
+        text: ''
+      }
+
+      this.$set(this.rowData.surcharge[index], this.value, newRule)
+      this.selectedRules.push(this.value)
+      this.value = ''
+    },
+    addGroup() {
+      if (!this.rowData.surcharge || !Array.isArray(this.rowData.surcharge)) {
+        this.$set(this.rowData, 'surcharge', [])
+      }
+      this.rowData.surcharge.push({})
+    },
+
+    // 获取规则的提示信息
+    getRulePlaceholder(ruleKey, type = 'value') {
+      const ruleOption = this.options.find(option => option.value === ruleKey)
+      if (!ruleOption || !ruleOption.unit) return ''
+
+      const unit = ruleOption.unit
+
+      if (type === 'start') {
+        return `起始值 (${unit})`
+      } else if (type === 'end') {
+        return `结束值 (${unit})`
+      } else {
+        return `产品该属性>=限制值 (${unit})`
+      }
+    },
+
+    // 获取范围的提示信息（针对范围类型的规则）
+    getRangePlaceholder(ruleKey, index) {
+      const ruleOption = this.options.find(option => option.value === ruleKey)
+      if (!ruleOption || !ruleOption.unit) return ''
+
+      const unit = ruleOption.unit
+      const labels = ['起始值', '结束值']
+      return `${labels[index]} (${unit})`
+    },
+
+    // 添加响应式更新规则值的方法
+    updateRuleValue(groupIndex, ruleKey, field, value) {
+      if (this.rowData.surcharge[groupIndex] && this.rowData.surcharge[groupIndex][ruleKey]) {
+        this.$set(this.rowData.surcharge[groupIndex][ruleKey], field, value)
+      }
+    },
+
+    // 更新范围值的方法
+    updateRuleRange(groupIndex, ruleKey, rangeIndex, value) {
+      if (this.rowData.surcharge[groupIndex] &&
+          this.rowData.surcharge[groupIndex][ruleKey] &&
+          this.rowData.surcharge[groupIndex][ruleKey].range) {
+        const newRange = [...this.rowData.surcharge[groupIndex][ruleKey].range]
+        newRange[rangeIndex] = value
+        this.$set(this.rowData.surcharge[groupIndex][ruleKey], 'range', newRange)
+      }
+    },
+
+    rulesEditOpen() {
+      if (this.rulesEdit) {
+        this.rulesEdit = false
+        this.width = 650
+      } else {
+        this.rulesEdit = true
+        this.width = '90%'
+      }
+    },
+    toDoAI() {
+      const range = []
+      const rangeArr = this.AIRange.split(',')
+      const priceArr = this.AIPrice.split(' ')
+      for (const key in rangeArr) {
+        range.push({
+          range: rangeArr[key],
+          price: priceArr[key]
+        })
+      }
+      this.$set(this.rowData, 'range', range)
+    },
+    deleteOperate() {
+      for (const item of this.rowData.range) {
+        this.$set(item, 'operate', 0)
+      }
+      this.showOperate = false
+    },
+    addOperate() {
+      const range = this.rowData.range
+      if (!range || range.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请添加至少一个范围'
+        })
+        return
+      }
+      this.showOperate = true
+    },
+    chick1(val) {
+      this.chickCheck(val, 1)
+    },
+    chick2(val) {
+      this.chickCheck(val, 2)
+    },
+    chick3(val) {
+      this.chickCheck(val, 3)
+    },
+    chickCheck(val, index) {
+      if (val) {
+        this.withEle.push(`${index}`)
+      } else {
+        this.withEle.splice(this.withEle.indexOf(`${index}`), 1)
+      }
+      this.initCheckBoxs()
+    },
+    initCheckBoxs() {
+      for (const item of this.withEle) {
+        switch (item) {
+          case '1':
+            this.ele1 = true
+            break
+          case '2':
+            this.ele2 = true
+            break
+          case '3':
+            this.ele3 = true
+            break
+          default:
+            break
+        }
+      }
+    },
+    initRowData() {
+      this.rowData = {
+        channelName: '',
+        channelCode: '',
+        channelType: '',
+        AdvancedUnits: 1000,
+        country: '',
+        long: 99999,
+        wide: 99999,
+        high: 99999,
+        maxSidelength: 99999,
+        maxWeight: 99999999,
+        minWeight: 0,
+        maxSumLWH: 99999999,
+        countWay: '1',
+        FWeight: null,
+        FWeightPrice: null,
+        CWeight: null,
+        CWeightPrice: null,
+        range: null,
+        ageing: '6-10天',
+        volumeWight: 6000,
+        operatePrice: 0,
+        remark: null,
+        volume: 99999,
+        registerPrice: 0,
+        surcharge: [],
+        customSurcharge: []
+      }
+      this.ele1 = false
+      this.ele2 = false
+      this.ele3 = false
+    },
+    handleClose() {
+      this.$emit('closeAdd')
+      this.initRowData()
+    },
+    async handleUndateChannel() {
+      this.onLoading = true
+
+      this.rowData.withElectricity = this.withEle.toString()
+      if (this.rowData.countWay === '1' || this.rowData.countWay === '4') {
+        this.rowData.range = null
+      } else if (this.rowData.countWay === '2' || this.rowData.countWay === '3') {
+        this.rowData.FWeight = null
+        this.rowData.FWeightPrice = null
+        this.rowData.CWeight = null
+        this.rowData.CWeight = null
+      }
+      const res = await this.$store.dispatch('channel/insertChannel', { rowData: this.rowData })
+      if (res.code === 200) {
+        this.handleClose()
+        this.$emit('updateSuccess')
+      }
+      this.onLoading = false
+    },
+    onSubmit() {
+      if (!this.rowData.channelName) {
+        this.$message({
+          type: 'warning',
+          message: '请输入渠道名称'
+        })
+      }
+      if (!this.rowData.channelCode) {
+        this.$message({
+          type: 'warning',
+          message: '请输入渠道代码: 谨慎修改此项'
+        })
+      }
+      if (!this.rowData.channelType) {
+        this.$message({
+          type: 'warning',
+          message: '请输入渠道类型'
+        })
+      }
+      if (this.rowData.countWay === '1') {
+        if (!this.rowData.FWeight || !this.rowData.FWeightPrice || !this.rowData.CWeight || !this.rowData.CWeightPrice) {
+          this.$message({
+            type: 'warning',
+            message: '请完善首重续重数据'
+          })
+          return
+        }
+      }
+      if (this.rowData.countWay === '2') {
+        for (const item of this.rowData.range) {
+          if (!item.price || !item.range[0] || !item.range[1]) {
+            this.$message({
+              type: 'warning',
+              message: '请完善重量范围数据'
+            })
+            return
+          }
+        }
+      }
+      if (this.rowData.countWay === '4') {
+        if (!this.rowData.FWeightPrice) {
+          this.$message({
+            type: 'warning',
+            message: '请完善价格数据'
+          })
+          return
+        }
+      }
+      this.handleUndateChannel()
+    },
+    addRange() {
+      if (!this.rowData.range) {
+        this.$set(this.rowData, 'range', [])
+      }
+      this.rowData.range.push({
+        price: null,
+        range: [null, null]
+      })
+    },
+    addRangePrice() {
+      if (!this.rowData.range) {
+        this.$set(this.rowData, 'range', [])
+      }
+      this.rowData.range.push({
+        range: null,
+        price: null
+      })
+    },
+    removeRange(index) {
+      this.$delete(this.rowData.range, index)
+    },
+    doLogRowData() {
+      console.log(this.rowData)
+    }
+  }
+}
+</script>
+
+<!-- <script>
+
+export default {
+  name: 'ChannelAdd',
+  props: {
+    // eslint-disable-next-line vue/prop-name-casing
+    is_add_open: {
+      type: Boolean,
+      default: () => { false }
+    },
+    row: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data() {
+    return {
+      rowData: {
+        channelName: '',
+        channelCode: '',
+        channelType: '',
+        AdvancedUnits: 1000,
+        country: '',
+        long: 99999,
+        wide: 99999,
+        high: 99999,
+        maxSidelength: 99999,
+        maxWeight: 99999999,
+        maxSumLWH: 99999999,
+        minWeight: 0,
+        countWay: '1',
+        FWeight: null,
+        FWeightPrice: null,
+        CWeight: null,
+        CWeightPrice: null,
+        range: null,
+        ageing: '6-10天',
+        volumeWight: 6000,
+        operatePrice: 0,
+        remark: null,
+        volume: 99999,
         registerPrice: 0
       },
       withEle: [],
@@ -361,7 +825,8 @@ export default {
         { value: 'LWH', label: '长+ 宽+ 高(大于或等于)' },
         { value: 'weightSmaller', label: '单件结算重(小于或等于)' },
         { value: 'weightRange', label: '重量范围' },
-        { value: 'volumeRange', label: '围长范围' }
+        { value: 'volumeRange', label: '围长范围' },
+        { value: 'overweight', label: '实重超重(大于)' }
       ],
       ZH_Options: {
         maxLength: '最长边长',
@@ -372,7 +837,8 @@ export default {
         LWH: '长+ 宽+ 高',
         weightSmaller: '单件结算重(小于或等于)',
         weightRange: '重量范围',
-        volumeRange: '围长范围'
+        volumeRange: '围长范围',
+        overweight: '实重超重'
       },
       value: '',
       selectedRules: [],
@@ -388,6 +854,7 @@ export default {
         this.rowData.range = []
       }
     }
+
   },
   methods: {
     deleteCustomSurcharge(index) {
@@ -429,6 +896,10 @@ export default {
       delete this.rowData.surcharge[index][key]
       this.selectedRules.splice(this.selectedRules.indexOf(key), 1)
     },
+    /**
+     * @description: 在规则组里选择了一个规则回调
+     * @param {number} index 所选择的规则组下标
+     */
     selectRule(index) {
       this.$set(this.rowData.surcharge[index], this.value, {
         value: 0,
@@ -675,7 +1146,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <style>
 .scrollbar-box::-webkit-scrollbar {

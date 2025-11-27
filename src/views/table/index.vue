@@ -387,6 +387,10 @@ export default {
     },
     updateSuccess() {
       this.closeEdit()
+      this.$message({
+        type: 'success',
+        message: '更新成功'
+      })
       this.getAllChannelList()
     }
   }
